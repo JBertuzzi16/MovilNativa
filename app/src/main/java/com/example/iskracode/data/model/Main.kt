@@ -103,7 +103,7 @@ fun main() {
             jugador.actualizarSaldo(-cantidad .toDouble())
             jugador.gestionRacha(haGanado=false)
         }
-        println("🔥 Racha de victorias actual: ${jugador.rachaDeVictorias} / 5")
+        println("Racha de victorias actual: ${jugador.rachaDeVictorias} / 5")
         println("--------------------------------------------------")
     }
 }
