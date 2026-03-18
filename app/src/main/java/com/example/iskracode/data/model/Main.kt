@@ -29,7 +29,7 @@ fun main() {
             println("¡No tienes saldo suficiente para esa apuesta!")
             continue // Vuelve al inicio del bucle
         }
-
+        jugador.actualizarSaldo(-cantidad.toDouble())
         println("Elige tipo de apuesta:")
         println("1. Pleno")
         println("2. Color")
@@ -51,7 +51,7 @@ fun main() {
 
                 if (color != "rojo" && color != "negro") {
                     println("Color no válido")
-                    return
+                    continue
                 }
 
                 Apuesta.Color(color, cantidad)
@@ -63,7 +63,7 @@ fun main() {
 
                 if (tipo != "par" && tipo != "impar") {
                     println("Tipo no válido")
-                    return
+                    continue
                 }
 
                 Apuesta.ParImpar(tipo, cantidad)
@@ -75,7 +75,7 @@ fun main() {
 
                 if (docena !in 1..3) {
                     println("Docena no válida")
-                    return
+                   continue
                 }
 
                 Apuesta.Docena(docena, cantidad)
@@ -83,7 +83,7 @@ fun main() {
 
             else -> {
                 println("Opción no válida")
-                return
+                continue
             }
         }
 
@@ -97,9 +97,13 @@ fun main() {
             println("¡Has ganado!")
             println("Premio: $premio")
             jugador.actualizarSaldo(+premio .toDouble())
+            jugador.gestionRacha(haGanado = true)
         } else {
             println("No hay premio.")
             jugador.actualizarSaldo(-cantidad .toDouble())
+            jugador.gestionRacha(haGanado=false)
         }
+        println("🔥 Racha de victorias actual: ${jugador.rachaDeVictorias} / 5")
+        println("--------------------------------------------------")
     }
 }

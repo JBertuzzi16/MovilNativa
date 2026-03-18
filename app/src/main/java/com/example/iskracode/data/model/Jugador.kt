@@ -26,10 +26,11 @@ class Jugador (
                         if (rachaDeVictorias==5){
                                 println("¡Racha de 5 Victorias conseguida! + 100.0")
                                 actualizarSaldo(100.0)
-                                rachaDeVictorias=0
-                        }else {
-                                rachaDeVictorias=0
+                            rachaDeVictorias=0
+
                         }
+                }else {
+                    rachaDeVictorias=0
                 }
 
         }
