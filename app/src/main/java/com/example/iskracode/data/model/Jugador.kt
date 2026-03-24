@@ -2,19 +2,18 @@ package com.example.iskracode.data.model
 
 class Jugador (
         var id: Int,
-        var nombre: String,
-        val saldoInicial: Double = 50.0,// 50 fichas inicial despues se puede cambiar
+        var nombre: String
 )
 {
-      var saldoActual: Double=50.00
+      var saldoActual = 50
               private set
-        fun tieneSaldoSuficiente(saldoInicial: Double): Boolean{
-                return saldoActual>=saldoInicial
+        fun tieneSaldoSuficiente(monto: Int): Boolean{
+                return saldoActual>=monto
 
         }
 
-        fun actualizarSaldo(saldoInicial: Double){
-                saldoActual +=saldoInicial
+        fun actualizarSaldo(monto:Int){
+                saldoActual +=monto
         }
 
         // Función racha de victorias
@@ -25,7 +24,7 @@ class Jugador (
                         rachaDeVictorias++
                         if (rachaDeVictorias==5){
                                 println("¡Racha de 5 Victorias conseguida! + 100.0")
-                                actualizarSaldo(100.0)
+                                actualizarSaldo(100)
                             rachaDeVictorias=0
 
                         }

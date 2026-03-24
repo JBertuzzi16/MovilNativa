@@ -9,7 +9,7 @@ fun main() {
     val jugador = Jugador(1,"Joaquin")
     println("=== RULETA ===")
     println ("Jugador: ${jugador.nombre.uppercase()}")
-    println("Dinero inicial: ${jugador.saldoInicial}")
+    println("Dinero inicial: ${jugador.saldoActual}")
 
     var jugando = true
 
@@ -25,11 +25,11 @@ fun main() {
             jugando = false
             continue
         }
-        if (!jugador.tieneSaldoSuficiente(cantidad .toDouble())) {
+        if (!jugador.tieneSaldoSuficiente(cantidad )) {
             println("¡No tienes saldo suficiente para esa apuesta!")
             continue // Vuelve al inicio del bucle
         }
-        jugador.actualizarSaldo(-cantidad.toDouble())
+        jugador.actualizarSaldo(-cantidad)
         println("Elige tipo de apuesta:")
         println("1. Pleno")
         println("2. Color")
@@ -96,11 +96,11 @@ fun main() {
         if (premio > 0) {
             println("¡Has ganado!")
             println("Premio: $premio")
-            jugador.actualizarSaldo(+premio .toDouble())
+            jugador.actualizarSaldo(+premio)
             jugador.gestionRacha(haGanado = true)
         } else {
             println("No hay premio.")
-            jugador.actualizarSaldo(-cantidad .toDouble())
+            jugador.actualizarSaldo(-cantidad)
             jugador.gestionRacha(haGanado=false)
         }
         println("Racha de victorias actual: ${jugador.rachaDeVictorias} / 5")

@@ -1,16 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
     namespace = "com.example.iskracode"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
-
+    compileSdk = 36
     defaultConfig {
         applicationId = "com.example.iskracode"
         minSdk = 24
@@ -55,4 +51,13 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    // --- BASE DE DATOS (ROOM + RXJAVA) ---
+    implementation(libs.room.runtime)
+    implementation(libs.room.rxjava3)
+    ksp(libs.room.compiler)
+
+    implementation(libs.rxjava3.core)
+    implementation(libs.rxjava3.android)
 }
+
+
