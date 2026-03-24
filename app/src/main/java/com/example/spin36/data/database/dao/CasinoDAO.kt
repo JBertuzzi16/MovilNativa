@@ -1,0 +1,27 @@
+package com.example.spin36.data.database.dao
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import com.example.spin36.data.database.entities.JugadorEntity
+import com.example.spin36.data.database.entities.PartidaEntity
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
+
+@Dao
+interface CasinoDAO {
+
+    @Insert
+    fun insertarJugador (jugadorEntity: JugadorEntity): Completable
+
+    @Insert
+    fun insertarPartida (partida: PartidaEntity): Completable
+
+    // Recupera el saldo del jugador
+    @Query ("SELECT * FROM jugador ORDER BY nombre DESC")
+    fun obtenerJugadorActual(): Single<JugadorEntity>
+
+    // Recupera el historial
+    @Query(value = "SELECT * FROM historial_partidas ORDER BY partidaId DESC")
+    fun obtenerHistorial(): Single<List<PartidaEntity>>
+}
