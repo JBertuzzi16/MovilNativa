@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "IskraCode"
+rootProject.name = "Spin36"
 include(":app")

@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "com.example.iskracode"
+    namespace = "com.example.spin36"
     compileSdk = 36
     defaultConfig {
-        applicationId = "com.example.iskracode"
+        applicationId = "com.example.spin36"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
