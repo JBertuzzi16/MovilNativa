@@ -3,9 +3,11 @@ package com.example.spin36.data.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.spin36.data.database.entities.JugadorEntity
 import com.example.spin36.data.database.entities.PartidaEntity
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
 
 @Dao
@@ -18,10 +20,14 @@ interface CasinoDAO {
     fun insertarPartida (partida: PartidaEntity): Completable
 
     // Recupera el saldo del jugador
-    @Query ("SELECT * FROM jugador ORDER BY nombre DESC")
-    fun obtenerJugadorActual(): Single<JugadorEntity>
+    @Query("SELECT * FROM jugador LIMIT 1")
+    fun obtenerJugadorActual(): Maybe<JugadorEntity>
 
     // Recupera el historial
     @Query(value = "SELECT * FROM historial_partidas ORDER BY partidaId DESC")
     fun obtenerHistorial(): Single<List<PartidaEntity>>
+
+    // Actualiza saldo del jugador
+    @Update
+    fun actualizarJugador(jugador: JugadorEntity): Completable
 }

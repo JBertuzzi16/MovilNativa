@@ -10,5 +10,8 @@ data class PartidaEntity(
     @ColumnInfo(name ="jugadorId" )val jugadorId: Int,
     @ColumnInfo(name ="tipoApuesta" )val tipoApuesta: String,
     @ColumnInfo(name ="resultadoRuleta" )val resultadoRuleta : Int,
-    @ColumnInfo(name ="ganancia" )val ganancia : Double
+    @ColumnInfo(name ="ganancia" )val ganancia : Int,
+    //añado estos para mantener en ROOM la racha actual y así sacar un bonus por racha(ej:5)
+    @ColumnInfo(name = "rachaActual")val rachaActual: Int,
+    @ColumnInfo(name = "bonusRacha")val bonusRacha: Int
 )
