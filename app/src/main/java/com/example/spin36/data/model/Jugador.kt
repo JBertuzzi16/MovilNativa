@@ -19,21 +19,22 @@ class Jugador (
         // Función racha de victorias
         var rachaDeVictorias:Int = 0
                 private set
-        fun gestionRacha (haGanado:Boolean){
-                if (haGanado){
-                        rachaDeVictorias++
-                        if (rachaDeVictorias==5){
-                                println("¡Racha de 5 Victorias conseguida! + 100.0")
-                                actualizarSaldo(100)
-                            rachaDeVictorias=0
-
-                        }
-                }else {
-                    rachaDeVictorias=0
-                }
-
+    fun gestionRacha(haGanado: Boolean): Boolean {
+        if (haGanado) {
+            rachaDeVictorias++
+            if (rachaDeVictorias == 5) {
+                actualizarSaldo(100)
+                rachaDeVictorias = 0
+                return true
+            }
+        } else {
+            rachaDeVictorias = 0
         }
+        return false
+    }
+
 }
+
 
 
 
