@@ -23,6 +23,10 @@ interface CasinoDAO {
     @Query("SELECT * FROM jugador LIMIT 1")
     fun obtenerJugadorActual(): Maybe<JugadorEntity>
 
+    // Buscar jugador por nombre
+    @Query ( "SELECT * FROM jugador WHERE nombre = :nombre LIMIT 1")
+    fun obtenerJugadorPorNombre (nombre:String): Maybe<JugadorEntity>
+
     // Recupera el historial
     @Query(value = "SELECT * FROM historial_partidas ORDER BY partidaId DESC")
     fun obtenerHistorial(): Single<List<PartidaEntity>>

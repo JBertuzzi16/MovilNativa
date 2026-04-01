@@ -2,10 +2,12 @@ package com.example.spin36.data.model
 
 class Jugador (
         var id: Int,
-        var nombre: String
+        var nombre: String,
+        saldoInicial : Int = 50,
+        rachaInicial: Int = 0
 )
 {
-      var saldoActual = 50
+      var saldoActual : Int = saldoInicial
               private set
         fun tieneSaldoSuficiente(monto: Int): Boolean{
                 return saldoActual>=monto
@@ -17,7 +19,7 @@ class Jugador (
         }
 
         // Función racha de victorias
-        var rachaDeVictorias:Int = 0
+        var rachaDeVictorias:Int = rachaInicial
                 private set
     fun gestionRacha(haGanado: Boolean): Boolean {
         if (haGanado) {
@@ -32,7 +34,10 @@ class Jugador (
         }
         return false
     }
-
+    fun reiniciarSesion (saldoInicial:Int = 50){
+        saldoActual=saldoInicial
+        rachaDeVictorias=0
+    }
 }
 
 

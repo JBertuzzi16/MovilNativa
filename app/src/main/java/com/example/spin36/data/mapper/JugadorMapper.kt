@@ -16,6 +16,7 @@ fun Jugador.toEntity(): JugadorEntity {
     return JugadorEntity(
         jugadorId = id,
         nombre = nombre,
-        saldoActual = saldoActual
+        saldoInicial = saldoActual,
+        rachaInicial = rachaDeVictorias
     )
 }

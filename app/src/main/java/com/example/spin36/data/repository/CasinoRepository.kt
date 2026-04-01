@@ -24,6 +24,11 @@ class CasinoRepository(
         )
         return dao.insertarJugador(jugador.toEntity())
     }
+    // Obtener jugador por nombre
+    fun obtenerJugadorPorNombre (nombre: String):Maybe<Jugador>{
+        return dao.obtenerJugadorPorNombre(nombre)
+            .map { entidad -> Jugador(entidad.jugadorId, entidad.nombre, entidad.saldoInicial, entidad.rachaInicial) }
+    }
 
     //aqui es donde reinicia el saldo actual con el mapper para inicio de sesion con 50 creditos
     fun obtenerJugadorSesion(): Maybe<Jugador> {

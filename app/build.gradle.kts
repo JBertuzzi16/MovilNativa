@@ -51,6 +51,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     // --- BASE DE DATOS (ROOM + RXJAVA) ---
     implementation(libs.room.runtime)
     implementation(libs.room.rxjava3)

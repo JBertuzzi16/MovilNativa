@@ -24,23 +24,34 @@ class JuegoViewModel(
 
     private var jugadorActual: Jugador? = null
 
-    fun cargarJugador() {
+    fun cargarJugador(nombreRecibido: String) {
         _uiState.value = _uiState.value.copy(
             cargando = true,
             error = null
         )
 
-        val disposable = repository.obtenerJugadorSesion()
+        val disposable = repository.obtenerJugadorPorNombre(nombreRecibido)
             .switchIfEmpty(
-                repository.crearJugadorInicial("Jugador")//instanciua jugador inicial
-                    .andThen(repository.obtenerJugadorSesion())
+                repository.crearJugadorInicial(nombreRecibido)
+                    .andThen(repository.obtenerJugadorPorNombre(nombreRecibido))
             )
+            // .toSingle() asegura a RxJava que en este punto sí o sí tenemos un jugador
+            .toSingle()
+            .flatMap { jugador ->
+
+                jugador.reiniciarSesion()
+
+                // 2. Guardamos este reseteo en la base de datos inmediatamente
+                repository.actualizarJugador(jugador)
+                    // 3. Pasamos el jugador reiniciado a la interfaz
+                    .andThen(io.reactivex.rxjava3.core.Single.just(jugador))
+            }
             .subscribe({ jugador ->
                 jugadorActual = jugador
 
                 _uiState.value = _uiState.value.copy(
                     nombreJugador = jugador.nombre,
-                    saldoActual = jugador.saldoActual,
+                    saldoActual = jugador.saldoActual, // ¡Ahora siempre será 1000 al entrar!
                     rachaActual = jugador.rachaDeVictorias,
                     cargando = false,
                     error = null

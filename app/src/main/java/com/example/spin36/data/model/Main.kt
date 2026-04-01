@@ -4,6 +4,7 @@ import com.example.spin36.data.model.Apuesta
 import com.example.spin36.data.model.Sesion
 import com.example.spin36.data.model.Jugador
 
+
 fun main() {
 
     val jugador = Jugador(1,"Joaquin")
@@ -106,4 +107,5 @@ fun main() {
         println("Racha de victorias actual: ${jugador.rachaDeVictorias} / 5")
         println("--------------------------------------------------")
     }
+
 }

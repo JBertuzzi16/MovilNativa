@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         val viewModel = ViewModelProvider(this, factory)[JuegoViewModel::class.java]
 
         setContent {
-            JuegoScreen(viewModel = viewModel)
+            AppNavHost(juegoViewModel = viewModel)
         }
     }
 }

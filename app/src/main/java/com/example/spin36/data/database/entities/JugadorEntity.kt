@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class JugadorEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "jugadorId")val jugadorId: Int = 0,
     @ColumnInfo(name = "nombre")val nombre: String,
-    @ColumnInfo(name = "saldoActual")val saldoActual: Int
+    @ColumnInfo(name = "saldoActual")val saldoInicial: Int,
+    @ColumnInfo (name = "rachaVictoria") val rachaInicial : Int
 )

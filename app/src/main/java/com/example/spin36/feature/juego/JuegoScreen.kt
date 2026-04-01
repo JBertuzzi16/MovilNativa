@@ -32,7 +32,7 @@ fun JuegoScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.cargarJugador()
+        viewModel.cargarJugador(nombreRecibido = "")
     }
 
     Scaffold(
