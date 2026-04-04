@@ -25,6 +25,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spin36.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.spin36.ui.theme.casinoAntracitaSecundario
+import com.example.spin36.ui.theme.casinoBlanco
+import com.example.spin36.ui.theme.casinoDoradoDetalles
+import com.example.spin36.ui.theme.casinoRojoAcciones
+import com.example.spin36.ui.theme.casinoVerde
 
 @Composable
 fun BienvenidaScreen(
@@ -32,12 +37,12 @@ fun BienvenidaScreen(
     onEntrarClick : (String)-> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val casinoVerde = Color(0xFF0F5C3A)
+
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(casinoVerde)
+            .background(color = casinoVerde)
     ){
         // Capa 1: Fondo
         ImagenRuleta(
@@ -94,7 +99,7 @@ fun LogoSpin36() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = "SPIN36",
-            color = Color(0xFA000000),
+            color = casinoAntracitaSecundario,
             fontSize = 42.sp,
             fontFamily = fuenteRuleta,
             letterSpacing = 2.sp
@@ -120,9 +125,9 @@ fun CampoIngresoNombre(
         singleLine = true,
         shape = RoundedCornerShape(25.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
-            focusedBorderColor = Color(0xFFFFD700),
+            focusedContainerColor = casinoBlanco,
+            unfocusedContainerColor = casinoBlanco,
+            focusedBorderColor = casinoDoradoDetalles,
             unfocusedBorderColor = Color.Transparent
         ),
         modifier = Modifier.fillMaxWidth()
@@ -134,13 +139,13 @@ fun BotonContinuar(onClick: () -> Unit) {
     val fuenteRuleta = FontFamily(Font(R.font.mileast, FontWeight.Normal))
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F)),
+        colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
         shape = RoundedCornerShape(25.dp),
         modifier = Modifier.fillMaxWidth().height(56.dp)
     ) {
         Text(
             text = "CONTINUAR",
-            color = Color.White,
+            color = casinoBlanco,
             fontSize = 18.sp,
             fontFamily = fuenteRuleta,
             fontWeight = FontWeight.Bold

@@ -7,7 +7,10 @@ import com.example.spin36.data.database.entities.JugadorEntity
 import com.example.spin36.data.database.entities.PartidaEntity
 import android.content.Context
 import androidx.room.Room
-@Database(entities = [JugadorEntity::class, PartidaEntity::class],version=1, exportSchema = false )
+import com.example.spin36.data.database.entities.SesionEntity
+
+@Database(entities = [JugadorEntity::class, PartidaEntity::class, SesionEntity::class],
+    version=1, exportSchema = false )
 abstract class Spin36Database: RoomDatabase() {
     abstract fun CasinoDAO(): CasinoDAO
 

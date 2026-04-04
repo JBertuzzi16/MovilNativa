@@ -6,12 +6,26 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.spin36.data.database.entities.JugadorEntity
 import com.example.spin36.data.database.entities.PartidaEntity
+import com.example.spin36.data.database.entities.SesionEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface CasinoDAO {
+
+
+
+    //HISTORIAL DE SESIONES
+    @Insert
+    fun insertarSesion(sesion: SesionEntity): Single<Long>
+
+    @Update
+    fun actualizarSesion(sesion: SesionEntity): Completable
+
+    @Query("SELECT * FROM historial_sesiones ORDER BY sesionId DESC")
+    fun obtenerHistorialSesiones(): Single<List<SesionEntity>>
+
 
     @Insert
     fun insertarJugador (jugadorEntity: JugadorEntity): Completable

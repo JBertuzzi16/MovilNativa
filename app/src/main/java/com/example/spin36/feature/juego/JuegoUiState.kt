@@ -11,7 +11,7 @@ data class JuegoUiState(
     val cantidadApuesta: String = "",
 
     val resultadoRuleta: Int? = null,
-    val monedasGanadas: Int = 0,
+    val ganancia: Int = 0,
     val bonusRacha: Int = 0,
 
     val mensajeResultado: String = "",

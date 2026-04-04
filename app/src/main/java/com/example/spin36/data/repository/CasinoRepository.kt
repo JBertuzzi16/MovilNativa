@@ -2,6 +2,7 @@ package com.example.spin36.data.repository
 
 import com.example.spin36.data.database.dao.CasinoDAO
 import com.example.spin36.data.database.entities.PartidaEntity
+import com.example.spin36.data.database.entities.SesionEntity
 import com.example.spin36.data.mapper.toDomainSesion
 import com.example.spin36.data.mapper.toEntity
 import com.example.spin36.data.model.Jugador
@@ -12,6 +13,35 @@ import io.reactivex.rxjava3.core.Single
 class CasinoRepository(
     private val dao: CasinoDAO
 ) {
+
+    //para historial de sesiones
+    fun crearSesion(
+        nombreJugador: String,
+        fechaHoraInicio: String,
+        saldoInicial: Int
+    ): Single<SesionEntity> {
+        val sesion = SesionEntity(
+            nombreJugador = nombreJugador,
+            fechaHoraInicio = fechaHoraInicio,
+            fechaHoraFin = null,
+            saldoFinal = saldoInicial,
+            rachaMaxima = 0,
+            apuestasRealizadas = 0
+        )
+
+        return dao.insertarSesion(sesion)
+            .map { idGenerado ->
+                sesion.copy(sesionId = idGenerado.toInt())
+            }
+    }
+
+    fun actualizarSesion(sesion: SesionEntity): Completable {
+        return dao.actualizarSesion(sesion)
+    }
+
+    fun obtenerHistorialSesiones(): Single<List<SesionEntity>> {
+        return dao.obtenerHistorialSesiones()
+    }
 
     fun insertarJugador(jugador: Jugador): Completable {
         return dao.insertarJugador(jugador.toEntity())

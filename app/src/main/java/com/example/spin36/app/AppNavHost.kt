@@ -1,5 +1,4 @@
 package com.example.spin36.app
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavType
@@ -8,41 +7,60 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.spin36.feature.bienvenida.BienvenidaScreen
+import com.example.spin36.feature.historial.HistorialScreen
+import com.example.spin36.feature.historial.HistorialViewModel
 import com.example.spin36.feature.juego.JuegoScreen
 import com.example.spin36.feature.juego.JuegoViewModel
 
 @Composable
-fun AppNavHost(juegoViewModel: JuegoViewModel) {
-    // Este es el "GPS" de tu aplicación
+fun AppNavHost(
+    juegoViewModel: JuegoViewModel,
+    historialViewModel: HistorialViewModel
+) {
     val navController = rememberNavController()
 
-    // Configuramos el mapa de la app. Empezamos en "bienvenida"
     NavHost(navController = navController, startDestination = "bienvenida") {
 
-        // --- RUTA 1: PANTALLA DE BIENVENIDA ---
         composable("bienvenida") {
             BienvenidaScreen(
                 onEntrarClick = { nombreJugador ->
-                    // Cuando el usuario presiona CONTINUAR, navegamos al juego
-                    // y enviamos el nombre como si fuera una ruta de internet
                     navController.navigate("juego/$nombreJugador")
                 }
             )
         }
 
-        // --- RUTA 2: PANTALLA DEL JUEGO ---
         composable(
-            route = "juego/{nombreJugador}", // Esperamos recibir el parámetro
+            route = "juego/{nombreJugador}",
             arguments = listOf(navArgument("nombreJugador") { type = NavType.StringType })
         ) { backStackEntry ->
-            // Rescatamos el nombre que viene en la ruta de navegación
-            val nombreRecibido = backStackEntry.arguments?.getString("nombreJugador") ?: "INVITADO"
+
+            val nombreRecibido =
+                backStackEntry.arguments?.getString("nombreJugador") ?: "INVITADO"
 
             LaunchedEffect(nombreRecibido) {
                 juegoViewModel.cargarJugador(nombreRecibido)
             }
 
-            JuegoScreen(viewModel = juegoViewModel)
+            JuegoScreen(
+                viewModel = juegoViewModel,
+                onHistorialClick = {
+                    navController.navigate("historial")
+                },
+                onSalirClick = {
+                    juegoViewModel.cerrarSesionActual {
+                        navController.popBackStack("bienvenida", inclusive = false)
+                    }
+                }
+            )
+        }
+
+        composable("historial") {
+            HistorialScreen(
+                viewModel = historialViewModel,
+                onSalirClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

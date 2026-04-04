@@ -2,10 +2,12 @@ package com.example.spin36.feature.juego
 
 import androidx.lifecycle.ViewModel
 import com.example.spin36.data.database.entities.PartidaEntity
+import com.example.spin36.data.database.entities.SesionEntity
 import com.example.spin36.data.model.Apuesta
 import com.example.spin36.data.model.Jugador
 import com.example.spin36.data.model.Sesion
 import com.example.spin36.data.repository.CasinoRepository
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +25,7 @@ class JuegoViewModel(
     val uiState: StateFlow<JuegoUiState> = _uiState
 
     private var jugadorActual: Jugador? = null
+    private var sesionActual: SesionEntity? = null
 
     fun cargarJugador(nombreRecibido: String) {
         _uiState.value = _uiState.value.copy(
@@ -35,24 +38,36 @@ class JuegoViewModel(
                 repository.crearJugadorInicial(nombreRecibido)
                     .andThen(repository.obtenerJugadorPorNombre(nombreRecibido))
             )
-            // .toSingle() asegura a RxJava que en este punto sí o sí tenemos un jugador
             .toSingle()
             .flatMap { jugador ->
 
                 jugador.reiniciarSesion()
 
-                // 2. Guardamos este reseteo en la base de datos inmediatamente
                 repository.actualizarJugador(jugador)
-                    // 3. Pasamos el jugador reiniciado a la interfaz
-                    .andThen(io.reactivex.rxjava3.core.Single.just(jugador))
+                    .andThen(
+                        repository.crearSesion(
+                            nombreJugador = jugador.nombre,
+                            fechaHoraInicio = obtenerFechaHoraActual(),
+                            saldoInicial = jugador.saldoActual
+                        )
+                    )
+                    .map { sesionCreada ->
+                        Pair(jugador, sesionCreada)
+                    }
             }
-            .subscribe({ jugador ->
+            .subscribe({ (jugador, sesionCreada) ->
                 jugadorActual = jugador
+                sesionActual = sesionCreada
 
                 _uiState.value = _uiState.value.copy(
                     nombreJugador = jugador.nombre,
-                    saldoActual = jugador.saldoActual, // ¡Ahora siempre será 1000 al entrar!
+                    saldoActual = jugador.saldoActual,
                     rachaActual = jugador.rachaDeVictorias,
+                    resultadoRuleta = null,
+                    ganancia = 0,
+                    bonusRacha = 0,
+                    mensajeResultado = "",
+                    juegoTerminado = false,
                     cargando = false,
                     error = null
                 )
@@ -92,6 +107,13 @@ class JuegoViewModel(
         val jugador = jugadorActual ?: run {
             _uiState.value = _uiState.value.copy(
                 error = "No hay jugador cargado"
+            )
+            return
+        }
+
+        val sesionBase = sesionActual ?: run {
+            _uiState.value = _uiState.value.copy(
+                error = "No hay sesión activa"
             )
             return
         }
@@ -142,23 +164,28 @@ class JuegoViewModel(
 
         val bonusActivado = jugador.gestionRacha(haGanado)
         val bonusRacha = if (bonusActivado) 100 else 0
-        val rachaParaHistorial = if (bonusActivado) 5 else jugador.rachaDeVictorias
+        val rachaDeEstaJugada = if (bonusActivado) 5 else jugador.rachaDeVictorias
         val monedasGanadasTotales = premio + bonusRacha
 
-        val  fechaHora = SimpleDateFormat(
-            "dd/MM/yyyy HH:mm:ss",
-            Locale.getDefault()
-        ).format(Date())
+        val juegoTerminado = jugador.saldoActual <= 0
 
         val partida = PartidaEntity(
+            sesionId = sesionBase.sesionId,
             jugadorId = jugador.id,
-            fechaHora = fechaHora,
+            fechaHora = obtenerFechaHoraActual(),
             tipoApuesta = construirDescripcionApuesta(state.tipoApuesta, state.valorApuesta),
             montoApostado = cantidad,
             numeroGanador = numeroGanador,
             resultado = if (haGanado) "Ganado" else "Perdido",
-            racha = rachaParaHistorial,
+            racha = rachaDeEstaJugada,
             monedasGanadas = monedasGanadasTotales
+        )
+
+        val sesionActualizada = sesionBase.copy(
+            saldoFinal = jugador.saldoActual,
+            rachaMaxima = maxOf(sesionBase.rachaMaxima, rachaDeEstaJugada),
+            apuestasRealizadas = sesionBase.apuestasRealizadas + 1,
+            fechaHoraFin = if (juegoTerminado) obtenerFechaHoraActual() else sesionBase.fechaHoraFin
         )
 
         val mensaje = construirMensajeResultado(
@@ -167,11 +194,10 @@ class JuegoViewModel(
             bonusRacha = bonusRacha
         )
 
-        val juegoTerminado = jugador.saldoActual <= 0
-
-        guardarJugadorYPartida(
+        guardarJugadorPartidaYSesion(
             jugador = jugador,
             partida = partida,
+            sesionActualizada = sesionActualizada,
             numeroGanador = numeroGanador,
             monedasGanadas = monedasGanadasTotales,
             bonusRacha = bonusRacha,
@@ -180,9 +206,10 @@ class JuegoViewModel(
         )
     }
 
-    private fun guardarJugadorYPartida(
+    private fun guardarJugadorPartidaYSesion(
         jugador: Jugador,
         partida: PartidaEntity,
+        sesionActualizada: SesionEntity,
         numeroGanador: Int,
         monedasGanadas: Int,
         bonusRacha: Int,
@@ -196,12 +223,15 @@ class JuegoViewModel(
 
         val disposable = repository.actualizarJugador(jugador)
             .andThen(repository.insertarPartida(partida))
+            .andThen(repository.actualizarSesion(sesionActualizada))
             .subscribe({
+                sesionActual = sesionActualizada
+
                 _uiState.value = _uiState.value.copy(
                     saldoActual = jugador.saldoActual,
                     rachaActual = jugador.rachaDeVictorias,
                     resultadoRuleta = numeroGanador,
-                    monedasGanadas = monedasGanadas,
+                    ganancia = monedasGanadas,
                     bonusRacha = bonusRacha,
                     mensajeResultado = mensaje,
                     juegoTerminado = juegoTerminado,
@@ -211,13 +241,35 @@ class JuegoViewModel(
             }, { error ->
                 _uiState.value = _uiState.value.copy(
                     cargando = false,
-                    error = error.message ?: "Error al guardar la partida"
+                    error = error.message ?: "Error al guardar la jugada"
                 )
             })
 
         disposables.add(disposable)
     }
 
+    fun cerrarSesionActual(onSesionCerrada: () -> Unit) {
+        val jugador = jugadorActual ?: return
+        val sesion = sesionActual ?: return
+
+        val sesionCerrada = sesion.copy(
+            saldoFinal = jugador.saldoActual,
+            rachaMaxima = maxOf(sesion.rachaMaxima, jugador.rachaDeVictorias),
+            fechaHoraFin = obtenerFechaHoraActual()
+        )
+
+        val disposable = repository.actualizarSesion(sesionCerrada)
+            .subscribe({
+                sesionActual = sesionCerrada
+                onSesionCerrada()
+            }, { error ->
+                _uiState.value = _uiState.value.copy(
+                    error = error.message ?: "Error al cerrar la sesión"
+                )
+            })
+
+        disposables.add(disposable)
+    }
     private fun crearApuesta(tipo: String, valor: String, cantidad: Int): Apuesta? {
         return when (tipo.lowercase()) {
             "pleno" -> {
@@ -267,6 +319,13 @@ class JuegoViewModel(
             else ->
                 "Salió el $numeroGanador. Has perdido la apuesta."
         }
+    }
+
+    private fun obtenerFechaHoraActual(): String {
+        return SimpleDateFormat(
+            "dd/MM/yyyy HH:mm:ss",
+            Locale.getDefault()
+        ).format(Date())
     }
 
     override fun onCleared() {

@@ -4,6 +4,7 @@ package com.example.spin36.feature.juego
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,13 +27,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JuegoScreen(
-    viewModel: JuegoViewModel
+    viewModel: JuegoViewModel,
+    onHistorialClick: () -> Unit,
+    onSalirClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        viewModel.cargarJugador(nombreRecibido = "")
-    }
 
     Scaffold(
         topBar = {
@@ -48,6 +46,8 @@ fun JuegoScreen(
             onValorApuestaChange = viewModel::onValorApuestaChange,
             onCantidadApuestaChange = viewModel::onCantidadApuestaChange,
             onJugarClick = viewModel::jugar,
+            onHistorialClick = onHistorialClick,
+            onSalirClick = onSalirClick,
             padding = padding
         )
     }
@@ -60,6 +60,8 @@ fun JuegoContent(
     onValorApuestaChange: (String) -> Unit,
     onCantidadApuestaChange: (String) -> Unit,
     onJugarClick: () -> Unit,
+    onHistorialClick: () -> Unit,
+    onSalirClick: () -> Unit,
     padding: PaddingValues
 ) {
     Column(
@@ -116,15 +118,35 @@ fun JuegoContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-      //temporal
         Text("cargando: ${uiState.cargando}")
         Text("juegoTerminado: ${uiState.juegoTerminado}")
+
         Button(
             onClick = onJugarClick,
-            modifier = Modifier.fillMaxWidth(),
-            //enabled = !uiState.cargando && !uiState.juegoTerminado
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Jugar")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = onHistorialClick,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Historial")
+            }
+
+            Button(
+                onClick = onSalirClick,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Salir")
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -135,7 +157,7 @@ fun JuegoContent(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text("Número ganador: ${uiState.resultadoRuleta}")
-                    Text("Monedas ganadas: ${uiState.monedasGanadas}")
+                    Text("Monedas ganadas: ${uiState.ganancia}")
                     Text("Bonus racha: ${uiState.bonusRacha}")
                     Text("Mensaje: ${uiState.mensajeResultado}")
                 }

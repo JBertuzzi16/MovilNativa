@@ -11,6 +11,9 @@ data class PartidaEntity(
 
     @ColumnInfo(name = "jugadorId")
     val jugadorId: Int,
+    //para ver detalles historia lde sesiones
+    @ColumnInfo(name = "sesionId")
+    val sesionId: Int,
 
     @ColumnInfo(name = "fechaHora")
     val fechaHora: String,
