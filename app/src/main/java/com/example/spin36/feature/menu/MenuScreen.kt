@@ -174,7 +174,7 @@ fun BotonMenu(
 @Composable
 fun PreviewMenuScreen() {
     MenuScreen(
-        nombreJugador = "Carlos",
+        nombreJugador = "KOLDO",
         onApostarClick = {},
         onHistorialClick = {},
         onVolverClick = {}

@@ -61,7 +61,7 @@ fun BienvenidaContent(
             .background(color = casinoVerde)
     ) {
         ImagenRuleta(
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.BottomCenter)
         )
 
         Column(
@@ -95,9 +95,9 @@ fun ImagenRuleta(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.ruleta),
         contentDescription = "Imagen Ruleta de Fondo",
-        modifier = modifier.fillMaxWidth(),
-        contentScale = ContentScale.Fit,
-        alpha = 0.8f
+        modifier = modifier.size(500.dp),
+        contentScale = ContentScale.Crop,
+        alpha = 0.85f
     )
 }
 
@@ -106,11 +106,13 @@ fun LogoSpin36() {
     val fuenteRuleta = FontFamily(Font(R.font.mileast, FontWeight.Normal))
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(modifier = Modifier.height(15.dp))
         Text(
             text = "SPIN36",
             color = casinoAntracitaSecundario,
-            fontSize = 42.sp,
+            fontSize = 50.sp,
             fontFamily = fuenteRuleta,
+            fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -118,8 +120,7 @@ fun LogoSpin36() {
             painter = painterResource(id = R.drawable.logo_spin36),
             contentDescription = "Logo SPIN36",
             modifier = Modifier
-                .width(140.dp)
-                .height(80.dp)
+                .width(500.dp)
         )
     }
 }

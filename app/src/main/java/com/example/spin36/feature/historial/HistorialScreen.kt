@@ -48,7 +48,9 @@ import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoRojoAcciones
 import com.example.spin36.ui.theme.casinoVerde
 import androidx.compose.foundation.layout.Box
-
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.layout.ContentScale
+import com.example.spin36.feature.menu.ImagenRuleta
 
 
 val fuenteRuleta= FontFamily(Font(R.font.mileast, FontWeight.Normal))
@@ -81,6 +83,9 @@ fun HistorialContent(
     Box(modifier = Modifier
         .fillMaxSize()
         .background(casinoVerde)){
+        ImagenRuleta(
+            modifier = Modifier.align(Alignment.Center)
+        )
     Column(horizontalAlignment = Alignment.CenterHorizontally,
 
         modifier = Modifier
@@ -246,7 +251,16 @@ fun SesionCard(
         }
     }
 }
-
+@Composable
+fun ImagenRuleta(modifier: Modifier= Modifier){
+    Image(
+        painter = painterResource(id=R.drawable.ruleta),
+        contentDescription = "Ruleta de fondo",
+        modifier = modifier.size(550.dp),
+        contentScale = ContentScale.Crop,
+        alpha = 0.3f
+    )
+}
 //completo
 @Preview(showBackground = true, showSystemUi = true, name = "Historial con datos")
 @Composable
