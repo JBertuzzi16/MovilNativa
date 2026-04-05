@@ -121,7 +121,7 @@ fun CampoIngresoNombre(
     OutlinedTextField(
         value = nombreActual,
         onValueChange = { if (it.length <= 15) onNombreCambiado(it) },
-        placeholder = { Text ("Ingresa tu nombre...") },
+        placeholder = { Text ("Ingresa tu nombre...")},
         singleLine = true,
         shape = RoundedCornerShape(25.dp),
         colors = OutlinedTextFieldDefaults.colors(
