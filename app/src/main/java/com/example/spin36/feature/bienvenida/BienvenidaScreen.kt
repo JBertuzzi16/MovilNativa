@@ -19,12 +19,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spin36.R
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.example.spin36.ui.theme.casinoAntracitaSecundario
 import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoDoradoDetalles
@@ -34,22 +34,36 @@ import com.example.spin36.ui.theme.casinoVerde
 @Composable
 fun BienvenidaScreen(
     viewModel: BienvenidaViewModel = viewModel(),
-    onEntrarClick : (String)-> Unit
+    onEntrarClick: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    BienvenidaContent(
+        nombreActual = uiState.nombre,
+        onNombreCambiado = { viewModel.onNombreChange(it) },
+        onEntrarClick = {
+            if (uiState.nombre.isNotBlank()) {
+                onEntrarClick(uiState.nombre)
+            }
+        }
+    )
+}
 
+@Composable
+fun BienvenidaContent(
+    nombreActual: String,
+    onNombreCambiado: (String) -> Unit,
+    onEntrarClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = casinoVerde)
-    ){
-        // Capa 1: Fondo
+    ) {
         ImagenRuleta(
             modifier = Modifier.align(Alignment.Center)
         )
 
-        // Capa 2: Contenido
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -57,25 +71,19 @@ fun BienvenidaScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Arriba: Logo
             LogoSpin36()
 
-            // Abajo: Input y Botón agrupados
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 CampoIngresoNombre(
-                    nombreActual = uiState.nombre,
-                    onNombreCambiado = { viewModel.onNombreChange(it) }
+                    nombreActual = nombreActual,
+                    onNombreCambiado = onNombreCambiado
                 )
 
                 BotonContinuar(
-                    onClick = {
-                        if (uiState.nombre.isNotBlank()){
-                            onEntrarClick(uiState.nombre)
-                        }
-                    }
+                    onClick = onEntrarClick
                 )
             }
         }
@@ -83,7 +91,7 @@ fun BienvenidaScreen(
 }
 
 @Composable
-fun ImagenRuleta(modifier: Modifier= Modifier) {
+fun ImagenRuleta(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.ruleta),
         contentDescription = "Imagen Ruleta de Fondo",
@@ -96,6 +104,7 @@ fun ImagenRuleta(modifier: Modifier= Modifier) {
 @Composable
 fun LogoSpin36() {
     val fuenteRuleta = FontFamily(Font(R.font.mileast, FontWeight.Normal))
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = "SPIN36",
@@ -108,7 +117,9 @@ fun LogoSpin36() {
         Image(
             painter = painterResource(id = R.drawable.logo_spin36),
             contentDescription = "Logo SPIN36",
-            modifier = Modifier.width(140.dp).height(80.dp)
+            modifier = Modifier
+                .width(140.dp)
+                .height(80.dp)
         )
     }
 }
@@ -116,14 +127,14 @@ fun LogoSpin36() {
 @Composable
 fun CampoIngresoNombre(
     nombreActual: String,
-    onNombreCambiado: (String)-> Unit
+    onNombreCambiado: (String) -> Unit
 ) {
     OutlinedTextField(
         value = nombreActual,
         onValueChange = { if (it.length <= 15) onNombreCambiado(it) },
-        placeholder = { Text ("Ingresa tu nombre...")},
+        placeholder = { Text("Ingresa tu nombre...") },
         singleLine = true,
-        shape = RoundedCornerShape(25.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = casinoBlanco,
             unfocusedContainerColor = casinoBlanco,
@@ -137,11 +148,14 @@ fun CampoIngresoNombre(
 @Composable
 fun BotonContinuar(onClick: () -> Unit) {
     val fuenteRuleta = FontFamily(Font(R.font.mileast, FontWeight.Normal))
+
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
-        shape = RoundedCornerShape(25.dp),
-        modifier = Modifier.fillMaxWidth().height(56.dp)
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
     ) {
         Text(
             text = "CONTINUAR",
@@ -156,7 +170,9 @@ fun BotonContinuar(onClick: () -> Unit) {
 @Preview(showBackground = true, showSystemUi = true, name = "Pantalla Bienvenida Completa")
 @Composable
 fun PreviewBienvenidaCompleta() {
-    BienvenidaScreen(
-        onEntrarClick = { /* Solo diseño */ }
+    BienvenidaContent(
+        nombreActual = "KOLDO",
+        onNombreCambiado = {},
+        onEntrarClick = {}
     )
 }
