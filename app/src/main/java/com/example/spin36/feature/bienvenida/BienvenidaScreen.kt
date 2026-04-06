@@ -156,10 +156,12 @@ fun CampoIngresoNombre(
         OutlinedTextField(
             value = nombreActual,
             onValueChange = { if (it.length <= 15) onNombreCambiado(it) },
-            placeholder = { Text("Ingresa tu nombre...") },
+            placeholder = { Text("Ingresa tu nombre...", color = casinoAntracitaSecundario) },
             singleLine = true,
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = casinoAntracitaSecundario,
+                unfocusedTextColor = casinoAntracitaSecundario,
                 focusedContainerColor = casinoBlanco,
                 unfocusedContainerColor = casinoBlanco,
                 focusedBorderColor = casinoDoradoDetalles,

@@ -98,10 +98,10 @@ fun AppNavHost(
                     }
                 },
                 onVolverClick = {
-                    val volvio = navController.popBackStack("bienvenida", inclusive = false)
+                    val volvio = navController.popBackStack("menu/$nombreRecibido", inclusive = false)
 
                     if (!volvio) {
-                        navController.navigate("bienvenida") {
+                        navController.navigate("menu/$nombreRecibido") {
                             launchSingleTop = true
                         }
                     }
@@ -132,6 +132,14 @@ fun AppNavHost(
                 onIrJuegoClick = {
                     navController.navigate("juego/$nombreRecibido") {
                         launchSingleTop = true
+                    }
+                },
+                onVolverClick = {
+                    val volvio = navController.popBackStack("menu/$nombreRecibido", inclusive = false )
+                    if (!volvio){
+                        navController.navigate("menu/$nombreRecibido"){
+                            launchSingleTop = true
+                        }
                     }
                 }
             )

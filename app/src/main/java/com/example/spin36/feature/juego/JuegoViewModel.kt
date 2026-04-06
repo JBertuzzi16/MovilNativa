@@ -28,6 +28,9 @@ class JuegoViewModel(
     private var sesionActual: SesionEntity? = null
 
     fun cargarJugador(nombreRecibido: String) {
+        if (jugadorActual?.nombre==nombreRecibido){
+            return
+        }
         _uiState.value = _uiState.value.copy(
             cargando = true,
             error = null
@@ -261,6 +264,8 @@ class JuegoViewModel(
         val disposable = repository.actualizarSesion(sesionCerrada)
             .subscribe({
                 sesionActual = sesionCerrada
+                jugadorActual = null
+                sesionActual = null
                 onSesionCerrada()
             }, { error ->
                 _uiState.value = _uiState.value.copy(

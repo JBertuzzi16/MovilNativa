@@ -63,6 +63,7 @@ import com.example.spin36.feature.components.PantallaActual
 import com.example.spin36.feature.components.Spin36TopBar
 import com.example.spin36.feature.historial.LogoSpin36
 import com.example.spin36.feature.historial.fuenteRuleta
+import com.example.spin36.ui.theme.casinoAntracitaSecundario
 import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoDoradoDetalles
 import com.example.spin36.ui.theme.casinoRojoAcciones
@@ -204,13 +205,16 @@ fun JuegoContent(
                     onValueChange = onCantidadApuestaChange,
                     placeholder = {
                         Text(
-                            text = "Cantidad de monedas",
-                            fontFamily = fuenteRuleta
+                            text = "Ingresa la apuesta...",
+                            fontFamily = fuenteRuleta,
+                            color= Color.Gray
                         )
                     },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = casinoAntracitaSecundario,
+                        unfocusedTextColor = casinoAntracitaSecundario,
                         focusedContainerColor = casinoBlanco,
                         unfocusedContainerColor = casinoBlanco,
                         focusedBorderColor = casinoDoradoDetalles,

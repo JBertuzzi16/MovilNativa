@@ -1,23 +1,19 @@
 package com.example.spin36.feature.historial
 
 
-import android.text.BoringLayout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,26 +30,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.ResourceFont
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.spin36.R
 import com.example.spin36.data.database.entities.SesionEntity
-import com.example.spin36.feature.bienvenida.BienvenidaScreen
-import com.example.spin36.ui.theme.casinoAntracitaSecundario
 import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoRojoAcciones
 import com.example.spin36.ui.theme.casinoVerde
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.shadow.Shadow
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.DpOffset
 import com.example.spin36.feature.components.PantallaActual
 import com.example.spin36.feature.components.Spin36TopBar
@@ -68,6 +57,7 @@ fun HistorialScreen(
     onSalirClick: () -> Unit,
     onIrMenuClick: () -> Unit,
     onIrJuegoClick: () -> Unit,
+    onVolverClick : () -> Unit,
     onSesionClick: (SesionEntity) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -81,6 +71,7 @@ fun HistorialScreen(
         onSalirClick = onSalirClick,
         onIrMenuClick = onIrMenuClick,
         onIrJuegoClick = onIrJuegoClick,
+        onVolverClick = onVolverClick,
         onSesionClick = onSesionClick
     )
 }
@@ -91,7 +82,8 @@ fun HistorialContent(
     onSalirClick: () -> Unit,
     onIrMenuClick: () -> Unit,
     onIrJuegoClick: () -> Unit,
-    onSesionClick: (SesionEntity) -> Unit = {}
+    onSesionClick: (SesionEntity) -> Unit = {},
+    onVolverClick: () -> Unit
 ) {
     Scaffold(
         containerColor = casinoVerde,
@@ -209,7 +201,7 @@ fun HistorialContent(
                                 )
                         ) {
                             OutlinedButton(
-                                onClick = onSalirClick,
+                                onClick = onVolverClick,
                                 colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
                                 shape = RoundedCornerShape(10.dp)
                             ) {
@@ -340,6 +332,6 @@ fun PreviewHistorialCompleta() {
         onSalirClick = {},
         onIrMenuClick = {},
         onIrJuegoClick = {},
-        onSesionClick = {}
-    )
+        onSesionClick = {},
+    ) {}
 }
