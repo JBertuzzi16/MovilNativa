@@ -204,7 +204,7 @@ fun BotonContinuar(onClick: () -> Unit) {
             Text(
                 text = "CONTINUAR",
                 color = casinoBlanco,
-                fontSize = 18.sp,
+                fontSize = 25.sp,
                 fontFamily = fuenteRuleta,
                 fontWeight = FontWeight.Bold
             )

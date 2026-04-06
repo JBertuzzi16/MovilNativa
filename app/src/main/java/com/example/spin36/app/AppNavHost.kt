@@ -77,9 +77,30 @@ fun AppNavHost(
                 onHistorialClick = {
                     navController.navigate("historial")
                 },
+                onMenuClick = {
+                    val existeEnBackStack = navController.popBackStack(
+                        "menu/$nombreRecibido",
+                        inclusive = false
+                    )
+
+                    if (!existeEnBackStack) {
+                        navController.navigate("menu/$nombreRecibido") {
+                            launchSingleTop = true
+                        }
+                    }
+                },
                 onSalirClick = {
                     juegoViewModel.cerrarSesionActual {
                         navController.popBackStack("bienvenida", inclusive = false)
+                    }
+                },
+                onVolverClick = {
+                    val volvio = navController.popBackStack("bienvenida", inclusive = false)
+
+                    if (!volvio) {
+                        navController.navigate("bienvenida") {
+                            launchSingleTop = true
+                        }
                     }
                 }
             )

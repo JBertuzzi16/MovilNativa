@@ -11,6 +11,8 @@ composeBom = "2024.09.00"
 room = "2.8.4"
 ksp= "2.3.4"
 foundationLayout = "1.10.6"
+foundation = "1.10.6"
+material3 = "1.4.0"
 
 
 
@@ -36,6 +38,8 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 rxjava3-core = { group = "io.reactivex.rxjava3", name = "rxjava", version = "3.1.8" }
 rxjava3-android = { group = "io.reactivex.rxjava3", name = "rxandroid", version = "3.0.2" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
