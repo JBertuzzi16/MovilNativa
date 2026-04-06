@@ -664,15 +664,6 @@ fun ImagenRuleta(modifier: Modifier = Modifier) {
         alpha = 0.15f
     )
 }
-@Composable
-fun LogoSpin36(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.logo_spin36),
-        contentDescription = "Logo SPIN36",
-        modifier = modifier
-            .width(70.dp)
-    )
-}
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewJuegoContent() {

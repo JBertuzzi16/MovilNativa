@@ -127,14 +127,6 @@ fun HistorialContent(
 
 
                 ) {
-                    Text(
-                        text = "HISTORIAL",
-                        fontFamily = fuenteRuleta,
-                        fontSize = 42.sp,
-                        color = casinoBlanco,
-                        modifier = Modifier.padding(bottom = 16.dp)
-
-                    )
 
                     when {
                         uiState.cargando -> {
@@ -299,16 +291,7 @@ fun SesionCard(
         }
     }
 }
-@Composable
-fun ImagenRuleta(modifier: Modifier= Modifier){
-    Image(
-        painter = painterResource(id=R.drawable.ruleta),
-        contentDescription = "Ruleta de fondo",
-        modifier = modifier.size(550.dp),
-        contentScale = ContentScale.Crop,
-        alpha = 0.3f
-    )
-}
+
 //completo
 @Preview(showBackground = true, showSystemUi = true, name = "Historial con datos")
 @Composable
