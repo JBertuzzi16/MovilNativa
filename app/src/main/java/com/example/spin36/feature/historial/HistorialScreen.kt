@@ -50,10 +50,13 @@ import com.example.spin36.ui.theme.casinoVerde
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.DpOffset
+import com.example.spin36.feature.components.PantallaActual
+import com.example.spin36.feature.components.Spin36TopBar
 import com.example.spin36.feature.menu.ImagenRuleta
 import com.example.spin36.ui.theme.casinoDoradoDetalles
 
@@ -63,6 +66,8 @@ val fuenteRuleta= FontFamily(Font(R.font.mileast, FontWeight.Normal))
 fun HistorialScreen(
     viewModel: HistorialViewModel,
     onSalirClick: () -> Unit,
+    onIrMenuClick: () -> Unit,
+    onIrJuegoClick: () -> Unit,
     onSesionClick: (SesionEntity) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -74,6 +79,8 @@ fun HistorialScreen(
     HistorialContent(
         uiState = uiState,
         onSalirClick = onSalirClick,
+        onIrMenuClick = onIrMenuClick,
+        onIrJuegoClick = onIrJuegoClick,
         onSesionClick = onSesionClick
     )
 }
@@ -82,134 +89,156 @@ fun HistorialScreen(
 fun HistorialContent(
     uiState: HistorialUiState,
     onSalirClick: () -> Unit,
+    onIrMenuClick: () -> Unit,
+    onIrJuegoClick: () -> Unit,
     onSesionClick: (SesionEntity) -> Unit = {}
-
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(casinoVerde)){
-        ImagenRuleta(
-            modifier = Modifier.align(Alignment.Center)
-        )
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 20.dp)
-
-
-    ) {
-        Text(
-            text = "HISTORIAL",
-            fontFamily = fuenteRuleta,
-            fontSize = 42.sp,
-            color = casinoBlanco,
-            modifier = Modifier.padding(bottom = 16.dp)
-
-        )
-
-        when {
-            uiState.cargando -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            uiState.error != null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = uiState.error,
-                        color = casinoRojoAcciones,
-                        fontFamily = fuenteRuleta
-                    )
-                }
-            }
-
-            uiState.sesiones.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "No hay sesiones guardadas todavía.",
-                        fontFamily = fuenteRuleta,
-                        color = casinoRojoAcciones
-                    )
-                }
-            }
-
-            else -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(bottom = 16.dp)
-                ) {
-                    items(uiState.sesiones) { sesion ->
-                        SesionCard(
-                            sesion = sesion,
-                            onClick = { onSesionClick(sesion) }
-                        )
-                    }
-                }
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            LogoSpin36(
-                modifier = Modifier.fillMaxWidth(0.18f)
+    Scaffold(
+        containerColor = casinoVerde,
+        topBar = {
+            Spin36TopBar(
+                titulo = "HISTORIAL",
+                pantallaActual = PantallaActual.HISTORIAL,
+                onIrMenu = onIrMenuClick,
+                onIrJuego = onIrJuegoClick,
+                onIrHistorial = {},
+                onIrAjustes = {},
+                onSalirConfirmado = onSalirClick
             )
-            Box(
-                modifier = Modifier
-                    .dropShadow(
-                        shape = RoundedCornerShape(10.dp),
-                        shadow = Shadow(
-                            radius = 20.dp,
-                            color = casinoDoradoDetalles.copy(alpha = 0.35f),
-                            offset = DpOffset(0.dp, 5.dp)
-                        )
-                    )
-            ) {
-                OutlinedButton(
-                    onClick = onSalirClick,
-                    colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
-                    shape = RoundedCornerShape(10.dp)
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(casinoVerde)
+                .padding(innerPadding)
+        ) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(casinoVerde)){
+                ImagenRuleta(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally,
+
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp, vertical = 20.dp)
+
+
                 ) {
                     Text(
-                        text = "Atrás",
+                        text = "HISTORIAL",
                         fontFamily = fuenteRuleta,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = casinoBlanco
+                        fontSize = 42.sp,
+                        color = casinoBlanco,
+                        modifier = Modifier.padding(bottom = 16.dp)
+
                     )
+
+                    when {
+                        uiState.cargando -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+
+                        uiState.error != null -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = uiState.error,
+                                    color = casinoRojoAcciones,
+                                    fontFamily = fuenteRuleta
+                                )
+                            }
+                        }
+
+                        uiState.sesiones.isEmpty() -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "No hay sesiones guardadas todavía.",
+                                    fontFamily = fuenteRuleta,
+                                    color = casinoRojoAcciones
+                                )
+                            }
+                        }
+
+                        else -> {
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(12.dp),
+                                contentPadding = PaddingValues(bottom = 16.dp)
+                            ) {
+                                items(uiState.sesiones) { sesion ->
+                                    SesionCard(
+                                        sesion = sesion,
+                                        onClick = { onSesionClick(sesion) }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        LogoSpin36(
+                            modifier = Modifier.fillMaxWidth(0.18f)
+                        )
+                        Box(
+                            modifier = Modifier
+                                .dropShadow(
+                                    shape = RoundedCornerShape(10.dp),
+                                    shadow = Shadow(
+                                        radius = 20.dp,
+                                        color = casinoDoradoDetalles.copy(alpha = 0.35f),
+                                        offset = DpOffset(0.dp, 5.dp)
+                                    )
+                                )
+                        ) {
+                            OutlinedButton(
+                                onClick = onSalirClick,
+                                colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Text(
+                                    text = "Atrás",
+                                    fontFamily = fuenteRuleta,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp,
+                                    color = casinoBlanco
+                                )
+                            }
+                        }
+
+                    }
+
                 }
             }
-
         }
-
     }
-    }
-
-
 }
+
 
 @Composable
 fun LogoSpin36(modifier: Modifier = Modifier) {
@@ -326,6 +355,8 @@ fun PreviewHistorialCompleta() {
     HistorialContent(
         uiState = estadoFake,
         onSalirClick = {},
+        onIrMenuClick = {},
+        onIrJuegoClick = {},
         onSesionClick = {}
     )
 }

@@ -59,6 +59,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.spin36.R
+import com.example.spin36.feature.components.PantallaActual
+import com.example.spin36.feature.components.Spin36TopBar
 import com.example.spin36.feature.historial.LogoSpin36
 import com.example.spin36.feature.historial.fuenteRuleta
 import com.example.spin36.ui.theme.casinoBlanco
@@ -148,90 +150,14 @@ fun JuegoContent(
     Scaffold(
         containerColor = casinoVerde,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "JUEGO",
-                        fontFamily = fuenteRuleta,
-                        color = casinoBlanco,
-                        fontSize = 42.sp
-                    )
-                },
-                actions = {
-                    Box {
-                        IconButton(
-                            onClick = { menuExpandido.value = true }
-                        ) {
-                            Text(
-                                text = "⋮",
-                                color = casinoBlanco,
-                                fontFamily = fuenteRuleta,
-                                fontSize = 28.sp
-                            )
-                        }
-
-                        DropdownMenu(
-                            expanded = menuExpandido.value,
-                            onDismissRequest = { menuExpandido.value = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = "Menú",
-                                        fontFamily = fuenteRuleta
-                                    )
-                                },
-                                onClick = {
-                                    menuExpandido.value = false
-                                    onMenuClick()
-                                }
-                            )
-
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = "Historial",
-                                        fontFamily = fuenteRuleta
-                                    )
-                                },
-                                onClick = {
-                                    menuExpandido.value = false
-                                    onHistorialClick()
-                                }
-                            )
-
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = "Ajustes",
-                                        fontFamily = fuenteRuleta
-                                    )
-                                },
-                                onClick = {
-                                    menuExpandido.value = false
-                                }
-                            )
-
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = "Salir",
-                                        fontFamily = fuenteRuleta
-                                    )
-                                },
-                                onClick = {
-                                    menuExpandido.value = false
-                                    mostrarDialogoSalir.value = true
-                                }
-                            )
-                        }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = casinoVerde,
-                    titleContentColor = casinoBlanco,
-                    actionIconContentColor = casinoBlanco
-                )
+            Spin36TopBar(
+                titulo = "JUEGO",
+                pantallaActual = PantallaActual.JUEGO,
+                onIrMenu = onMenuClick,
+                onIrJuego = {},
+                onIrHistorial = onHistorialClick,
+                onIrAjustes = {},
+                onSalirConfirmado = onSalirClick
             )
         }
     ) { innerPadding ->

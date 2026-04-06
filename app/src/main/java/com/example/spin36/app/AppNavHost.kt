@@ -50,10 +50,13 @@ fun AppNavHost(
                     navController.navigate("juego/$nombreRecibido")
                 },
                 onHistorialClick = {
-                    navController.navigate("historial")
+                    navController.navigate("historial/$nombreRecibido")
+                },
+                onSalirClick = {
+                    navController.popBackStack("bienvenida", inclusive = false)
                 },
                 onVolverClick = {
-                    navController.popBackStack()
+                    navController.popBackStack("bienvenida", inclusive = false)
                 }
             )
         }
@@ -75,7 +78,7 @@ fun AppNavHost(
             JuegoScreen(
                 viewModel = juegoViewModel,
                 onHistorialClick = {
-                    navController.navigate("historial")
+                    navController.navigate("historial/$nombreRecibido")
                 },
                 onMenuClick = {
                     val existeEnBackStack = navController.popBackStack(
@@ -106,11 +109,30 @@ fun AppNavHost(
             )
         }
 
-        composable("historial") {
+        composable(
+            route = "historial/{nombreJugador}",
+            arguments = listOf(
+                navArgument("nombreJugador") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+
+            val nombreRecibido =
+                backStackEntry.arguments?.getString("nombreJugador") ?: "INVITADO"
+
             HistorialScreen(
                 viewModel = historialViewModel,
                 onSalirClick = {
-                    navController.popBackStack()
+                    navController.popBackStack("bienvenida", inclusive = false)
+                },
+                onIrMenuClick = {
+                    navController.navigate("menu/$nombreRecibido") {
+                        launchSingleTop = true
+                    }
+                },
+                onIrJuegoClick = {
+                    navController.navigate("juego/$nombreRecibido") {
+                        launchSingleTop = true
+                    }
                 }
             )
         }
