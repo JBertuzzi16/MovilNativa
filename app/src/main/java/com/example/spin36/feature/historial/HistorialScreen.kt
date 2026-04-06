@@ -48,9 +48,14 @@ import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoRojoAcciones
 import com.example.spin36.ui.theme.casinoVerde
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.DpOffset
 import com.example.spin36.feature.menu.ImagenRuleta
+import com.example.spin36.ui.theme.casinoDoradoDetalles
 
 
 val fuenteRuleta= FontFamily(Font(R.font.mileast, FontWeight.Normal))
@@ -162,31 +167,45 @@ fun HistorialContent(
                 }
             }
         }
-
-        OutlinedButton(
-            onClick = onSalirClick,
-            colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
-            shape = RoundedCornerShape(10.dp),
+        Row(
             modifier = Modifier
-                .align(Alignment.End)
-                .fillMaxWidth(0.3f)
-
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Atrás",
-                fontFamily = fuenteRuleta,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = casinoBlanco
+            LogoSpin36(
+                modifier = Modifier.fillMaxWidth(0.18f)
             )
+            Box(
+                modifier = Modifier
+                    .dropShadow(
+                        shape = RoundedCornerShape(10.dp),
+                        shadow = Shadow(
+                            radius = 20.dp,
+                            color = casinoDoradoDetalles.copy(alpha = 0.35f),
+                            offset = DpOffset(0.dp, 5.dp)
+                        )
+                    )
+            ) {
+                OutlinedButton(
+                    onClick = onSalirClick,
+                    colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(
+                        text = "Atrás",
+                        fontFamily = fuenteRuleta,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = casinoBlanco
+                    )
+                }
+            }
+
         }
+
     }
-    LogoSpin36(
-        modifier = Modifier
-            .align(Alignment.BottomStart)
-            .fillMaxWidth(0.18f)
-            .padding(start = 20.dp, bottom = 30.dp)
-    )
     }
 
 

@@ -3,6 +3,7 @@ package com.example.spin36.feature.bienvenida
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -13,13 +14,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -130,42 +135,82 @@ fun CampoIngresoNombre(
     nombreActual: String,
     onNombreCambiado: (String) -> Unit
 ) {
-    OutlinedTextField(
-        value = nombreActual,
-        onValueChange = { if (it.length <= 15) onNombreCambiado(it) },
-        placeholder = { Text("Ingresa tu nombre...") },
-        singleLine = true,
-        shape = RoundedCornerShape(16.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = casinoBlanco,
-            unfocusedContainerColor = casinoBlanco,
-            focusedBorderColor = casinoDoradoDetalles,
-            unfocusedBorderColor = Color.Transparent
-        ),
-        modifier = Modifier.fillMaxWidth()
-    )
+    Box(
+        modifier = Modifier
+            .dropShadow(
+                shape = RoundedCornerShape(18.dp),
+                shadow = Shadow(
+                    radius = 20.dp,
+                    color = casinoDoradoDetalles.copy(alpha = 0.35f),
+                    offset = DpOffset(0.dp, 16.dp)
+                )
+            )
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(casinoDoradoDetalles, casinoBlanco)
+                ),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(2.dp)
+    ) {
+        OutlinedTextField(
+            value = nombreActual,
+            onValueChange = { if (it.length <= 15) onNombreCambiado(it) },
+            placeholder = { Text("Ingresa tu nombre...") },
+            singleLine = true,
+            shape = RoundedCornerShape(16.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = casinoBlanco,
+                unfocusedContainerColor = casinoBlanco,
+                focusedBorderColor = casinoDoradoDetalles,
+                unfocusedBorderColor = Color.Transparent
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
 }
 
 @Composable
 fun BotonContinuar(onClick: () -> Unit) {
     val fuenteRuleta = FontFamily(Font(R.font.mileast, FontWeight.Normal))
 
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
-        shape = RoundedCornerShape(16.dp),
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
+            .dropShadow(
+                shape = RoundedCornerShape(18.dp),
+                shadow = Shadow(
+                    radius = 20.dp,
+                    color = casinoDoradoDetalles.copy(alpha = 0.35f),
+                    offset = DpOffset(0.dp, 16.dp)
+                )
+            )
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(casinoDoradoDetalles, casinoRojoAcciones)
+                ),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(2.dp)
     ) {
-        Text(
-            text = "CONTINUAR",
-            color = casinoBlanco,
-            fontSize = 18.sp,
-            fontFamily = fuenteRuleta,
-            fontWeight = FontWeight.Bold
-        )
+        Button(
+            onClick = onClick,
+            colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+        ) {
+            Text(
+                text = "CONTINUAR",
+                color = casinoBlanco,
+                fontSize = 18.sp,
+                fontFamily = fuenteRuleta,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
+
 }
 
 @Preview(showBackground = true, showSystemUi = true, name = "Pantalla Bienvenida Completa")
