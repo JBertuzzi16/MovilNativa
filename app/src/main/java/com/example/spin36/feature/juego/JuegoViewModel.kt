@@ -311,13 +311,13 @@ class JuegoViewModel(
     ): String {
         return when {
             premio > 0 && bonusRacha > 0 ->
-                "Salió el $numeroGanador. Has ganado $premio monedas y bonus de racha +$bonusRacha."
+                "Ha salido el $numeroGanador. Has ganado $premio monedas y bonus de racha +$bonusRacha."
 
             premio > 0 ->
-                "Salió el $numeroGanador. Has ganado $premio monedas."
+                "Ha salido el $numeroGanador. Has ganado $premio monedas."
 
             else ->
-                "Salió el $numeroGanador. Has perdido la apuesta."
+                "Ha salido el $numeroGanador. Has perdido la apuesta."
         }
     }
 

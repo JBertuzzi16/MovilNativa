@@ -19,6 +19,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -47,100 +48,126 @@ import com.example.spin36.ui.theme.casinoDoradoDetalles
 import com.example.spin36.ui.theme.casinoRojoAcciones
 import com.example.spin36.ui.theme.casinoVerde
 import org.intellij.lang.annotations.JdkConstants
+import com.example.spin36.feature.components.Spin36TopBar
+import com.example.spin36.feature.components.PantallaActual
 
 @Composable
 fun MenuScreen(
     nombreJugador: String,
     onApostarClick: () -> Unit,
     onHistorialClick: () -> Unit,
+    onSalirClick: () -> Unit,
     onVolverClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(casinoVerde)
-    ) {
-        ImagenRuleta(
-            modifier = Modifier.align(Alignment.Center)
-        )
-        ImagenTapete(
-            modifier = Modifier.align(Alignment.Center)
-        )
-
-        Column(
+    Scaffold(
+        containerColor = casinoVerde,
+        topBar = {
+            Spin36TopBar(
+                titulo = "MENÚ",
+                pantallaActual = PantallaActual.MENU,
+                onIrMenu = {},
+                onIrJuego = onApostarClick,
+                onIrHistorial = onHistorialClick,
+                onIrAjustes = {},
+                onSalirConfirmado = onSalirClick
+            )
+        }
+    ) { innerPadding ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+                .background(casinoVerde)
+                .padding(innerPadding)
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Start
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(casinoVerde)
             ) {
-                Text(
-                    text = nombreJugador,
-                    color = casinoBlanco,
-                    fontSize = 26.sp,
-                    fontFamily = fuenteRuletaMenu
+                ImagenRuleta(
+                    modifier = Modifier.align(Alignment.Center)
                 )
-            }
-
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                BotonMenu(
-                    texto = "APOSTAR",
-                    onClick = onApostarClick,
+                ImagenTapete(
+                    modifier = Modifier.align(Alignment.Center)
                 )
 
-                BotonMenu(
-                    texto = "HISTORIAL",
-                    onClick = onHistorialClick
-                )
-                Row(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .fillMaxSize()
+                        .padding(32.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    LogoSpin36(
-                        modifier = Modifier.fillMaxWidth(0.18f)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .dropShadow(
-                                shape = RoundedCornerShape(10.dp),
-                                shadow = Shadow(
-                                    radius = 20.dp,
-                                    color = casinoDoradoDetalles.copy(alpha = 0.35f),
-                                    offset = DpOffset(0.dp, 5.dp)
-                                )
-                            )
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.Start
                     ) {
-                        OutlinedButton(
-                            onClick = onVolverClick,
-                            colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
-                            shape = RoundedCornerShape(10.dp)
-                        ) {
-                            Text(
-                                text = "Atrás",
-                                fontFamily = fuenteRuleta,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
-                                color = casinoBlanco
-                            )
-                        }
+                        Text(
+                            text = nombreJugador,
+                            color = casinoBlanco,
+                            fontSize = 26.sp,
+                            fontFamily = fuenteRuletaMenu
+                        )
                     }
 
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        BotonMenu(
+                            texto = "APOSTAR",
+                            onClick = onApostarClick,
+                        )
+
+                        BotonMenu(
+                            texto = "HISTORIAL",
+                            onClick = onHistorialClick
+                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            LogoSpin36(
+                                modifier = Modifier.fillMaxWidth(0.18f)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .dropShadow(
+                                        shape = RoundedCornerShape(10.dp),
+                                        shadow = Shadow(
+                                            radius = 20.dp,
+                                            color = casinoDoradoDetalles.copy(alpha = 0.35f),
+                                            offset = DpOffset(0.dp, 5.dp)
+                                        )
+                                    )
+                            ) {
+                                OutlinedButton(
+                                    onClick = onVolverClick,
+                                    colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
+                                    shape = RoundedCornerShape(10.dp)
+                                ) {
+                                    Text(
+                                        text = "Atrás",
+                                        fontFamily = fuenteRuleta,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp,
+                                        color = casinoBlanco
+                                    )
+                                }
+                            }
+
+                        }
+                    }
                 }
+
             }
         }
-
     }
 }
+
 
 
 private val fuenteRuletaMenu = FontFamily(
@@ -218,6 +245,7 @@ fun PreviewMenuScreen() {
         nombreJugador = "KOLDO",
         onApostarClick = {},
         onHistorialClick = {},
+        onSalirClick = {},
         onVolverClick = {}
     )
 }
