@@ -236,21 +236,23 @@ fun JuegoContent(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     TipoApuestaButton(
-                        texto = "PLENO",
+                        texto = "PLENO x36",
+
+
                         selected = uiState.tipoApuesta == "pleno",
                         onClick = onSeleccionarPleno,
                         modifier = Modifier.weight(1f)
                     )
 
                     TipoApuestaButton(
-                        texto = "DOCENA",
+                        texto = "DOCENA x3",
                         selected = uiState.tipoApuesta == "docena",
                         onClick = onSeleccionarDocena,
                         modifier = Modifier.weight(1f)
                     )
 
                     TipoApuestaButton(
-                        texto = "ROJO",
+                        texto = "ROJO x2",
                         selected = uiState.tipoApuesta == "color" && uiState.valorApuesta == "rojo",
                         onClick = onSeleccionarRojo,
                         modifier = Modifier.weight(1f)
@@ -262,21 +264,21 @@ fun JuegoContent(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     TipoApuestaButton(
-                        texto = "NEGRO",
+                        texto = "NEGRO x2",
                         selected = uiState.tipoApuesta == "color" && uiState.valorApuesta == "negro",
                         onClick = onSeleccionarNegro,
                         modifier = Modifier.weight(1f)
                     )
 
                     TipoApuestaButton(
-                        texto = "PAR",
+                        texto = "PAR\n x2",
                         selected = uiState.tipoApuesta == "par_impar" && uiState.valorApuesta == "par",
                         onClick = onSeleccionarPar,
                         modifier = Modifier.weight(1f)
                     )
 
                     TipoApuestaButton(
-                        texto = "IMPAR",
+                        texto = "IMPAR x2",
                         selected = uiState.tipoApuesta == "par_impar" && uiState.valorApuesta == "impar",
                         onClick = onSeleccionarImpar,
                         modifier = Modifier.weight(1f)
@@ -546,7 +548,9 @@ fun TipoApuestaButton(
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center
             )
+
         }
+
     } else {
         OutlinedButton(
             onClick = onClick,
