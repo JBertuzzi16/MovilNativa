@@ -56,6 +56,7 @@ fun MenuScreen(
     nombreJugador: String,
     onApostarClick: () -> Unit,
     onHistorialClick: () -> Unit,
+    onAjustesClick: () -> Unit,
     onSalirClick: () -> Unit,
     onVolverClick: () -> Unit
 ) {
@@ -68,7 +69,7 @@ fun MenuScreen(
                 onIrMenu = {},
                 onIrJuego = onApostarClick,
                 onIrHistorial = onHistorialClick,
-                onIrAjustes = {},
+                onIrAjustes = onAjustesClick,
                 onSalirConfirmado = onSalirClick
             )
         }
@@ -245,6 +246,7 @@ fun PreviewMenuScreen() {
         nombreJugador = "KOLDO",
         onApostarClick = {},
         onHistorialClick = {},
+        onAjustesClick = {},
         onSalirClick = {},
         onVolverClick = {}
     )

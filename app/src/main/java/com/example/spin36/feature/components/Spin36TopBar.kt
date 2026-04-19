@@ -24,10 +24,12 @@ import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoRojoAcciones
 import com.example.spin36.ui.theme.casinoVerde
 
+//identifica la pantalla activa para ocultarla en el desplegable
 enum class PantallaActual {
     MENU,
     JUEGO,
-    HISTORIAL
+    HISTORIAL,
+    AJUSTES
 }
 
 private val fuenteRuletaTopBar = FontFamily(
@@ -75,12 +77,7 @@ fun Spin36TopBar(
             ) {
                 if (pantallaActual != PantallaActual.MENU) {
                     DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = "Menú",
-                                fontFamily = fuenteRuletaTopBar
-                            )
-                        },
+                        text = { Text(text = "Menú", fontFamily = fuenteRuletaTopBar) },
                         onClick = {
                             menuExpandido.value = false
                             onIrMenu()
@@ -90,12 +87,7 @@ fun Spin36TopBar(
 
                 if (pantallaActual != PantallaActual.JUEGO) {
                     DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = "Juego / Apuesta",
-                                fontFamily = fuenteRuletaTopBar
-                            )
-                        },
+                        text = { Text(text = "Juego / Apuesta", fontFamily = fuenteRuletaTopBar) },
                         onClick = {
                             menuExpandido.value = false
                             onIrJuego()
@@ -105,12 +97,7 @@ fun Spin36TopBar(
 
                 if (pantallaActual != PantallaActual.HISTORIAL) {
                     DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = "Historial",
-                                fontFamily = fuenteRuletaTopBar
-                            )
-                        },
+                        text = { Text(text = "Historial", fontFamily = fuenteRuletaTopBar) },
                         onClick = {
                             menuExpandido.value = false
                             onIrHistorial()
@@ -118,26 +105,19 @@ fun Spin36TopBar(
                     )
                 }
 
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = "Ajustes",
-                            fontFamily = fuenteRuletaTopBar
-                        )
-                    },
-                    onClick = {
-                        menuExpandido.value = false
-                        onIrAjustes()
-                    }
-                )
+                // Ajustes solo se muestra si no estamos ya en Ajustes
+                if (pantallaActual != PantallaActual.AJUSTES) {
+                    DropdownMenuItem(
+                        text = { Text(text = "Ajustes", fontFamily = fuenteRuletaTopBar) },
+                        onClick = {
+                            menuExpandido.value = false
+                            onIrAjustes()
+                        }
+                    )
+                }
 
                 DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = "Salir",
-                            fontFamily = fuenteRuletaTopBar
-                        )
-                    },
+                    text = { Text(text = "Salir", fontFamily = fuenteRuletaTopBar) },
                     onClick = {
                         menuExpandido.value = false
                         mostrarDialogoSalir.value = true
@@ -156,16 +136,10 @@ fun Spin36TopBar(
         AlertDialog(
             onDismissRequest = { mostrarDialogoSalir.value = false },
             title = {
-                Text(
-                    text = "Confirmar salida",
-                    fontFamily = fuenteRuletaTopBar
-                )
+                Text(text = "Confirmar salida", fontFamily = fuenteRuletaTopBar)
             },
             text = {
-                Text(
-                    text = "¿Seguro que quieres salir de la app?",
-                    fontFamily = fuenteRuletaTopBar
-                )
+                Text(text = "¿Seguro que quieres salir de la app?", fontFamily = fuenteRuletaTopBar)
             },
             confirmButton = {
                 Button(
@@ -173,26 +147,14 @@ fun Spin36TopBar(
                         mostrarDialogoSalir.value = false
                         onSalirConfirmado()
                     },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = casinoRojoAcciones
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones)
                 ) {
-                    Text(
-                        text = "Sí",
-                        color = casinoBlanco,
-                        fontFamily = fuenteRuletaTopBar
-                    )
+                    Text(text = "Sí", color = casinoBlanco, fontFamily = fuenteRuletaTopBar)
                 }
             },
             dismissButton = {
-                OutlinedButton(
-                    onClick = { mostrarDialogoSalir.value = false }
-                ) {
-                    Text(
-                        text = "No",
-                        fontFamily = fuenteRuletaTopBar,
-                        color = Color.Black
-                    )
+                OutlinedButton(onClick = { mostrarDialogoSalir.value = false }) {
+                    Text(text = "No", fontFamily = fuenteRuletaTopBar, color = Color.Black)
                 }
             }
         )
