@@ -7,7 +7,7 @@ import com.example.spin36.data.model.Apuesta
 import com.example.spin36.data.model.Jugador
 import com.example.spin36.data.model.Sesion
 import com.example.spin36.data.repository.CasinoRepository
-import io.reactivex.rxjava3.core.Single
+import com.example.spin36.feature.galeria.GaleriaManager
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,8 @@ import java.util.Date
 import java.util.Locale
 
 class JuegoViewModel(
-    private val repository: CasinoRepository
+    private val repository: CasinoRepository,
+    private val galeriaManager: GaleriaManager? = null
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
@@ -230,16 +231,25 @@ class JuegoViewModel(
             .subscribe({
                 sesionActual = sesionActualizada
 
+                val (capturaGuardada, errorGaleria) = intentarGuardarCaptura(
+                    monedasGanadas = monedasGanadas,
+                    nombreJugador  = jugador.nombre,
+                    numeroGanador  = numeroGanador,
+                    fecha          = obtenerFechaHoraActual()
+                )
+
                 _uiState.value = _uiState.value.copy(
-                    saldoActual = jugador.saldoActual,
-                    rachaActual = jugador.rachaDeVictorias,
-                    resultadoRuleta = numeroGanador,
-                    ganancia = monedasGanadas,
-                    bonusRacha = bonusRacha,
+                    saldoActual      = jugador.saldoActual,
+                    rachaActual      = jugador.rachaDeVictorias,
+                    resultadoRuleta  = numeroGanador,
+                    ganancia         = monedasGanadas,
+                    bonusRacha       = bonusRacha,
                     mensajeResultado = mensaje,
-                    juegoTerminado = juegoTerminado,
-                    cargando = false,
-                    error = null
+                    juegoTerminado   = juegoTerminado,
+                    capturaGuardada  = capturaGuardada,
+                    errorGaleria     = errorGaleria,
+                    cargando         = false,
+                    error            = null
                 )
             }, { error ->
                 _uiState.value = _uiState.value.copy(
@@ -331,6 +341,21 @@ class JuegoViewModel(
             "dd/MM/yyyy HH:mm:ss",
             Locale.getDefault()
         ).format(Date())
+    }
+
+    private fun intentarGuardarCaptura(
+        monedasGanadas: Int,
+        nombreJugador: String,
+        numeroGanador: Int,
+        fecha: String
+    ): Pair<Boolean, String?> {
+        if (monedasGanadas <= 0 || galeriaManager == null) return Pair(false, null)
+        return try {
+            galeriaManager.guardarVictoria(nombreJugador, numeroGanador, monedasGanadas, fecha)
+            Pair(true, null)
+        } catch (e: Exception) {
+            Pair(false, "No se pudo guardar la captura: ${e.message}")
+        }
     }
 
     override fun onCleared() {

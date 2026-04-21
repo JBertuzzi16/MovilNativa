@@ -10,6 +10,7 @@ import com.example.spin36.data.preferences.AjustesPreferences
 import com.example.spin36.data.repository.CasinoRepository
 import com.example.spin36.feature.ajustes.AjustesViewModel
 import com.example.spin36.feature.ajustes.AjustesViewModelFactory
+import com.example.spin36.feature.galeria.GaleriaManager
 import com.example.spin36.feature.historial.HistorialViewModel
 import com.example.spin36.feature.historial.HistorialViewModelFactory
 import com.example.spin36.feature.juego.JuegoViewModel
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
         //viewmodels
         val juegoViewModel = ViewModelProvider(
-            this, JuegoViewModelFactory(repository)
+            this, JuegoViewModelFactory(repository, GaleriaManager(applicationContext))
         )[JuegoViewModel::class.java]
 
         val historialViewModel = ViewModelProvider(

@@ -17,6 +17,9 @@ data class JuegoUiState(
     val mensajeResultado: String = "",
     val juegoTerminado: Boolean = false,
 
+    //bitmap
     val cargando: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val capturaGuardada: Boolean = false,
+    val errorGaleria: String? = null
 )

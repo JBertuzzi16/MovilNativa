@@ -1,5 +1,10 @@
 package com.example.spin36.feature.juego
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +25,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -75,6 +81,26 @@ fun JuegoScreen(
     onVolverClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = androidx.compose.ui.platform.LocalContext.current
+
+    //permisos en funcion del android
+    val permisoLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { concedido ->
+        if (concedido) viewModel.jugar()
+    }
+
+    //decide si hay que pedir permiso antes de girar (solo en API <= 28)
+    fun onGirarConPermiso() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            val permiso = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            if (context.checkSelfPermission(permiso) != PackageManager.PERMISSION_GRANTED) {
+                permisoLauncher.launch(permiso)
+                return
+            }
+        }
+        viewModel.jugar()
+    }
 
     JuegoContent(
         uiState = uiState,
@@ -103,7 +129,7 @@ fun JuegoScreen(
         },
         onSeleccionarNumeroPleno  = { numero -> viewModel.onValorApuestaChange(numero.toString()) },
         onSeleccionarDocenaValor  = { docena -> viewModel.onValorApuestaChange(docena.toString()) },
-        onGirarClick     = { viewModel.jugar() },
+        onGirarClick     = { onGirarConPermiso() },
         onHistorialClick = onHistorialClick,
         onMenuClick      = onMenuClick,
         onAjustesClick   = onAjustesClick,
@@ -299,21 +325,38 @@ fun JuegoContent(
                     }
                 }
 
-                //mensaje fin partida
-                if (uiState.juegoTerminado) {
-                    Text(
-                        text      = "Juego terminado. Te has quedado sin saldo.",
-                        color     = casinoRojoAcciones,
-                        fontFamily = fuenteRuleta,
-                        fontSize  = 18.sp,
-                        modifier  = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
+    }
+
+    if (uiState.juegoTerminado) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = {
+                Text(text = "Juego terminado", fontFamily = fuenteRuleta, fontSize = 24.sp)
+            },
+            text = {
+                Text(
+                    text = "Te has quedado sin saldo. ¿Qué quieres hacer?",
+                    fontFamily = fuenteRuleta,
+                    fontSize = 18.sp
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = onMenuClick,
+                    colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones)
+                ) {
+                    Text(text = "Volver al menú", fontFamily = fuenteRuleta, color = casinoBlanco)
+                }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = onSalirClick) {
+                    Text(text = "Salir", fontFamily = fuenteRuleta)
+                }
+            }
+        )
     }
 }
 
@@ -378,6 +421,22 @@ fun ResultadoPanel(uiState: JuegoUiState) {
         }
         if (uiState.mensajeResultado.isNotBlank()) {
             Text(text = uiState.mensajeResultado, color = casinoBlanco, fontFamily = fuenteRuleta, fontSize = 17.sp)
+        }
+        if (uiState.capturaGuardada) {
+            Text(
+                text       = "¡Victoria guardada en tu galería!",
+                color      = casinoDoradoDetalles,
+                fontFamily = fuenteRuleta,
+                fontSize   = 16.sp
+            )
+        }
+        if (uiState.errorGaleria != null) {
+            Text(
+                text       = "${uiState.errorGaleria}",
+                color      = casinoRojoAcciones,
+                fontFamily = fuenteRuleta,
+                fontSize   = 15.sp
+            )
         }
     }
 }
