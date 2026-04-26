@@ -181,7 +181,7 @@ class MusicaManager(private val context: Context) {
                resultado == AudioManager.AUDIOFOCUS_REQUEST_DELAYED
     }
 
-    //liberarfoco
+    //liberar foco
     private fun abandonarFoco() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             focusRequest?.let { audioManager.abandonAudioFocusRequest(it) }
