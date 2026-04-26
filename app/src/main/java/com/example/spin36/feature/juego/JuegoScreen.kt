@@ -77,6 +77,7 @@ fun JuegoScreen(
     onHistorialClick: () -> Unit,
     onMenuClick: () -> Unit,
     onAjustesClick: () -> Unit,
+    onAyudaClick: () -> Unit = {},
     onSalirClick: () -> Unit,
     onVolverClick: () -> Unit
 ) {
@@ -142,6 +143,7 @@ fun JuegoScreen(
         onHistorialClick         = onHistorialClick,
         onMenuClick              = onMenuClick,
         onAjustesClick           = onAjustesClick,
+        onAyudaClick             = onAyudaClick,
         onSalirClick             = onSalirClick,
         onVolverClick            = onVolverClick
     )
@@ -166,6 +168,7 @@ fun JuegoContent(
     onHistorialClick: () -> Unit,
     onMenuClick: () -> Unit,
     onAjustesClick: () -> Unit,
+    onAyudaClick: () -> Unit = {},
     onSalirClick: () -> Unit,
     onVolverClick: () -> Unit
 ) {
@@ -179,6 +182,7 @@ fun JuegoContent(
                 onIrJuego      = {},
                 onIrHistorial  = onHistorialClick,
                 onIrAjustes    = onAjustesClick,
+                onIrAyuda      = onAyudaClick,
                 onSalirConfirmado = onSalirClick
             )
         }
@@ -508,6 +512,7 @@ fun PreviewJuegoContent() {
         onHistorialClick         = {},
         onMenuClick              = {},
         onAjustesClick           = {},
+        onAyudaClick             = {},
         onSalirClick             = {},
         onVolverClick            = {}
     )

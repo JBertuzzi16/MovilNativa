@@ -57,6 +57,7 @@ fun MenuScreen(
     onApostarClick: () -> Unit,
     onHistorialClick: () -> Unit,
     onAjustesClick: () -> Unit,
+    onAyudaClick: () -> Unit = {},
     onSalirClick: () -> Unit,
     onVolverClick: () -> Unit
 ) {
@@ -64,12 +65,13 @@ fun MenuScreen(
         containerColor = casinoVerde,
         topBar = {
             Spin36TopBar(
-                titulo = "MENÚ",
-                pantallaActual = PantallaActual.MENU,
-                onIrMenu = {},
-                onIrJuego = onApostarClick,
-                onIrHistorial = onHistorialClick,
-                onIrAjustes = onAjustesClick,
+                titulo            = "MENÚ",
+                pantallaActual    = PantallaActual.MENU,
+                onIrMenu          = {},
+                onIrJuego         = onApostarClick,
+                onIrHistorial     = onHistorialClick,
+                onIrAjustes       = onAjustesClick,
+                onIrAyuda         = onAyudaClick,
                 onSalirConfirmado = onSalirClick
             )
         }

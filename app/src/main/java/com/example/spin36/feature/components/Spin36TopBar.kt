@@ -29,7 +29,8 @@ enum class PantallaActual {
     MENU,
     JUEGO,
     HISTORIAL,
-    AJUSTES
+    AJUSTES,
+    AYUDA
 }
 
 private val fuenteRuletaTopBar = FontFamily(
@@ -45,6 +46,7 @@ fun Spin36TopBar(
     onIrJuego: () -> Unit,
     onIrHistorial: () -> Unit,
     onIrAjustes: () -> Unit = {},
+    onIrAyuda: () -> Unit = {},
     onSalirConfirmado: () -> Unit
 ) {
     val menuExpandido = remember { mutableStateOf(false) }
@@ -105,13 +107,23 @@ fun Spin36TopBar(
                     )
                 }
 
-                // Ajustes solo se muestra si no estamos ya en Ajustes
+                //ajustes solo se muestra si no estamos ya en Ajustes
                 if (pantallaActual != PantallaActual.AJUSTES) {
                     DropdownMenuItem(
                         text = { Text(text = "Ajustes", fontFamily = fuenteRuletaTopBar) },
                         onClick = {
                             menuExpandido.value = false
                             onIrAjustes()
+                        }
+                    )
+                }
+
+                if (pantallaActual != PantallaActual.AYUDA) {
+                    DropdownMenuItem(
+                        text = { Text(text = "Ayuda", fontFamily = fuenteRuletaTopBar) },
+                        onClick = {
+                            menuExpandido.value = false
+                            onIrAyuda()
                         }
                     )
                 }

@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import com.example.spin36.R
 import java.io.OutputStream
@@ -60,6 +62,7 @@ class GaleriaManager(private val context: Context) {
         return bmp
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     fun guardarBitmapEnUri(bitmap: Bitmap, uri: Uri): Boolean {
         val stream: OutputStream = context.contentResolver.openOutputStream(uri)
             ?: return false

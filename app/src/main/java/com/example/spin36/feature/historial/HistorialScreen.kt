@@ -57,6 +57,7 @@ fun HistorialScreen(
     onIrMenuClick: () -> Unit,
     onIrJuegoClick: () -> Unit,
     onAjustesClick: () -> Unit,
+    onAyudaClick: () -> Unit = {},
     onVolverClick: () -> Unit,
     onSesionClick: (SesionEntity) -> Unit = {}
 ) {
@@ -72,6 +73,7 @@ fun HistorialScreen(
         onIrMenuClick  = onIrMenuClick,
         onIrJuegoClick = onIrJuegoClick,
         onAjustesClick = onAjustesClick,
+        onAyudaClick   = onAyudaClick,
         onVolverClick  = onVolverClick,
         onSesionClick  = onSesionClick
     )
@@ -84,6 +86,7 @@ fun HistorialContent(
     onIrMenuClick: () -> Unit,
     onIrJuegoClick: () -> Unit,
     onAjustesClick: () -> Unit = {},
+    onAyudaClick: () -> Unit = {},
     onSesionClick: (SesionEntity) -> Unit = {},
     onVolverClick: () -> Unit
 ) {
@@ -97,6 +100,7 @@ fun HistorialContent(
                 onIrJuego         = onIrJuegoClick,
                 onIrHistorial     = {},
                 onIrAjustes       = onAjustesClick,
+                onIrAyuda         = onAyudaClick,
                 onSalirConfirmado = onSalirClick
             )
         }

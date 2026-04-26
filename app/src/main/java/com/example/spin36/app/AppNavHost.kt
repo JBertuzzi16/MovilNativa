@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.spin36.feature.ajustes.AjustesScreen
 import com.example.spin36.feature.ajustes.AjustesViewModel
+import com.example.spin36.feature.ayuda.AyudaScreen
 import com.example.spin36.feature.bienvenida.BienvenidaScreen
 import com.example.spin36.feature.historial.HistorialScreen
 import com.example.spin36.feature.historial.HistorialViewModel
@@ -29,7 +30,6 @@ fun AppNavHost(
         startDestination = "bienvenida"
     ) {
 
-        //bienvenida
         composable("bienvenida") {
             BienvenidaScreen(
                 onEntrarClick = { nombreJugador ->
@@ -38,7 +38,6 @@ fun AppNavHost(
             )
         }
 
-        //menu
         composable(
             route     = "menu/{nombreJugador}",
             arguments = listOf(navArgument("nombreJugador") { type = NavType.StringType })
@@ -50,12 +49,12 @@ fun AppNavHost(
                 onApostarClick   = { navController.navigate("juego/$nombre") },
                 onHistorialClick = { navController.navigate("historial/$nombre") },
                 onAjustesClick   = { navController.navigate("ajustes/$nombre") },
+                onAyudaClick     = { navController.navigate("ayuda/$nombre") { launchSingleTop = true } },
                 onSalirClick     = { navController.popBackStack("bienvenida", inclusive = false) },
                 onVolverClick    = { navController.popBackStack("bienvenida", inclusive = false) }
             )
         }
 
-        //juego
         composable(
             route     = "juego/{nombreJugador}",
             arguments = listOf(navArgument("nombreJugador") { type = NavType.StringType })
@@ -76,6 +75,9 @@ fun AppNavHost(
                 onAjustesClick   = {
                     navController.navigate("ajustes/$nombre") { launchSingleTop = true }
                 },
+                onAyudaClick     = {
+                    navController.navigate("ayuda/$nombre") { launchSingleTop = true }
+                },
                 onSalirClick     = {
                     juegoViewModel.cerrarSesionActual {
                         navController.popBackStack("bienvenida", inclusive = false)
@@ -88,7 +90,6 @@ fun AppNavHost(
             )
         }
 
-        //historial
         composable(
             route     = "historial/{nombreJugador}",
             arguments = listOf(navArgument("nombreJugador") { type = NavType.StringType })
@@ -107,6 +108,9 @@ fun AppNavHost(
                 onAjustesClick   = {
                     navController.navigate("ajustes/$nombre") { launchSingleTop = true }
                 },
+                onAyudaClick     = {
+                    navController.navigate("ayuda/$nombre") { launchSingleTop = true }
+                },
                 onVolverClick    = {
                     val volvio = navController.popBackStack("menu/$nombre", inclusive = false)
                     if (!volvio) navController.navigate("menu/$nombre") { launchSingleTop = true }
@@ -114,7 +118,6 @@ fun AppNavHost(
             )
         }
 
-        //ajustes
         composable(
             route     = "ajustes/{nombreJugador}",
             arguments = listOf(navArgument("nombreJugador") { type = NavType.StringType })
@@ -136,7 +139,37 @@ fun AppNavHost(
                 },
                 onHistorialClick = {
                     navController.navigate("historial/$nombre") { launchSingleTop = true }
+                },
+                onAyudaClick     = {
+                    navController.navigate("ayuda/$nombre") { launchSingleTop = true }
                 }
+            )
+        }
+
+        composable(
+            route     = "ayuda/{nombreJugador}",
+            arguments = listOf(navArgument("nombreJugador") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val nombre = backStackEntry.arguments?.getString("nombreJugador") ?: "INVITADO"
+
+            AyudaScreen(
+                onVolverClick    = {
+                    val volvio = navController.popBackStack()
+                    if (!volvio) navController.navigate("menu/$nombre") { launchSingleTop = true }
+                },
+                onMenuClick      = {
+                    navController.navigate("menu/$nombre") { launchSingleTop = true }
+                },
+                onJuegoClick     = {
+                    navController.navigate("juego/$nombre") { launchSingleTop = true }
+                },
+                onHistorialClick = {
+                    navController.navigate("historial/$nombre") { launchSingleTop = true }
+                },
+                onAjustesClick   = {
+                    navController.navigate("ajustes/$nombre") { launchSingleTop = true }
+                },
+                onSalirClick     = { navController.popBackStack("bienvenida", inclusive = false) }
             )
         }
     }

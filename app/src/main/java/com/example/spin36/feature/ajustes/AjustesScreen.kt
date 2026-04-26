@@ -62,7 +62,8 @@ fun AjustesScreen(
     onSalirClick: () -> Unit,
     onMenuClick: () -> Unit,
     onJuegoClick: () -> Unit,
-    onHistorialClick: () -> Unit
+    onHistorialClick: () -> Unit,
+    onAyudaClick: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -94,7 +95,8 @@ fun AjustesScreen(
         onSalirClick         = onSalirClick,
         onMenuClick          = onMenuClick,
         onJuegoClick         = onJuegoClick,
-        onHistorialClick     = onHistorialClick
+        onHistorialClick     = onHistorialClick,
+        onAyudaClick         = onAyudaClick
     )
 }
 
@@ -109,7 +111,8 @@ fun AjustesContent(
     onSalirClick: () -> Unit,
     onMenuClick: () -> Unit,
     onJuegoClick: () -> Unit,
-    onHistorialClick: () -> Unit
+    onHistorialClick: () -> Unit,
+    onAyudaClick: () -> Unit = {}
 ) {
     Scaffold(
         containerColor = casinoVerde,
@@ -121,6 +124,7 @@ fun AjustesContent(
                 onIrJuego         = onJuegoClick,
                 onIrHistorial     = onHistorialClick,
                 onIrAjustes       = {},
+                onIrAyuda         = onAyudaClick,
                 onSalirConfirmado = onSalirClick
             )
         }
