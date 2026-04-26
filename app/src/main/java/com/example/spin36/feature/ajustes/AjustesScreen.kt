@@ -45,6 +45,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.spin36.R
 import com.example.spin36.feature.components.PantallaActual
 import com.example.spin36.feature.components.Spin36TopBar
+import com.example.spin36.feature.components.rememberSoundClick
 import com.example.spin36.feature.menu.ImagenRuleta
 import com.example.spin36.ui.theme.casinoAntracitaSecundario
 import com.example.spin36.ui.theme.casinoBlanco
@@ -263,7 +264,7 @@ fun AjustesContent(
                         )
                     ) {
                         OutlinedButton(
-                            onClick = onVolverClick,
+                            onClick = rememberSoundClick(onVolverClick),
                             colors  = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
                             shape   = RoundedCornerShape(10.dp)
                         ) {
@@ -303,7 +304,7 @@ private fun BotonAjustes(texto: String, onClick: () -> Unit) {
             .padding(2.dp)
     ) {
         Button(
-            onClick  = onClick,
+            onClick  = rememberSoundClick(onClick),
             colors   = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
             shape    = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth().height(56.dp)
@@ -322,7 +323,7 @@ private fun BotonAjustes(texto: String, onClick: () -> Unit) {
 @Composable
 private fun BotonAjustesSecundario(texto: String, onClick: () -> Unit) {
     OutlinedButton(
-        onClick  = onClick,
+        onClick  = rememberSoundClick(onClick),
         shape    = RoundedCornerShape(16.dp),
         modifier = Modifier.fillMaxWidth().height(52.dp),
         colors   = ButtonDefaults.outlinedButtonColors(contentColor = casinoBlanco)

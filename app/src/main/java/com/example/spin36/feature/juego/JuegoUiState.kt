@@ -24,5 +24,10 @@ data class JuegoUiState(
     val bitmapVictoria: Bitmap? = null,
     val capturaPendiente: Boolean = false,
     val capturaGuardada: Boolean = false,
-    val errorGuardado: String? = null
+    val errorGuardado: String? = null,
+
+    val animacionActiva: Boolean = false,
+    val numeroAnimado: Int = 0,
+    val animacionFinalizada: Boolean = false,
+    val ultimaJugadaGanadora: Boolean = false
 )

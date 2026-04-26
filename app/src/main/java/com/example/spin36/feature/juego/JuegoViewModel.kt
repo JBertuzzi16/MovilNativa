@@ -154,6 +154,13 @@ class JuegoViewModel(
             juegoTerminado    = juegoTerminado,
             haGanado          = haGanado
         )
+
+        _uiState.value = _uiState.value.copy(
+            animacionActiva       = true,
+            animacionFinalizada   = false,
+            numeroAnimado         = numeroGanador,
+            ultimaJugadaGanadora  = haGanado
+        )
     }
 
     private fun guardarJugadorPartidaYSesion(
@@ -209,6 +216,17 @@ class JuegoViewModel(
             })
 
         disposables.add(disposable)
+    }
+
+    fun marcarAnimacionFinalizada() {
+        _uiState.value = _uiState.value.copy(animacionFinalizada = true)
+    }
+
+    fun cerrarAnimacion() {
+        _uiState.value = _uiState.value.copy(
+            animacionActiva     = false,
+            animacionFinalizada = false
+        )
     }
 
     fun guardarCapturaEnUri(uri: Uri) {

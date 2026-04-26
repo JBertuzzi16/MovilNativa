@@ -48,8 +48,9 @@ import com.example.spin36.ui.theme.casinoDoradoDetalles
 import com.example.spin36.ui.theme.casinoRojoAcciones
 import com.example.spin36.ui.theme.casinoVerde
 import org.intellij.lang.annotations.JdkConstants
-import com.example.spin36.feature.components.Spin36TopBar
 import com.example.spin36.feature.components.PantallaActual
+import com.example.spin36.feature.components.Spin36TopBar
+import com.example.spin36.feature.components.rememberSoundClick
 
 @Composable
 fun MenuScreen(
@@ -148,7 +149,7 @@ fun MenuScreen(
                                     )
                             ) {
                                 OutlinedButton(
-                                    onClick = onVolverClick,
+                                    onClick = rememberSoundClick(onVolverClick),
                                     colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
                                     shape = RoundedCornerShape(10.dp)
                                 ) {
@@ -202,6 +203,7 @@ fun BotonMenu(
     texto: String,
     onClick: () -> Unit
 ) {
+    val onClickSonoro = rememberSoundClick(onClick)
 
     Box(
         modifier = Modifier
@@ -222,7 +224,7 @@ fun BotonMenu(
             .padding(2.dp)
     ) {
         Button(
-            onClick = onClick,
+            onClick = onClickSonoro,
             colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier

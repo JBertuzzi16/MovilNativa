@@ -42,6 +42,7 @@ import com.example.spin36.R
 import com.example.spin36.data.database.entities.SesionEntity
 import com.example.spin36.feature.components.PantallaActual
 import com.example.spin36.feature.components.Spin36TopBar
+import com.example.spin36.feature.components.rememberSoundClick
 import com.example.spin36.feature.menu.ImagenRuleta
 import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoDoradoDetalles
@@ -187,7 +188,7 @@ fun HistorialContent(
                             )
                         ) {
                             OutlinedButton(
-                                onClick = onVolverClick,
+                                onClick = rememberSoundClick(onVolverClick),
                                 colors  = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
                                 shape   = RoundedCornerShape(10.dp)
                             ) {

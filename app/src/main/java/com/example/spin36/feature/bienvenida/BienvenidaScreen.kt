@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spin36.R
+import com.example.spin36.feature.components.rememberSoundClick
 import com.example.spin36.ui.theme.casinoAntracitaSecundario
 import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoDoradoDetalles
@@ -176,6 +177,7 @@ fun CampoIngresoNombre(
 @Composable
 fun BotonContinuar(onClick: () -> Unit) {
     val fuenteRuleta = FontFamily(Font(R.font.mileast, FontWeight.Normal))
+    val onClickSonoro = rememberSoundClick(onClick)
 
     Box(
         modifier = Modifier
@@ -196,7 +198,7 @@ fun BotonContinuar(onClick: () -> Unit) {
             .padding(2.dp)
     ) {
         Button(
-            onClick = onClick,
+            onClick = onClickSonoro,
             colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
