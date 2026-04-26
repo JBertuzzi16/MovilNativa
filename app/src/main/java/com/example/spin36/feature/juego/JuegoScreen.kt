@@ -83,17 +83,22 @@ fun JuegoScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = androidx.compose.ui.platform.LocalContext.current
 
-    //permisos en funcion del android
     val permisoLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { concedido ->
         if (concedido) viewModel.jugar()
     }
 
-    //decide si hay que pedir permiso antes de girar (solo en API <= 28)
+    val guardarDocumentLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("image/webp")
+    ) { uri ->
+        if (uri != null) viewModel.guardarCapturaEnUri(uri)
+        else viewModel.descartarCaptura()
+    }
+
     fun onGirarConPermiso() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            val permiso = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            val permiso = Manifest.permission.WRITE_EXTERNAL_STORAGE
             if (context.checkSelfPermission(permiso) != PackageManager.PERMISSION_GRANTED) {
                 permisoLauncher.launch(permiso)
                 return
@@ -127,14 +132,18 @@ fun JuegoScreen(
             viewModel.onTipoApuestaChange("par_impar")
             viewModel.onValorApuestaChange("impar")
         },
-        onSeleccionarNumeroPleno  = { numero -> viewModel.onValorApuestaChange(numero.toString()) },
-        onSeleccionarDocenaValor  = { docena -> viewModel.onValorApuestaChange(docena.toString()) },
-        onGirarClick     = { onGirarConPermiso() },
-        onHistorialClick = onHistorialClick,
-        onMenuClick      = onMenuClick,
-        onAjustesClick   = onAjustesClick,
-        onSalirClick     = onSalirClick,
-        onVolverClick    = onVolverClick
+        onSeleccionarNumeroPleno = { numero -> viewModel.onValorApuestaChange(numero.toString()) },
+        onSeleccionarDocenaValor = { docena -> viewModel.onValorApuestaChange(docena.toString()) },
+        onGirarClick             = { onGirarConPermiso() },
+        onGuardarCapturaClick    = {
+            guardarDocumentLauncher.launch("spin36_victoria_${System.currentTimeMillis()}.webp")
+        },
+        onDescartarCapturaClick  = { viewModel.descartarCaptura() },
+        onHistorialClick         = onHistorialClick,
+        onMenuClick              = onMenuClick,
+        onAjustesClick           = onAjustesClick,
+        onSalirClick             = onSalirClick,
+        onVolverClick            = onVolverClick
     )
 }
 
@@ -152,6 +161,8 @@ fun JuegoContent(
     onSeleccionarNumeroPleno: (Int) -> Unit,
     onSeleccionarDocenaValor: (Int) -> Unit,
     onGirarClick: () -> Unit,
+    onGuardarCapturaClick: () -> Unit,
+    onDescartarCapturaClick: () -> Unit,
     onHistorialClick: () -> Unit,
     onMenuClick: () -> Unit,
     onAjustesClick: () -> Unit,
@@ -275,7 +286,11 @@ fun JuegoContent(
                 }
 
                 if (uiState.resultadoRuleta != null || uiState.mensajeResultado.isNotBlank()) {
-                    ResultadoPanel(uiState = uiState)
+                    ResultadoPanel(
+                        uiState                 = uiState,
+                        onGuardarCapturaClick   = onGuardarCapturaClick,
+                        onDescartarCapturaClick = onDescartarCapturaClick
+                    )
                 }
 
                 //boton girar
@@ -401,7 +416,11 @@ fun ValorApuestaButton(texto: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun ResultadoPanel(uiState: JuegoUiState) {
+fun ResultadoPanel(
+    uiState: JuegoUiState,
+    onGuardarCapturaClick: () -> Unit,
+    onDescartarCapturaClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -422,21 +441,33 @@ fun ResultadoPanel(uiState: JuegoUiState) {
         if (uiState.mensajeResultado.isNotBlank()) {
             Text(text = uiState.mensajeResultado, color = casinoBlanco, fontFamily = fuenteRuleta, fontSize = 17.sp)
         }
-        if (uiState.capturaGuardada) {
-            Text(
-                text       = "¡Victoria guardada en tu galería!",
-                color      = casinoDoradoDetalles,
-                fontFamily = fuenteRuleta,
-                fontSize   = 16.sp
-            )
+
+        if (uiState.capturaPendiente) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "¿Guardar imagen de la victoria?", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Button(
+                    onClick = onGuardarCapturaClick,
+                    colors  = ButtonDefaults.buttonColors(containerColor = casinoDoradoDetalles),
+                    shape   = RoundedCornerShape(10.dp)
+                ) {
+                    Text(text = "Guardar", color = Color.Black, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
+                }
+                OutlinedButton(
+                    onClick = onDescartarCapturaClick,
+                    shape   = RoundedCornerShape(10.dp),
+                    border  = BorderStroke(1.dp, casinoBlanco)
+                ) {
+                    Text(text = "No guardar", color = casinoBlanco, fontFamily = fuenteRuleta)
+                }
+            }
         }
-        if (uiState.errorGaleria != null) {
-            Text(
-                text       = "${uiState.errorGaleria}",
-                color      = casinoRojoAcciones,
-                fontFamily = fuenteRuleta,
-                fontSize   = 15.sp
-            )
+
+        if (uiState.capturaGuardada) {
+            Text(text = "¡Imagen guardada correctamente!", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
+        }
+        if (uiState.errorGuardado != null) {
+            Text(text = uiState.errorGuardado, color = casinoRojoAcciones, fontFamily = fuenteRuleta, fontSize = 15.sp)
         }
     }
 }
@@ -472,6 +503,8 @@ fun PreviewJuegoContent() {
         onSeleccionarNumeroPleno = {},
         onSeleccionarDocenaValor = {},
         onGirarClick             = {},
+        onGuardarCapturaClick    = {},
+        onDescartarCapturaClick  = {},
         onHistorialClick         = {},
         onMenuClick              = {},
         onAjustesClick           = {},

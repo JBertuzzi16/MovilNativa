@@ -1,5 +1,6 @@
 package com.example.spin36.feature.juego
 
+import android.graphics.Bitmap
 
 data class JuegoUiState(
     val nombreJugador: String = "",
@@ -17,9 +18,11 @@ data class JuegoUiState(
     val mensajeResultado: String = "",
     val juegoTerminado: Boolean = false,
 
-    //bitmap
     val cargando: Boolean = false,
     val error: String? = null,
+
+    val bitmapVictoria: Bitmap? = null,
+    val capturaPendiente: Boolean = false,
     val capturaGuardada: Boolean = false,
-    val errorGaleria: String? = null
+    val errorGuardado: String? = null
 )

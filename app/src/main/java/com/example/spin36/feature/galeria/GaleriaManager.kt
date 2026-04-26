@@ -1,35 +1,30 @@
 package com.example.spin36.feature.galeria
 
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Build
-import android.provider.MediaStore
+import android.graphics.Typeface
+import android.net.Uri
+import androidx.core.content.res.ResourcesCompat
+import com.example.spin36.R
+import java.io.OutputStream
 
 class GaleriaManager(private val context: Context) {
 
-    fun guardarVictoria(
+    fun crearBitmapVictoria(
         nombreJugador: String,
         numeroGanador: Int,
-        ganancia: Int,
-        fecha: String
-    ): Boolean {
-        val bitmap = crearImagenVictoria(nombreJugador, numeroGanador, ganancia, fecha)
-        return guardarEnGaleria(bitmap, "spin36_victoria_${System.currentTimeMillis()}.png")
-    }
-    //creamos el bitmap
-    private fun crearImagenVictoria(
-        nombreJugador: String,
-        numeroGanador: Int,
-        ganancia: Int,
-        fecha: String
+        fecha: String,
+        tipoApuesta: String,
+        cantidadApostada: Int,
+        montoGanado: Int
     ): Bitmap {
-        val ancho = 800
-        val alto  = 500
-        val bmp    = Bitmap.createBitmap(ancho, alto, Bitmap.Config.ARGB_8888)
+        val ancho      = 800
+        val alto       = 620
+        val tipografia = ResourcesCompat.getFont(context, R.font.mileast) ?: Typeface.DEFAULT
+        val bmp        = Bitmap.createBitmap(ancho, alto, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bmp)
 
         val pintaFondo = Paint().apply { color = Color.parseColor("#0F5C3A") }
@@ -42,53 +37,34 @@ class GaleriaManager(private val context: Context) {
         }
         canvas.drawRect(16f, 16f, (ancho - 16).toFloat(), (alto - 16).toFloat(), pintaBorde)
 
-
-        fun texto(size: Float, color: Int, negrita: Boolean = false) = Paint().apply {
-            textSize  = size
+        fun texto(size: Float, color: Int) = Paint().apply {
+            textSize   = size
             this.color = color
-            textAlign = Paint.Align.CENTER
-            isFakeBoldText = negrita
+            textAlign  = Paint.Align.CENTER
+            typeface   = tipografia
         }
 
-        val dorado  = Color.parseColor("#C9A227")
-        val blanco  = Color.parseColor("#F5F1E8")
-        val cx      = ancho / 2f
+        val dorado = Color.parseColor("#C9A227")
+        val blanco = Color.parseColor("#F5F1E8")
+        val cx     = ancho / 2f
 
-        canvas.drawText("SPIN 36", cx, 100f, texto(90f, dorado, negrita = true))
-        canvas.drawText("¡VICTORIA!", cx, 190f, texto(54f, blanco, negrita = true))
-        canvas.drawText(nombreJugador, cx, 265f, texto(40f, blanco))
-        canvas.drawText("Número ganador: $numeroGanador", cx, 330f, texto(34f, dorado))
-        canvas.drawText("Ganancia: $ganancia monedas", cx, 385f, texto(30f, blanco))
-        canvas.drawText(fecha, cx, 460f, texto(22f, blanco))
+        canvas.drawText("SPIN 36",                          cx,  90f, texto(90f, dorado))
+        canvas.drawText("¡VICTORIA!",                       cx, 175f, texto(54f, blanco))
+        canvas.drawText(nombreJugador,                      cx, 245f, texto(40f, blanco))
+        canvas.drawText("Número ganador: $numeroGanador",   cx, 305f, texto(34f, dorado))
+        canvas.drawText("Apuesta: $tipoApuesta",            cx, 365f, texto(30f, blanco))
+        canvas.drawText("Cantidad apostada: $cantidadApostada monedas", cx, 415f, texto(30f, blanco))
+        canvas.drawText("Monto ganado: $montoGanado monedas",           cx, 465f, texto(30f, dorado))
+        canvas.drawText(fecha,                              cx, 535f, texto(22f, blanco))
 
         return bmp
     }
 
-    //lo guardamos en el dispositivo con MediaStore
-    private fun guardarEnGaleria(bitmap: Bitmap, nombre: String): Boolean {
-        val valores = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, nombre)
-            put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Spin36")
-                put(MediaStore.Images.Media.IS_PENDING, 1)
-            }
+    fun guardarBitmapEnUri(bitmap: Bitmap, uri: Uri): Boolean {
+        val stream: OutputStream = context.contentResolver.openOutputStream(uri)
+            ?: return false
+        return stream.use {
+            bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 100, it)
         }
-
-        val uri = context.contentResolver.insert(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, valores
-        ) ?: throw IllegalStateException("MediaStore no pudo crear la entrada de imagen")
-
-        context.contentResolver.openOutputStream(uri)?.use { stream ->
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        } ?: throw IllegalStateException("No se pudo abrir el stream de escritura")
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            valores.clear()
-            valores.put(MediaStore.Images.Media.IS_PENDING, 0)
-            context.contentResolver.update(uri, valores, null, null)
-        }
-
-        return true
     }
 }

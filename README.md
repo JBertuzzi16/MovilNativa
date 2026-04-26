@@ -1,6 +1,6 @@
 # SPIN36
 
-SPIN36 es una aplicación Android desarrollada en **Kotlin** con **Jetpack Compose** que simula una experiencia de ruleta de casino.  
+SPIN36 es una aplicación Android desarrollada en **Kotlin** con **Jetpack Compose** que simula una experiencia de ruleta de casino.\
 El usuario puede iniciar sesión con su nombre, acceder a un menú principal, realizar apuestas en la ruleta y consultar el historial de sesiones jugadas.
 
 ---
@@ -65,16 +65,19 @@ Esto permite una arquitectura más limpia, mantenible y fácil de escalar.
 La aplicación contiene las siguientes pantallas:
 
 1. **Bienvenida**
+
    - El usuario introduce su nombre
    - Se navega al menú principal
 
 2. **Menú**
+
    - Muestra el nombre del jugador
    - Permite acceder al juego
    - Permite acceder al historial
    - Permite volver atrás
 
 3. **Juego**
+
    - Se selecciona el tipo de apuesta
    - Se introduce la cantidad de monedas
    - Se ejecuta el giro
@@ -86,6 +89,7 @@ La aplicación contiene las siguientes pantallas:
      - Salir
 
 4. **Historial**
+
    - Lista de sesiones guardadas
    - Botón para volver atrás
 
@@ -94,21 +98,28 @@ La aplicación contiene las siguientes pantallas:
 ## Tipos de apuesta implementados
 
 ### 1. Pleno
+
 Permite apostar a un número exacto entre `0` y `36`.
 
 ### 2. Docena
+
 Permite apostar a una de las tres docenas:
+
 - 1
 - 2
 - 3
 
 ### 3. Color
+
 Permite apostar a:
+
 - rojo
 - negro
 
 ### 4. Paridad
+
 Permite apostar a:
+
 - par
 - impar
 
@@ -182,3 +193,4 @@ com.example.spin36
 │
 └── ui
     └── theme
+```
