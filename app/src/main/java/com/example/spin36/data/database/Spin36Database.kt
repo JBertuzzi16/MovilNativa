@@ -10,7 +10,7 @@ import androidx.room.Room
 import com.example.spin36.data.database.entities.SesionEntity
 
 @Database(entities = [JugadorEntity::class, PartidaEntity::class, SesionEntity::class],
-    version=2, exportSchema = false )
+    version=3, exportSchema = false )
 abstract class Spin36Database: RoomDatabase() {
     abstract fun CasinoDAO(): CasinoDAO
 

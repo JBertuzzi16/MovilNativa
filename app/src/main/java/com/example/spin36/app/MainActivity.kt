@@ -17,6 +17,7 @@ import com.example.spin36.feature.historial.HistorialViewModelFactory
 import com.example.spin36.feature.juego.JuegoViewModel
 import com.example.spin36.feature.juego.JuegoViewModelFactory
 import com.example.spin36.feature.musica.MusicaManager
+import com.example.spin36.feature.ubicacion.UbicacionManager
 import com.example.spin36.ui.theme.Spin36Theme
 
 class MainActivity : ComponentActivity() {
@@ -43,6 +44,7 @@ class MainActivity : ComponentActivity() {
                 repository         = repository,
                 galeriaManager     = GaleriaManager(applicationContext),
                 calendarioManager  = CalendarioManager(applicationContext),
+                ubicacionManager = UbicacionManager(applicationContext),
                 context            = applicationContext
             )
         )[JuegoViewModel::class.java]

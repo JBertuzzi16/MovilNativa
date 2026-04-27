@@ -1,9 +1,11 @@
 package com.example.spin36.feature.juego
 
+import android.Manifest
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.net.Uri
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spin36.R
@@ -18,6 +20,7 @@ import com.example.spin36.data.model.Jugador
 import com.example.spin36.data.model.Sesion
 import com.example.spin36.data.repository.CasinoRepository
 import com.example.spin36.feature.galeria.GaleriaManager
+import com.example.spin36.feature.ubicacion.UbicacionManager
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -32,6 +35,7 @@ class JuegoViewModel(
     private val repository: CasinoRepository,
     private val galeriaManager: GaleriaManager? = null,
     private val calendarioManager: CalendarioManager? = null,
+    private val ubicacionManager: UbicacionManager? = null,
     context: Context? = null
 ) : ViewModel() {
 
@@ -119,7 +123,8 @@ class JuegoViewModel(
         _uiState.value = _uiState.value.copy(cantidadApuesta = cantidad, error = null)
     }
 
-    fun jugar() {
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
+   fun jugar() {
         val jugador    = jugadorActual ?: run { _uiState.value = _uiState.value.copy(error = "No hay jugador cargado"); return }
         val sesionBase = sesionActual  ?: run { _uiState.value = _uiState.value.copy(error = "No hay sesión activa");  return }
 
@@ -146,7 +151,9 @@ class JuegoViewModel(
         val rachaDeEstaJugada     = if (bonusActivado) 5 else jugador.rachaDeVictorias
         val monedasGanadasTotales = premio + bonusRacha
         val juegoTerminado        = jugador.saldoActual <= 0
-
+        // Lo lento lo pasamos a una couritine
+        viewModelScope.launch(Dispatchers.IO){
+        val ubicacion = ubicacionManager?.obtenerUbicacion()
         val partida = PartidaEntity(
             sesionId       = sesionBase.sesionId,
             jugadorId      = jugador.id,
@@ -156,8 +163,11 @@ class JuegoViewModel(
             numeroGanador  = numeroGanador,
             resultado      = if (haGanado) "Ganado" else "Perdido",
             racha          = rachaDeEstaJugada,
-            monedasGanadas = monedasGanadasTotales
+            monedasGanadas = monedasGanadasTotales,
+            latitud        = ubicacion?.first,
+            longitud       = ubicacion?.second,
         )
+
 
         val sesionActualizada = sesionBase.copy(
             saldoFinal         = jugador.saldoActual,
@@ -177,6 +187,7 @@ class JuegoViewModel(
             juegoTerminado    = juegoTerminado,
             haGanado          = haGanado
         )
+        }
 
         _uiState.value = _uiState.value.copy(
             animacionActiva      = true,

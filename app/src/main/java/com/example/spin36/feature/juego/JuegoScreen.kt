@@ -118,6 +118,10 @@ fun JuegoScreen(
         ActivityResultContracts.RequestMultiplePermissions()
     ) {}
 
+    val permisoUbicacion = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { }
+
     val guardarDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("image/webp")
     ) { uri ->
@@ -148,6 +152,17 @@ fun JuegoScreen(
         if (uiState.victoriaEnCalendario){
             Toast.makeText(context, "¡Victoria guardada en el calendario!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    LaunchedEffect(Unit) {
+        val permisos = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        )
+        val faltaAlguno = permisos.any {
+            context.checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED
+        }
+        if (faltaAlguno) permisoUbicacion.launch(permisos)
     }
     JuegoContent(
         uiState                  = uiState,

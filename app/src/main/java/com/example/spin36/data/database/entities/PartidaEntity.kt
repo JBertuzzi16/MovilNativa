@@ -34,5 +34,11 @@ data class PartidaEntity(
     val racha: Int,
 
     @ColumnInfo(name = "monedasGanadas")
-    val monedasGanadas: Int
+    val monedasGanadas: Int,
+
+    @ColumnInfo (name = "latitud")
+    val latitud: Double? = null,
+
+    @ColumnInfo (name = "longitud")
+    val longitud: Double? = null,
 )
