@@ -29,5 +29,8 @@ data class JuegoUiState(
     val animacionActiva: Boolean = false,
     val numeroAnimado: Int = 0,
     val animacionFinalizada: Boolean = false,
-    val ultimaJugadaGanadora: Boolean = false
+    val ultimaJugadaGanadora: Boolean = false,
+
+    val victoriaEnCalendario: Boolean = false,
+    val errorCalendario: String? = null
 )

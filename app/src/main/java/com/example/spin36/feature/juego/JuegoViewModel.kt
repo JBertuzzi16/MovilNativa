@@ -5,7 +5,12 @@ import android.media.AudioAttributes
 import android.media.SoundPool
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.spin36.R
+import com.example.spin36.feature.calendario.CalendarioManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.example.spin36.data.database.entities.PartidaEntity
 import com.example.spin36.data.database.entities.SesionEntity
 import com.example.spin36.data.model.Apuesta
@@ -26,6 +31,7 @@ import java.util.Locale
 class JuegoViewModel(
     private val repository: CasinoRepository,
     private val galeriaManager: GaleriaManager? = null,
+    private val calendarioManager: CalendarioManager? = null,
     context: Context? = null
 ) : ViewModel() {
 
@@ -199,16 +205,25 @@ class JuegoViewModel(
             .subscribe({
                 sesionActual = sesionActualizada
 
+
                 val bitmap = if (haGanado && galeriaManager != null) {
                     galeriaManager.crearBitmapVictoria(
-                        nombreJugador    = jugador.nombre,
-                        numeroGanador    = numeroGanador,
-                        fecha            = obtenerFechaHoraActual(),
-                        tipoApuesta      = partida.tipoApuesta,
+                        nombreJugador = jugador.nombre,
+                        numeroGanador = numeroGanador,
+                        fecha = obtenerFechaHoraActual(),
+                        tipoApuesta = partida.tipoApuesta,
                         cantidadApostada = partida.montoApostado,
-                        montoGanado      = partida.monedasGanadas
+                        montoGanado = partida.monedasGanadas
                     )
                 } else null
+
+                if (haGanado) {
+                    guardarVictoriaEnCalendario(
+                        tipoApuesta   = partida.tipoApuesta,
+                        numeroGanador = numeroGanador,
+                        montoGanado   = partida.monedasGanadas
+                    )
+                }
 
                 _uiState.value = _uiState.value.copy(
                     saldoActual      = jugador.saldoActual,
@@ -223,7 +238,9 @@ class JuegoViewModel(
                     capturaGuardada  = false,
                     errorGuardado    = null,
                     cargando         = false,
-                    error            = null
+                    error            = null,
+                    victoriaEnCalendario = false,
+                    errorCalendario = null,
                 )
             }, { error ->
                 _uiState.value = _uiState.value.copy(
@@ -277,6 +294,31 @@ class JuegoViewModel(
             capturaGuardada  = false,
             errorGuardado    = null
         )
+    }
+
+    fun guardarVictoriaEnCalendario(tipoApuesta: String, numeroGanador: Int, montoGanado: Int) {
+        val manager = calendarioManager ?: return
+        val jugador = jugadorActual ?: return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val exito = try {
+                manager.guardarVictoriaEnCalendario(
+                    nombreJugador = jugador.nombre,
+                    tipoApuesta   = tipoApuesta,
+                    numeroGanador = numeroGanador,
+                    montoGanado   = montoGanado,
+                    fechaMillis   = System.currentTimeMillis()
+                )
+            } catch (e: Exception) {
+                false
+            }
+            withContext(Dispatchers.Main) {
+                _uiState.value = _uiState.value.copy(
+                    victoriaEnCalendario = exito,
+                    errorCalendario = if (exito) null else "No se pudo guardar en el calendario"
+                )
+            }
+        }
     }
 
     fun cerrarSesionActual(onSesionCerrada: () -> Unit) {

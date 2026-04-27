@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -113,6 +114,10 @@ fun JuegoScreen(
         ActivityResultContracts.RequestPermission()
     ) { concedido -> if (concedido) viewModel.jugar() }
 
+    val permisoCalendario = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) {}
+
     val guardarDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("image/webp")
     ) { uri ->
@@ -129,6 +134,21 @@ fun JuegoScreen(
         viewModel.jugar()
     }
 
+    LaunchedEffect(Unit) {
+        val permisos = arrayOf(
+            Manifest.permission.READ_CALENDAR,
+            Manifest.permission.WRITE_CALENDAR
+        )
+        val faltaAlguno = permisos.any {
+            context.checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED
+        }
+        if (faltaAlguno) permisoCalendario.launch(permisos)
+    }
+    LaunchedEffect(uiState.victoriaEnCalendario) {
+        if (uiState.victoriaEnCalendario){
+            Toast.makeText(context, "¡Victoria guardada en el calendario!", Toast.LENGTH_SHORT).show()
+        }
+    }
     JuegoContent(
         uiState                  = uiState,
         onCantidadApuestaChange  = { if (it.all { c -> c.isDigit() }) viewModel.onCantidadApuestaChange(it) },

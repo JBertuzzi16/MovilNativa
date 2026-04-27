@@ -8,7 +8,7 @@ class Sesion {
 
         fun girar(): Int {
             return (0..36).random()
-            //return 14 Lo comento para las pruebas de racha de victoria
+
         }
     }
 }
