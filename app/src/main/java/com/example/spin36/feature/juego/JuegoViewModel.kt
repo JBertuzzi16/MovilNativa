@@ -1,7 +1,11 @@
 package com.example.spin36.feature.juego
 
+import android.content.Context
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.example.spin36.R
 import com.example.spin36.data.database.entities.PartidaEntity
 import com.example.spin36.data.database.entities.SesionEntity
 import com.example.spin36.data.model.Apuesta
@@ -21,7 +25,8 @@ import java.util.Locale
 
 class JuegoViewModel(
     private val repository: CasinoRepository,
-    private val galeriaManager: GaleriaManager? = null
+    private val galeriaManager: GaleriaManager? = null,
+    context: Context? = null
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
@@ -31,6 +36,18 @@ class JuegoViewModel(
 
     private var jugadorActual: Jugador? = null
     private var sesionActual: SesionEntity? = null
+
+    private val soundPool: SoundPool? = context?.let {
+        SoundPool.Builder()
+            .setMaxStreams(1)
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build()
+            ).build()
+    }
+    private val soundCapturaId: Int = context?.let { soundPool?.load(it, R.raw.captura_sound, 1) } ?: 0
 
     fun cargarJugador(nombreRecibido: String) {
         if (jugadorActual?.nombre == nombreRecibido) return
@@ -59,20 +76,20 @@ class JuegoViewModel(
                 jugadorActual = jugador
                 sesionActual  = sesionCreada
                 _uiState.value = _uiState.value.copy(
-                    nombreJugador   = jugador.nombre,
-                    saldoActual     = jugador.saldoActual,
-                    rachaActual     = jugador.rachaDeVictorias,
-                    resultadoRuleta = null,
-                    ganancia        = 0,
-                    bonusRacha      = 0,
+                    nombreJugador    = jugador.nombre,
+                    saldoActual      = jugador.saldoActual,
+                    rachaActual      = jugador.rachaDeVictorias,
+                    resultadoRuleta  = null,
+                    ganancia         = 0,
+                    bonusRacha       = 0,
                     mensajeResultado = "",
-                    juegoTerminado  = false,
-                    bitmapVictoria  = null,
+                    juegoTerminado   = false,
+                    bitmapVictoria   = null,
                     capturaPendiente = false,
-                    capturaGuardada = false,
-                    errorGuardado   = null,
-                    cargando        = false,
-                    error           = null
+                    capturaGuardada  = false,
+                    errorGuardado    = null,
+                    cargando         = false,
+                    error            = null
                 )
             }, { error ->
                 _uiState.value = _uiState.value.copy(
@@ -103,36 +120,36 @@ class JuegoViewModel(
         val state    = _uiState.value
         val cantidad = state.cantidadApuesta.toIntOrNull()
 
-        if (state.tipoApuesta.isBlank())          { _uiState.value = state.copy(error = "Selecciona un tipo de apuesta");       return }
-        if (state.valorApuesta.isBlank())          { _uiState.value = state.copy(error = "Introduce un valor de apuesta");      return }
-        if (cantidad == null || cantidad <= 0)     { _uiState.value = state.copy(error = "La cantidad apostada no es válida");  return }
-        if (!jugador.tieneSaldoSuficiente(cantidad)) { _uiState.value = state.copy(error = "No tienes saldo suficiente");       return }
+        if (state.tipoApuesta.isBlank())             { _uiState.value = state.copy(error = "Selecciona un tipo de apuesta");      return }
+        if (state.valorApuesta.isBlank())             { _uiState.value = state.copy(error = "Introduce un valor de apuesta");     return }
+        if (cantidad == null || cantidad <= 0)        { _uiState.value = state.copy(error = "La cantidad apostada no es válida"); return }
+        if (!jugador.tieneSaldoSuficiente(cantidad))  { _uiState.value = state.copy(error = "No tienes saldo suficiente");        return }
 
         val apuesta = crearApuesta(state.tipoApuesta, state.valorApuesta, cantidad)
             ?: run { _uiState.value = state.copy(error = "Datos de apuesta no válidos"); return }
 
         jugador.actualizarSaldo(-cantidad)
 
-        val numeroGanador        = Sesion.girar()
-        val premio               = apuesta.calcularPremio(numeroGanador)
-        val haGanado             = premio > 0
+        val numeroGanador         = Sesion.girar()
+        val premio                = apuesta.calcularPremio(numeroGanador)
+        val haGanado              = premio > 0
         if (haGanado) jugador.actualizarSaldo(premio)
 
-        val bonusActivado        = jugador.gestionRacha(haGanado)
-        val bonusRacha           = if (bonusActivado) 100 else 0
-        val rachaDeEstaJugada    = if (bonusActivado) 5 else jugador.rachaDeVictorias
+        val bonusActivado         = jugador.gestionRacha(haGanado)
+        val bonusRacha            = if (bonusActivado) 100 else 0
+        val rachaDeEstaJugada     = if (bonusActivado) 5 else jugador.rachaDeVictorias
         val monedasGanadasTotales = premio + bonusRacha
-        val juegoTerminado       = jugador.saldoActual <= 0
+        val juegoTerminado        = jugador.saldoActual <= 0
 
         val partida = PartidaEntity(
-            sesionId      = sesionBase.sesionId,
-            jugadorId     = jugador.id,
-            fechaHora     = obtenerFechaHoraActual(),
-            tipoApuesta   = construirDescripcionApuesta(state.tipoApuesta, state.valorApuesta),
-            montoApostado = cantidad,
-            numeroGanador = numeroGanador,
-            resultado     = if (haGanado) "Ganado" else "Perdido",
-            racha         = rachaDeEstaJugada,
+            sesionId       = sesionBase.sesionId,
+            jugadorId      = jugador.id,
+            fechaHora      = obtenerFechaHoraActual(),
+            tipoApuesta    = construirDescripcionApuesta(state.tipoApuesta, state.valorApuesta),
+            montoApostado  = cantidad,
+            numeroGanador  = numeroGanador,
+            resultado      = if (haGanado) "Ganado" else "Perdido",
+            racha          = rachaDeEstaJugada,
             monedasGanadas = monedasGanadasTotales
         )
 
@@ -156,10 +173,10 @@ class JuegoViewModel(
         )
 
         _uiState.value = _uiState.value.copy(
-            animacionActiva       = true,
-            animacionFinalizada   = false,
-            numeroAnimado         = numeroGanador,
-            ultimaJugadaGanadora  = haGanado
+            animacionActiva      = true,
+            animacionFinalizada  = false,
+            numeroAnimado        = numeroGanador,
+            ultimaJugadaGanadora = haGanado
         )
     }
 
@@ -230,13 +247,14 @@ class JuegoViewModel(
     }
 
     fun guardarCapturaEnUri(uri: Uri) {
-        val bitmap = _uiState.value.bitmapVictoria ?: return
+        val bitmap  = _uiState.value.bitmapVictoria ?: return
         val manager = galeriaManager ?: return
 
         val disposable = Completable.fromCallable { manager.guardarBitmapEnUri(bitmap, uri) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                if (soundCapturaId != 0) soundPool?.play(soundCapturaId, 1f, 1f, 1, 0, 1f)
                 _uiState.value = _uiState.value.copy(
                     capturaPendiente = false,
                     capturaGuardada  = true,
@@ -326,6 +344,7 @@ class JuegoViewModel(
         SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
 
     override fun onCleared() {
+        soundPool?.release()
         disposables.clear()
         super.onCleared()
     }

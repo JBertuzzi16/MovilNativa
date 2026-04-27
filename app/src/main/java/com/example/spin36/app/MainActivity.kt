@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
         //viewmodels
         val juegoViewModel = ViewModelProvider(
-            this, JuegoViewModelFactory(repository, GaleriaManager(applicationContext))
+            this, JuegoViewModelFactory(repository, GaleriaManager(applicationContext), applicationContext)
         )[JuegoViewModel::class.java]
 
         val historialViewModel = ViewModelProvider(
