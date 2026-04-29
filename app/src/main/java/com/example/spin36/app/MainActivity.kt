@@ -16,6 +16,7 @@ import com.example.spin36.feature.historial.HistorialViewModel
 import com.example.spin36.feature.historial.HistorialViewModelFactory
 import com.example.spin36.feature.juego.JuegoViewModel
 import com.example.spin36.feature.juego.JuegoViewModelFactory
+import com.example.spin36.feature.components.ButtonSoundPool
 import com.example.spin36.feature.musica.MusicaManager
 import com.example.spin36.feature.ubicacion.UbicacionManager
 import com.example.spin36.ui.theme.Spin36Theme
@@ -32,6 +33,9 @@ class MainActivity : ComponentActivity() {
         val database   = Spin36Database.getDatabase(applicationContext)
         val dao        = database.CasinoDAO()
         val repository = CasinoRepository(dao)
+
+        //sonidos de botones
+        ButtonSoundPool.init(applicationContext)
 
         //musica
         ajustesPreferences = AjustesPreferences(applicationContext)
@@ -87,6 +91,7 @@ class MainActivity : ComponentActivity() {
     //librea mediaplayer al cerrar la app
     override fun onDestroy() {
         musicaManager.detener()
+        ButtonSoundPool.release()
         super.onDestroy()
     }
 

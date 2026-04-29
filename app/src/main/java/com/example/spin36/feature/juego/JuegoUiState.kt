@@ -32,5 +32,6 @@ data class JuegoUiState(
     val ultimaJugadaGanadora: Boolean = false,
 
     val victoriaEnCalendario: Boolean = false,
+    val victoriaCalendarioPendiente: Boolean = false,
     val errorCalendario: String? = null
 )

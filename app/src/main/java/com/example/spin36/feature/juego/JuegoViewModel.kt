@@ -46,6 +46,9 @@ class JuegoViewModel(
 
     private var jugadorActual: Jugador? = null
     private var sesionActual: SesionEntity? = null
+    private var pendienteTipoApuesta: String? = null
+    private var pendienteNumeroGanador: Int? = null
+    private var pendienteMontoGanado: Int? = null
 
     private val soundPool: SoundPool? = context?.let {
         SoundPool.Builder()
@@ -229,11 +232,9 @@ class JuegoViewModel(
                 } else null
 
                 if (haGanado) {
-                    guardarVictoriaEnCalendario(
-                        tipoApuesta   = partida.tipoApuesta,
-                        numeroGanador = numeroGanador,
-                        montoGanado   = partida.monedasGanadas
-                    )
+                    pendienteTipoApuesta   = partida.tipoApuesta
+                    pendienteNumeroGanador = numeroGanador
+                    pendienteMontoGanado   = partida.monedasGanadas
                 }
 
                 _uiState.value = _uiState.value.copy(
@@ -250,6 +251,7 @@ class JuegoViewModel(
                     errorGuardado    = null,
                     cargando         = false,
                     error            = null,
+                    victoriaCalendarioPendiente = haGanado,
                     victoriaEnCalendario = false,
                     errorCalendario = null,
                 )
@@ -330,6 +332,18 @@ class JuegoViewModel(
                 )
             }
         }
+    }
+
+    fun confirmarGuardadoEnCalendario() {
+        val tipo   = pendienteTipoApuesta   ?: return
+        val numero = pendienteNumeroGanador ?: return
+        val monto  = pendienteMontoGanado   ?: return
+        guardarVictoriaEnCalendario(tipo, numero, monto)
+        _uiState.value = _uiState.value.copy(victoriaCalendarioPendiente = false)
+    }
+
+    fun rechazarGuardadoEnCalendario() {
+        _uiState.value = _uiState.value.copy(victoriaCalendarioPendiente = false)
     }
 
     fun cerrarSesionActual(onSesionCerrada: () -> Unit) {

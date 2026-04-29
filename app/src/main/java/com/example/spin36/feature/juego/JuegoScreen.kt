@@ -178,6 +178,8 @@ fun JuegoScreen(
         onGirarClick             = { onGirarConPermiso() },
         onGuardarCapturaClick    = { guardarDocumentLauncher.launch("spin36_victoria_${System.currentTimeMillis()}.webp") },
         onDescartarCapturaClick  = { viewModel.descartarCaptura() },
+        onConfirmarCalendario    = { viewModel.confirmarGuardadoEnCalendario() },
+        onRechazarCalendario     = { viewModel.rechazarGuardadoEnCalendario() },
         onAnimacionFinalizada    = { viewModel.marcarAnimacionFinalizada() },
         onCerrarAnimacion        = { viewModel.cerrarAnimacion() },
         onHistorialClick         = onHistorialClick,
@@ -205,6 +207,8 @@ fun JuegoContent(
     onGirarClick: () -> Unit,
     onGuardarCapturaClick: () -> Unit,
     onDescartarCapturaClick: () -> Unit,
+    onConfirmarCalendario: () -> Unit,
+    onRechazarCalendario: () -> Unit,
     onAnimacionFinalizada: () -> Unit,
     onCerrarAnimacion: () -> Unit,
     onHistorialClick: () -> Unit,
@@ -305,7 +309,7 @@ fun JuegoContent(
                         Text(text = uiState.error, color = casinoRojoAcciones, fontFamily = fuenteRuleta, fontSize = 18.sp)
                     }
                     if (uiState.resultadoRuleta != null || uiState.mensajeResultado.isNotBlank()) {
-                        ResultadoPanel(uiState, onGuardarCapturaClick, onDescartarCapturaClick)
+                        ResultadoPanel(uiState, onGuardarCapturaClick, onDescartarCapturaClick, onConfirmarCalendario, onRechazarCalendario)
                     }
 
                     Box(
@@ -544,7 +548,12 @@ fun ValorApuestaButton(texto: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun ResultadoPanel(uiState: JuegoUiState, onGuardarCapturaClick: () -> Unit, onDescartarCapturaClick: () -> Unit) {
+fun ResultadoPanel(uiState: JuegoUiState, onGuardarCapturaClick: () -> Unit, onDescartarCapturaClick: () -> Unit, onConfirmarCalendario: () -> Unit, onRechazarCalendario: () -> Unit) {
+    val sonoroGuardarCaptura      = rememberSoundClick(onGuardarCapturaClick)
+    val sonoroDescartarCaptura    = rememberSoundClick(onDescartarCapturaClick)
+    val sonoroConfirmarCalendario = rememberSoundClick(onConfirmarCalendario)
+    val sonoroRechazarCalendario  = rememberSoundClick(onRechazarCalendario)
+
     Column(
         modifier = Modifier.fillMaxWidth().background(color = casinoBlanco.copy(alpha = 0.14f), shape = RoundedCornerShape(16.dp)).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -559,16 +568,31 @@ fun ResultadoPanel(uiState: JuegoUiState, onGuardarCapturaClick: () -> Unit, onD
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "¿Guardar imagen de la victoria?", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Button(onClick = rememberSoundClick(onGuardarCapturaClick), colors = ButtonDefaults.buttonColors(containerColor = casinoDoradoDetalles), shape = RoundedCornerShape(10.dp)) {
+                Button(onClick = sonoroGuardarCaptura, colors = ButtonDefaults.buttonColors(containerColor = casinoDoradoDetalles), shape = RoundedCornerShape(10.dp)) {
                     Text(text = "Guardar", color = Color.Black, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
                 }
-                OutlinedButton(onClick = rememberSoundClick(onDescartarCapturaClick), shape = RoundedCornerShape(10.dp), border = BorderStroke(1.dp, casinoBlanco)) {
+                OutlinedButton(onClick = sonoroDescartarCaptura, shape = RoundedCornerShape(10.dp), border = BorderStroke(1.dp, casinoBlanco)) {
                     Text(text = "No guardar", color = casinoBlanco, fontFamily = fuenteRuleta)
                 }
             }
         }
         if (uiState.capturaGuardada) Text(text = "¡Imagen guardada correctamente!", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
         if (uiState.errorGuardado != null) Text(text = uiState.errorGuardado, color = casinoRojoAcciones, fontFamily = fuenteRuleta, fontSize = 15.sp)
+
+        if (uiState.victoriaCalendarioPendiente) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "¿Guardar victoria en el calendario?", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Button(onClick = sonoroConfirmarCalendario, colors = ButtonDefaults.buttonColors(containerColor = casinoDoradoDetalles), shape = RoundedCornerShape(10.dp)) {
+                    Text(text = "Guardar", color = Color.Black, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
+                }
+                OutlinedButton(onClick = sonoroRechazarCalendario, shape = RoundedCornerShape(10.dp), border = BorderStroke(1.dp, casinoBlanco)) {
+                    Text(text = "No guardar", color = casinoBlanco, fontFamily = fuenteRuleta)
+                }
+            }
+        }
+        if (uiState.victoriaEnCalendario) Text(text = "¡Victoria guardada en el calendario!", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
+        if (uiState.errorCalendario != null) Text(text = uiState.errorCalendario, color = casinoRojoAcciones, fontFamily = fuenteRuleta, fontSize = 15.sp)
     }
 }
 
@@ -584,7 +608,7 @@ fun PreviewJuegoContent() {
         uiState = JuegoUiState(nombreJugador = "Carlos", saldoActual = 120, rachaActual = 2, tipoApuesta = "pleno", valorApuesta = "17", cantidadApuesta = "10", resultadoRuleta = 17, ganancia = 350, bonusRacha = 0, mensajeResultado = "Salió el 17. Has ganado 350 monedas."),
         onCantidadApuestaChange = {}, onSeleccionarPleno = {}, onSeleccionarDocena = {}, onSeleccionarRojo = {}, onSeleccionarNegro = {},
         onSeleccionarPar = {}, onSeleccionarImpar = {}, onSeleccionarNumeroPleno = {}, onSeleccionarDocenaValor = {},
-        onGirarClick = {}, onGuardarCapturaClick = {}, onDescartarCapturaClick = {}, onAnimacionFinalizada = {}, onCerrarAnimacion = {},
+        onGirarClick = {}, onGuardarCapturaClick = {}, onDescartarCapturaClick = {}, onConfirmarCalendario = {}, onRechazarCalendario = {}, onAnimacionFinalizada = {}, onCerrarAnimacion = {},
         onHistorialClick = {}, onMenuClick = {}, onAjustesClick = {}, onAyudaClick = {}, onSalirClick = {}, onVolverClick = {}
     )
 }
