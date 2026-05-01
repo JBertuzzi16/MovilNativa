@@ -18,13 +18,22 @@ import com.example.spin36.feature.juego.JuegoViewModel
 import com.example.spin36.feature.juego.JuegoViewModelFactory
 import com.example.spin36.feature.components.ButtonSoundPool
 import com.example.spin36.feature.musica.MusicaManager
+import com.example.spin36.feature.notificacion.NotificacionHelper
 import com.example.spin36.feature.ubicacion.UbicacionManager
 import com.example.spin36.ui.theme.Spin36Theme
+import android.Manifest
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var musicaManager: MusicaManager
     private lateinit var ajustesPreferences: AjustesPreferences
+
+    private val pedirPermisoNotificacion = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ){ }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +69,12 @@ class MainActivity : ComponentActivity() {
         val ajustesViewModel = ViewModelProvider(
             this, AjustesViewModelFactory(ajustesPreferences, musicaManager)
         )[AjustesViewModel::class.java]
+
+        // notifiaciones
+        NotificacionHelper.crearCanal(applicationContext)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            pedirPermisoNotificacion.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
 
         setContent {
             Spin36Theme {
@@ -115,4 +130,6 @@ class MainActivity : ComponentActivity() {
             musicaManager.reproducirOficial()
         }
     }
+
+
 }

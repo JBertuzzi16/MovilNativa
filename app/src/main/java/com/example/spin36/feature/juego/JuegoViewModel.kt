@@ -20,6 +20,7 @@ import com.example.spin36.data.model.Jugador
 import com.example.spin36.data.model.Sesion
 import com.example.spin36.data.repository.CasinoRepository
 import com.example.spin36.feature.galeria.GaleriaManager
+import com.example.spin36.feature.notificacion.NotificacionHelper
 import com.example.spin36.feature.ubicacion.UbicacionManager
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 
 class JuegoViewModel(
     private val repository: CasinoRepository,
@@ -50,6 +52,8 @@ class JuegoViewModel(
     private var pendienteNumeroGanador: Int? = null
     private var pendienteMontoGanado: Int? = null
 
+    private var tiempoInicioJugada: Long = 0
+
     private val soundPool: SoundPool? = context?.let {
         SoundPool.Builder()
             .setMaxStreams(1)
@@ -62,6 +66,7 @@ class JuegoViewModel(
     }
     private val soundCapturaId: Int = context?.let { soundPool?.load(it, R.raw.captura_sound, 1) } ?: 0
 
+    private val notificacionHelper : NotificacionHelper? = context?.let { NotificacionHelper(it) }
     fun cargarJugador(nombreRecibido: String) {
         if (jugadorActual?.nombre == nombreRecibido) return
 
@@ -138,6 +143,8 @@ class JuegoViewModel(
         if (state.valorApuesta.isBlank())             { _uiState.value = state.copy(error = "Introduce un valor de apuesta");     return }
         if (cantidad == null || cantidad <= 0)        { _uiState.value = state.copy(error = "La cantidad apostada no es válida"); return }
         if (!jugador.tieneSaldoSuficiente(cantidad))  { _uiState.value = state.copy(error = "No tienes saldo suficiente");        return }
+
+        tiempoInicioJugada = System.currentTimeMillis()
 
         val apuesta = crearApuesta(state.tipoApuesta, state.valorApuesta, cantidad)
             ?: run { _uiState.value = state.copy(error = "Datos de apuesta no válidos"); return }
@@ -235,6 +242,8 @@ class JuegoViewModel(
                     pendienteTipoApuesta   = partida.tipoApuesta
                     pendienteNumeroGanador = numeroGanador
                     pendienteMontoGanado   = partida.monedasGanadas
+                    val tiempoResolucion = System.currentTimeMillis() - tiempoInicioJugada
+                    notificacionHelper?.mostrarNotificacionVictoria(tiempoResolucion)
                 }
 
                 _uiState.value = _uiState.value.copy(
