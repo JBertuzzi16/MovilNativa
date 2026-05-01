@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Spin36</string>
+
+    <!-- Benvinguda -->
+    <string name="bienvenida_placeholder">Introdueix el teu nom…</string>
+    <string name="bienvenida_continuar">CONTINUAR</string>
+
+    <!-- Menú -->
+    <string name="menu_titulo">MENÚ</string>
+    <string name="menu_apostar">APOSTAR</string>
+    <string name="menu_historial">HISTORIAL</string>
+    <string name="menu_atras">Enrere</string>
+
+    <!-- TopBar / navegació -->
+    <string name="nav_menu">Menú</string>
+    <string name="nav_juego">Joc / Aposta</string>
+    <string name="nav_historial">Historial</string>
+    <string name="nav_ajustes">Ajustos</string>
+    <string name="nav_ayuda">Ajuda</string>
+    <string name="nav_salir">Sortir</string>
+    <string name="nav_confirmar_salida">Confirmar sortida</string>
+    <string name="nav_confirmar_salida_texto">Segur que vols sortir de l\'app?</string>
+    <string name="nav_si">Sí</string>
+    <string name="nav_no">No</string>
+
+    <!-- Joc -->
+    <string name="juego_titulo">JOC</string>
+    <string name="juego_jugador">Jugador</string>
+    <string name="juego_saldo">Saldo</string>
+    <string name="juego_racha">Ratxa</string>
+    <string name="juego_placeholder_apuesta">Introdueix l\'aposta…</string>
+    <string name="juego_tipo_apuesta">TIPUS D\'APOSTA</string>
+    <string name="juego_pleno">PLE x36</string>
+    <string name="juego_docena">DOTZENA x3</string>
+    <string name="juego_rojo">VERMELL x2</string>
+    <string name="juego_negro">NEGRE x2</string>
+    <string name="juego_par">PARELL x2</string>
+    <string name="juego_impar">SENAR x2</string>
+    <string name="juego_elige_numero">Tria número</string>
+    <string name="juego_elige_docena">Tria dotzena</string>
+    <string name="juego_docena_n">Dotzena %d</string>
+    <string name="juego_girar">GIRAR</string>
+    <string name="juego_atras">Enrere</string>
+    <string name="juego_terminado_titulo">Joc acabat</string>
+    <string name="juego_terminado_texto">T\'has quedat sense saldo. Què vols fer?</string>
+    <string name="juego_volver_menu">Tornar al menú</string>
+    <string name="juego_salir">Sortir</string>
+
+    <!-- Resultat -->
+    <string name="resultado_titulo">Resultat</string>
+    <string name="resultado_numero_ganador">Número guanyador: %d</string>
+    <string name="resultado_ganancia">Guany total: %d</string>
+    <string name="resultado_bonus">Bonus ratxa: +%d</string>
+    <string name="resultado_guardar_pregunta">Vols desar la imatge de la victòria?</string>
+    <string name="resultado_guardar">Desar</string>
+    <string name="resultado_no_guardar">No desar</string>
+    <string name="resultado_guardada">Imatge desada correctament!</string>
+
+    <!-- Bitmap victòria -->
+    <string name="bitmap_victoria">VICTÒRIA!</string>
+    <string name="bitmap_numero_ganador">Número guanyador: %d</string>
+    <string name="bitmap_apuesta">Aposta: %s</string>
+    <string name="bitmap_cantidad">Quantitat apostada: %d monedes</string>
+    <string name="bitmap_monto">Import guanyat: %d monedes</string>
+
+    <!-- Missatge resultat -->
+    <string name="msg_ganado_bonus">Ha sortit el %1$d. Has guanyat %2$d monedes i bonus de ratxa +%3$d.</string>
+    <string name="msg_ganado">Ha sortit el %1$d. Has guanyat %2$d monedes.</string>
+    <string name="msg_perdido">Ha sortit el %1$d. Has perdut l\'aposta.</string>
+
+    <!-- Animació -->
+    <string name="animacion_resultado">Resultat</string>
+    <string name="animacion_toque">Toca per continuar</string>
+
+    <!-- Historial -->
+    <string name="historial_titulo">HISTORIAL</string>
+    <string name="historial_vacio">Encara no hi ha sessions desades.</string>
+    <string name="historial_atras">Enrere</string>
+    <string name="historial_sesion_inicio">Inici: %s h.</string>
+    <string name="historial_sesion_saldo">Saldo final: %d monedes</string>
+    <string name="historial_sesion_racha">Ratxa màxima: %d</string>
+    <string name="historial_sesion_apuestas">Apostes realitzades: %d</string>
+
+    <!-- Ajustos -->
+    <string name="ajustes_titulo">AJUSTOS</string>
+    <string name="ajustes_musica_titulo">MÚSICA</string>
+    <string name="ajustes_musica_fondo">Música de fons</string>
+    <string name="ajustes_pista_activa">Pista activa: %s</string>
+    <string name="ajustes_cancion_personalizada">Cançó personalitzada</string>
+    <string name="ajustes_melodia_oficial">Melodia oficial del joc</string>
+    <string name="ajustes_volumen">Volum</string>
+    <string name="ajustes_elegir_dispositivo">TRIAR DEL DISPOSITIU</string>
+    <string name="ajustes_usar_oficial">USAR MELODIA OFICIAL</string>
+    <string name="ajustes_atras">Enrere</string>
+
+    <!-- Idioma -->
+    <string name="ajustes_idioma_titulo">IDIOMA</string>
+    <string name="ajustes_idioma_es">Castellà</string>
+    <string name="ajustes_idioma_en">Anglès</string>
+    <string name="ajustes_idioma_ca">Català</string>
+    <string name="ajustes_idioma_eu">Èuscar</string>
+
+    <!-- Calendari -->
+    <string name="calendario_guardar_pregunta">Vols desar la victòria al calendari?</string>
+    <string name="calendario_guardar">Desar</string>
+    <string name="calendario_no_guardar">No desar</string>
+    <string name="calendario_guardada">Victòria desada al calendari!</string>
+    <string name="calendario_error">No s\'ha pogut desar al calendari</string>
+
+    <!-- Ajuda -->
+    <string name="ayuda_titulo">AJUDA</string>
+</resources>

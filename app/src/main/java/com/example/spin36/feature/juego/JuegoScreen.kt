@@ -72,6 +72,7 @@ import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -223,7 +224,7 @@ fun JuegoContent(
             containerColor = casinoVerde,
             topBar = {
                 Spin36TopBar(
-                    titulo            = "JUEGO",
+                    titulo            = stringResource(R.string.juego_titulo),
                     pantallaActual    = PantallaActual.JUEGO,
                     onIrMenu          = onMenuClick,
                     onIrJuego         = {},
@@ -243,15 +244,15 @@ fun JuegoContent(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        ResumenJuegoItem(titulo = "Jugador", valor = uiState.nombreJugador, modifier = Modifier.weight(1f))
-                        ResumenJuegoItem(titulo = "Saldo",   valor = "${uiState.saldoActual}", modifier = Modifier.weight(1f))
-                        ResumenJuegoItem(titulo = "Racha",   valor = "${uiState.rachaActual}", modifier = Modifier.weight(1f))
+                        ResumenJuegoItem(titulo = stringResource(R.string.juego_jugador), valor = uiState.nombreJugador, modifier = Modifier.weight(1f))
+                        ResumenJuegoItem(titulo = stringResource(R.string.juego_saldo),   valor = "${uiState.saldoActual}", modifier = Modifier.weight(1f))
+                        ResumenJuegoItem(titulo = stringResource(R.string.juego_racha),   valor = "${uiState.rachaActual}", modifier = Modifier.weight(1f))
                     }
 
                     OutlinedTextField(
                         value           = uiState.cantidadApuesta,
                         onValueChange   = onCantidadApuestaChange,
-                        placeholder     = { Text(text = "Ingresa la apuesta...", fontFamily = fuenteRuleta, color = Color.Gray) },
+                        placeholder     = { Text(text = stringResource(R.string.juego_placeholder_apuesta), fontFamily = fuenteRuleta, color = Color.Gray) },
                         singleLine      = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -266,22 +267,22 @@ fun JuegoContent(
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Text(text = "TIPO DE APUESTA", fontFamily = fuenteRuleta, fontSize = 22.sp, color = casinoBlanco)
+                    Text(text = stringResource(R.string.juego_tipo_apuesta), fontFamily = fuenteRuleta, fontSize = 22.sp, color = casinoBlanco)
 
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        TipoApuestaButton("PLENO x36", uiState.tipoApuesta == "pleno", onSeleccionarPleno, Modifier.weight(1f))
-                        TipoApuestaButton("DOCENA x3", uiState.tipoApuesta == "docena", onSeleccionarDocena, Modifier.weight(1f))
-                        TipoApuestaButton("ROJO x2",   uiState.tipoApuesta == "color" && uiState.valorApuesta == "rojo", onSeleccionarRojo, Modifier.weight(1f))
+                        TipoApuestaButton(stringResource(R.string.juego_pleno),  uiState.tipoApuesta == "pleno", onSeleccionarPleno, Modifier.weight(1f))
+                        TipoApuestaButton(stringResource(R.string.juego_docena), uiState.tipoApuesta == "docena", onSeleccionarDocena, Modifier.weight(1f))
+                        TipoApuestaButton(stringResource(R.string.juego_rojo),   uiState.tipoApuesta == "color" && uiState.valorApuesta == "rojo", onSeleccionarRojo, Modifier.weight(1f))
                     }
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        TipoApuestaButton("NEGRO x2",  uiState.tipoApuesta == "color" && uiState.valorApuesta == "negro", onSeleccionarNegro, Modifier.weight(1f))
-                        TipoApuestaButton("PAR x2",    uiState.tipoApuesta == "par_impar" && uiState.valorApuesta == "par", onSeleccionarPar, Modifier.weight(1f))
-                        TipoApuestaButton("IMPAR x2",  uiState.tipoApuesta == "par_impar" && uiState.valorApuesta == "impar", onSeleccionarImpar, Modifier.weight(1f))
+                        TipoApuestaButton(stringResource(R.string.juego_negro),  uiState.tipoApuesta == "color" && uiState.valorApuesta == "negro", onSeleccionarNegro, Modifier.weight(1f))
+                        TipoApuestaButton(stringResource(R.string.juego_par),    uiState.tipoApuesta == "par_impar" && uiState.valorApuesta == "par", onSeleccionarPar, Modifier.weight(1f))
+                        TipoApuestaButton(stringResource(R.string.juego_impar),  uiState.tipoApuesta == "par_impar" && uiState.valorApuesta == "impar", onSeleccionarImpar, Modifier.weight(1f))
                     }
 
                     when (uiState.tipoApuesta) {
                         "pleno" -> {
-                            Text(text = "Elige número", fontFamily = fuenteRuleta, fontSize = 20.sp, color = casinoBlanco)
+                            Text(text = stringResource(R.string.juego_elige_numero), fontFamily = fuenteRuleta, fontSize = 20.sp, color = casinoBlanco)
                             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 items((0..36).toList()) { numero ->
                                     ValorApuestaButton(numero.toString(), uiState.valorApuesta == numero.toString()) { onSeleccionarNumeroPleno(numero) }
@@ -289,10 +290,10 @@ fun JuegoContent(
                             }
                         }
                         "docena" -> {
-                            Text(text = "Elige docena", fontFamily = fuenteRuleta, fontSize = 20.sp, color = casinoBlanco)
+                            Text(text = stringResource(R.string.juego_elige_docena), fontFamily = fuenteRuleta, fontSize = 20.sp, color = casinoBlanco)
                             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 items(listOf(1, 2, 3)) { docena ->
-                                    ValorApuestaButton("Docena $docena", uiState.valorApuesta == docena.toString()) { onSeleccionarDocenaValor(docena) }
+                                    ValorApuestaButton(stringResource(R.string.juego_docena_n, docena), uiState.valorApuesta == docena.toString()) { onSeleccionarDocenaValor(docena) }
                                 }
                             }
                         }
@@ -325,7 +326,7 @@ fun JuegoContent(
                             shape    = RoundedCornerShape(16.dp),
                             modifier = Modifier.fillMaxWidth().height(58.dp)
                         ) {
-                            Text(text = "GIRAR", color = casinoBlanco, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold, fontSize = 25.sp)
+                            Text(text = stringResource(R.string.juego_girar), color = casinoBlanco, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold, fontSize = 25.sp)
                         }
                     }
 
@@ -341,7 +342,7 @@ fun JuegoContent(
                                 colors  = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
                                 shape   = RoundedCornerShape(10.dp)
                             ) {
-                                Text(text = "Atrás", fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = casinoBlanco)
+                                Text(text = stringResource(R.string.juego_atras), fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = casinoBlanco)
                             }
                         }
                     }
@@ -363,17 +364,17 @@ fun JuegoContent(
         if (uiState.juegoTerminado && !uiState.animacionActiva) {
             AlertDialog(
                 onDismissRequest = {},
-                title   = { Text(text = "Juego terminado", fontFamily = fuenteRuleta, fontSize = 24.sp) },
-                text    = { Text(text = "Te has quedado sin saldo. ¿Qué quieres hacer?", fontFamily = fuenteRuleta, fontSize = 18.sp) },
+                title   = { Text(text = stringResource(R.string.juego_terminado_titulo), fontFamily = fuenteRuleta, fontSize = 24.sp) },
+                text    = { Text(text = stringResource(R.string.juego_terminado_texto), fontFamily = fuenteRuleta, fontSize = 18.sp) },
                 confirmButton = {
                     Button(
                         onClick = rememberSoundClick(onMenuClick),
                         colors  = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones)
-                    ) { Text(text = "Volver al menú", fontFamily = fuenteRuleta, color = casinoBlanco) }
+                    ) { Text(text = stringResource(R.string.juego_volver_menu), fontFamily = fuenteRuleta, color = casinoBlanco) }
                 },
                 dismissButton = {
                     OutlinedButton(onClick = rememberSoundClick(onSalirClick)) {
-                        Text(text = "Salir", fontFamily = fuenteRuleta)
+                        Text(text = stringResource(R.string.juego_salir), fontFamily = fuenteRuleta)
                     }
                 }
             )
@@ -438,7 +439,7 @@ fun RuletaAnimacionOverlay(
 
         if (animacionFinalizada) {
             Text(
-                text       = "Toca para continuar",
+                text       = stringResource(R.string.animacion_toque),
                 color      = casinoBlanco.copy(alpha = 0.65f),
                 fontFamily = fuenteRuleta,
                 fontSize   = 16.sp,
@@ -501,7 +502,7 @@ fun PanelNumeroFinal(numero: Int, esGanadora: Boolean) {
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()) {
-                Text(text = "Resultado", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                Text(text = stringResource(R.string.animacion_resultado), color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                 Text(text = numero.toString(), color = if (esGanadora) casinoDoradoDetalles else Color.Black, fontFamily = fuenteRuleta, fontSize = 88.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
             }
         }
@@ -558,40 +559,40 @@ fun ResultadoPanel(uiState: JuegoUiState, onGuardarCapturaClick: () -> Unit, onD
         modifier = Modifier.fillMaxWidth().background(color = casinoBlanco.copy(alpha = 0.14f), shape = RoundedCornerShape(16.dp)).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        Text(text = "Resultado", color = casinoBlanco, fontFamily = fuenteRuleta, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-        uiState.resultadoRuleta?.let { Text(text = "Número ganador: $it", color = casinoBlanco, fontFamily = fuenteRuleta, fontSize = 18.sp) }
-        if (uiState.ganancia  > 0) Text(text = "Ganancia total: ${uiState.ganancia}", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 18.sp)
-        if (uiState.bonusRacha > 0) Text(text = "Bonus racha: +${uiState.bonusRacha}", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 18.sp)
+        Text(text = stringResource(R.string.resultado_titulo), color = casinoBlanco, fontFamily = fuenteRuleta, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        uiState.resultadoRuleta?.let { Text(text = stringResource(R.string.resultado_numero_ganador, it), color = casinoBlanco, fontFamily = fuenteRuleta, fontSize = 18.sp) }
+        if (uiState.ganancia  > 0) Text(text = stringResource(R.string.resultado_ganancia, uiState.ganancia), color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 18.sp)
+        if (uiState.bonusRacha > 0) Text(text = stringResource(R.string.resultado_bonus, uiState.bonusRacha), color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 18.sp)
         if (uiState.mensajeResultado.isNotBlank()) Text(text = uiState.mensajeResultado, color = casinoBlanco, fontFamily = fuenteRuleta, fontSize = 17.sp)
 
         if (uiState.capturaPendiente) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "¿Guardar imagen de la victoria?", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
+            Text(text = stringResource(R.string.resultado_guardar_pregunta), color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Button(onClick = sonoroGuardarCaptura, colors = ButtonDefaults.buttonColors(containerColor = casinoDoradoDetalles), shape = RoundedCornerShape(10.dp)) {
-                    Text(text = "Guardar", color = Color.Black, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.resultado_guardar), color = Color.Black, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
                 }
                 OutlinedButton(onClick = sonoroDescartarCaptura, shape = RoundedCornerShape(10.dp), border = BorderStroke(1.dp, casinoBlanco)) {
-                    Text(text = "No guardar", color = casinoBlanco, fontFamily = fuenteRuleta)
+                    Text(text = stringResource(R.string.resultado_no_guardar), color = casinoBlanco, fontFamily = fuenteRuleta)
                 }
             }
         }
-        if (uiState.capturaGuardada) Text(text = "¡Imagen guardada correctamente!", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
+        if (uiState.capturaGuardada) Text(text = stringResource(R.string.resultado_guardada), color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
         if (uiState.errorGuardado != null) Text(text = uiState.errorGuardado, color = casinoRojoAcciones, fontFamily = fuenteRuleta, fontSize = 15.sp)
 
         if (uiState.victoriaCalendarioPendiente) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "¿Guardar victoria en el calendario?", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
+            Text(text = stringResource(R.string.calendario_guardar_pregunta), color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Button(onClick = sonoroConfirmarCalendario, colors = ButtonDefaults.buttonColors(containerColor = casinoDoradoDetalles), shape = RoundedCornerShape(10.dp)) {
-                    Text(text = "Guardar", color = Color.Black, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.calendario_guardar), color = Color.Black, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
                 }
                 OutlinedButton(onClick = sonoroRechazarCalendario, shape = RoundedCornerShape(10.dp), border = BorderStroke(1.dp, casinoBlanco)) {
-                    Text(text = "No guardar", color = casinoBlanco, fontFamily = fuenteRuleta)
+                    Text(text = stringResource(R.string.calendario_no_guardar), color = casinoBlanco, fontFamily = fuenteRuleta)
                 }
             }
         }
-        if (uiState.victoriaEnCalendario) Text(text = "¡Victoria guardada en el calendario!", color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
+        if (uiState.victoriaEnCalendario) Text(text = stringResource(R.string.calendario_guardada), color = casinoDoradoDetalles, fontFamily = fuenteRuleta, fontSize = 16.sp)
         if (uiState.errorCalendario != null) Text(text = uiState.errorCalendario, color = casinoRojoAcciones, fontFamily = fuenteRuleta, fontSize = 15.sp)
     }
 }

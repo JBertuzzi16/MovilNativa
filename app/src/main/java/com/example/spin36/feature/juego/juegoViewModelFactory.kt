@@ -19,7 +19,7 @@ class JuegoViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(JuegoViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return JuegoViewModel(repository, galeriaManager, calendarioManager,ubicacionManager,context) as T
+            return JuegoViewModel(repository, galeriaManager, calendarioManager, ubicacionManager, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

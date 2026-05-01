@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -57,6 +58,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.appcompat:appcompat:1.7.0")
     // --- BASE DE DATOS (ROOM + RXJAVA) ---
     implementation(libs.room.runtime)
     implementation(libs.room.rxjava3)
@@ -65,5 +67,3 @@ dependencies {
     implementation(libs.rxjava3.core)
     implementation(libs.rxjava3.android)
 }
-
-

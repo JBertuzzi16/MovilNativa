@@ -20,13 +20,18 @@ class GaleriaManager(private val context: Context) {
         fecha: String,
         tipoApuesta: String,
         cantidadApostada: Int,
-        montoGanado: Int
+        montoGanado: Int,
+        textoVictoria: String,
+        textoNumeroGanador: String,
+        textoApuesta: String,
+        textoCantidad: String,
+        textoMonto: String
     ): Bitmap {
         val ancho      = 800
         val alto       = 620
         val tipografia = ResourcesCompat.getFont(context, R.font.mileast) ?: Typeface.DEFAULT
         val bmp        = Bitmap.createBitmap(ancho, alto, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bmp)
+        val canvas     = Canvas(bmp)
 
         val pintaFondo = Paint().apply { color = Color.parseColor("#0F5C3A") }
         canvas.drawRect(0f, 0f, ancho.toFloat(), alto.toFloat(), pintaFondo)
@@ -49,29 +54,26 @@ class GaleriaManager(private val context: Context) {
         val blanco = Color.parseColor("#F5F1E8")
         val cx     = ancho / 2f
 
-        canvas.drawText("SPIN 36",                          cx,  90f, texto(90f, dorado))
-        canvas.drawText("¡VICTORIA!",                       cx, 175f, texto(54f, blanco))
-        canvas.drawText(nombreJugador,                      cx, 245f, texto(40f, blanco))
-        canvas.drawText("Número ganador: $numeroGanador",   cx, 305f, texto(34f, dorado))
-        canvas.drawText("Apuesta: $tipoApuesta",            cx, 365f, texto(30f, blanco))
-        canvas.drawText("Cantidad apostada: $cantidadApostada monedas", cx, 415f, texto(30f, blanco))
-        canvas.drawText("Monto ganado: $montoGanado monedas",           cx, 465f, texto(30f, dorado))
-        canvas.drawText(fecha,                              cx, 535f, texto(22f, blanco))
+        canvas.drawText("SPIN 36",          cx,  90f, texto(90f, dorado))
+        canvas.drawText(textoVictoria,       cx, 175f, texto(54f, blanco))
+        canvas.drawText(nombreJugador,       cx, 245f, texto(40f, blanco))
+        canvas.drawText(textoNumeroGanador,  cx, 305f, texto(34f, dorado))
+        canvas.drawText(textoApuesta,        cx, 365f, texto(30f, blanco))
+        canvas.drawText(textoCantidad,       cx, 415f, texto(30f, blanco))
+        canvas.drawText(textoMonto,          cx, 465f, texto(30f, dorado))
+        canvas.drawText(fecha,               cx, 535f, texto(22f, blanco))
 
         return bmp
     }
 
     fun guardarBitmapEnUri(bitmap: Bitmap, uri: Uri): Boolean {
-        val stream: OutputStream = context.contentResolver.openOutputStream(uri)
-            ?: return false
+        val stream: OutputStream = context.contentResolver.openOutputStream(uri) ?: return false
         val formato = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Bitmap.CompressFormat.WEBP_LOSSLESS
         } else {
             @Suppress("DEPRECATION")
             Bitmap.CompressFormat.WEBP
         }
-        return stream.use {
-            bitmap.compress(formato, 100, it)
-        }
+        return stream.use { bitmap.compress(formato, 100, it) }
     }
 }

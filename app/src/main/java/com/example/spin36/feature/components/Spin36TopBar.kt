@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -24,17 +25,9 @@ import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoRojoAcciones
 import com.example.spin36.ui.theme.casinoVerde
 
-enum class PantallaActual {
-    MENU,
-    JUEGO,
-    HISTORIAL,
-    AJUSTES,
-    AYUDA
-}
+enum class PantallaActual { MENU, JUEGO, HISTORIAL, AJUSTES, AYUDA }
 
-private val fuenteRuletaTopBar = FontFamily(
-    Font(R.font.mileast, FontWeight.Normal)
-)
+private val fuenteRuletaTopBar = FontFamily(Font(R.font.mileast, FontWeight.Normal))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,103 +45,46 @@ fun Spin36TopBar(
     val mostrarDialogoSalir = remember { mutableStateOf(false) }
 
     TopAppBar(
-        title = {
-            Text(text = titulo, fontFamily = fuenteRuletaTopBar, color = casinoBlanco, fontSize = 42.sp)
-        },
+        title   = { Text(text = titulo, fontFamily = fuenteRuletaTopBar, color = casinoBlanco, fontSize = 42.sp) },
         actions = {
             IconButton(onClick = rememberSoundClick { menuExpandido.value = true }) {
                 Text(text = "⋮", color = casinoBlanco, fontFamily = fuenteRuletaTopBar, fontSize = 28.sp)
             }
-
-            DropdownMenu(
-                expanded = menuExpandido.value,
-                onDismissRequest = { menuExpandido.value = false }
-            ) {
+            DropdownMenu(expanded = menuExpandido.value, onDismissRequest = { menuExpandido.value = false }) {
                 if (pantallaActual != PantallaActual.MENU) {
-                    DropdownMenuItem(
-                        text = { Text(text = "Menú", fontFamily = fuenteRuletaTopBar) },
-                        onClick = rememberSoundClick {
-                            menuExpandido.value = false
-                            onIrMenu()
-                        }
-                    )
+                    DropdownMenuItem(text = { Text(stringResource(R.string.nav_menu), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onIrMenu() })
                 }
-
                 if (pantallaActual != PantallaActual.JUEGO) {
-                    DropdownMenuItem(
-                        text = { Text(text = "Juego / Apuesta", fontFamily = fuenteRuletaTopBar) },
-                        onClick = rememberSoundClick {
-                            menuExpandido.value = false
-                            onIrJuego()
-                        }
-                    )
+                    DropdownMenuItem(text = { Text(stringResource(R.string.nav_juego), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onIrJuego() })
                 }
-
                 if (pantallaActual != PantallaActual.HISTORIAL) {
-                    DropdownMenuItem(
-                        text = { Text(text = "Historial", fontFamily = fuenteRuletaTopBar) },
-                        onClick = rememberSoundClick {
-                            menuExpandido.value = false
-                            onIrHistorial()
-                        }
-                    )
+                    DropdownMenuItem(text = { Text(stringResource(R.string.nav_historial), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onIrHistorial() })
                 }
-
                 if (pantallaActual != PantallaActual.AJUSTES) {
-                    DropdownMenuItem(
-                        text = { Text(text = "Ajustes", fontFamily = fuenteRuletaTopBar) },
-                        onClick = rememberSoundClick {
-                            menuExpandido.value = false
-                            onIrAjustes()
-                        }
-                    )
+                    DropdownMenuItem(text = { Text(stringResource(R.string.nav_ajustes), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onIrAjustes() })
                 }
-
                 if (pantallaActual != PantallaActual.AYUDA) {
-                    DropdownMenuItem(
-                        text = { Text(text = "Ayuda", fontFamily = fuenteRuletaTopBar) },
-                        onClick = rememberSoundClick {
-                            menuExpandido.value = false
-                            onIrAyuda()
-                        }
-                    )
+                    DropdownMenuItem(text = { Text(stringResource(R.string.nav_ayuda), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onIrAyuda() })
                 }
-
-                DropdownMenuItem(
-                    text = { Text(text = "Salir", fontFamily = fuenteRuletaTopBar) },
-                    onClick = rememberSoundClick {
-                        menuExpandido.value = false
-                        mostrarDialogoSalir.value = true
-                    }
-                )
+                DropdownMenuItem(text = { Text(stringResource(R.string.nav_salir), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; mostrarDialogoSalir.value = true })
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor         = casinoVerde,
-            titleContentColor      = casinoBlanco,
-            actionIconContentColor = casinoBlanco
-        )
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = casinoVerde, titleContentColor = casinoBlanco, actionIconContentColor = casinoBlanco)
     )
 
     if (mostrarDialogoSalir.value) {
         AlertDialog(
             onDismissRequest = { mostrarDialogoSalir.value = false },
-            title   = { Text(text = "Confirmar salida", fontFamily = fuenteRuletaTopBar) },
-            text    = { Text(text = "¿Seguro que quieres salir de la app?", fontFamily = fuenteRuletaTopBar) },
+            title   = { Text(stringResource(R.string.nav_confirmar_salida), fontFamily = fuenteRuletaTopBar) },
+            text    = { Text(stringResource(R.string.nav_confirmar_salida_texto), fontFamily = fuenteRuletaTopBar) },
             confirmButton = {
-                Button(
-                    onClick = rememberSoundClick {
-                        mostrarDialogoSalir.value = false
-                        onSalirConfirmado()
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones)
-                ) {
-                    Text(text = "Sí", color = casinoBlanco, fontFamily = fuenteRuletaTopBar)
+                Button(onClick = rememberSoundClick { mostrarDialogoSalir.value = false; onSalirConfirmado() }, colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones)) {
+                    Text(stringResource(R.string.nav_si), color = casinoBlanco, fontFamily = fuenteRuletaTopBar)
                 }
             },
             dismissButton = {
                 OutlinedButton(onClick = rememberSoundClick { mostrarDialogoSalir.value = false }) {
-                    Text(text = "No", fontFamily = fuenteRuletaTopBar, color = Color.Black)
+                    Text(stringResource(R.string.nav_no), fontFamily = fuenteRuletaTopBar, color = Color.Black)
                 }
             }
         )

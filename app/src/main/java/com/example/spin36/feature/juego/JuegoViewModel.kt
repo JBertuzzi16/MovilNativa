@@ -42,6 +42,7 @@ class JuegoViewModel(
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
+    private val appContext: Context? = context?.applicationContext
 
     private val _uiState = MutableStateFlow(JuegoUiState())
     val uiState: StateFlow<JuegoUiState> = _uiState
@@ -229,12 +230,17 @@ class JuegoViewModel(
 
                 val bitmap = if (haGanado && galeriaManager != null) {
                     galeriaManager.crearBitmapVictoria(
-                        nombreJugador = jugador.nombre,
-                        numeroGanador = numeroGanador,
-                        fecha = obtenerFechaHoraActual(),
-                        tipoApuesta = partida.tipoApuesta,
-                        cantidadApostada = partida.montoApostado,
-                        montoGanado = partida.monedasGanadas
+                        nombreJugador      = jugador.nombre,
+                        numeroGanador      = numeroGanador,
+                        fecha              = obtenerFechaHoraActual(),
+                        tipoApuesta        = partida.tipoApuesta,
+                        cantidadApostada   = partida.montoApostado,
+                        montoGanado        = partida.monedasGanadas,
+                        textoVictoria      = appContext?.getString(R.string.bitmap_victoria)       ?: "¡VICTORIA!",
+                        textoNumeroGanador = appContext?.getString(R.string.bitmap_numero_ganador, numeroGanador) ?: "Número ganador: $numeroGanador",
+                        textoApuesta       = appContext?.getString(R.string.bitmap_apuesta, partida.tipoApuesta)  ?: "Apuesta: ${partida.tipoApuesta}",
+                        textoCantidad      = appContext?.getString(R.string.bitmap_cantidad, partida.montoApostado) ?: "Cantidad apostada: ${partida.montoApostado} monedas",
+                        textoMonto         = appContext?.getString(R.string.bitmap_monto, partida.monedasGanadas)   ?: "Monto ganado: ${partida.monedasGanadas} monedas"
                     )
                 } else null
 
@@ -319,7 +325,12 @@ class JuegoViewModel(
     }
 
     fun guardarVictoriaEnCalendario(tipoApuesta: String, numeroGanador: Int, montoGanado: Int) {
-        val manager = calendarioManager ?: return
+        val manager = calendarioManager ?: run {
+            _uiState.value = _uiState.value.copy(
+                errorCalendario = appContext?.getString(R.string.calendario_error) ?: "No se pudo guardar en el calendario"
+            )
+            return
+        }
         val jugador = jugadorActual ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -337,7 +348,8 @@ class JuegoViewModel(
             withContext(Dispatchers.Main) {
                 _uiState.value = _uiState.value.copy(
                     victoriaEnCalendario = exito,
-                    errorCalendario = if (exito) null else "No se pudo guardar en el calendario"
+                    errorCalendario      = if (exito) null else
+                        appContext?.getString(R.string.calendario_error) ?: "No se pudo guardar en el calendario"
                 )
             }
         }
@@ -410,9 +422,12 @@ class JuegoViewModel(
 
     private fun construirMensajeResultado(numeroGanador: Int, premio: Int, bonusRacha: Int): String {
         return when {
-            premio > 0 && bonusRacha > 0 -> "Ha salido el $numeroGanador. Has ganado $premio monedas y bonus de racha +$bonusRacha."
-            premio > 0                   -> "Ha salido el $numeroGanador. Has ganado $premio monedas."
-            else                         -> "Ha salido el $numeroGanador. Has perdido la apuesta."
+            premio > 0 && bonusRacha > 0 -> appContext?.getString(R.string.msg_ganado_bonus, numeroGanador, premio, bonusRacha)
+                ?: "Ha salido el $numeroGanador. Has ganado $premio monedas y bonus de racha +$bonusRacha."
+            premio > 0 -> appContext?.getString(R.string.msg_ganado, numeroGanador, premio)
+                ?: "Ha salido el $numeroGanador. Has ganado $premio monedas."
+            else -> appContext?.getString(R.string.msg_perdido, numeroGanador)
+                ?: "Ha salido el $numeroGanador. Has perdido la apuesta."
         }
     }
 

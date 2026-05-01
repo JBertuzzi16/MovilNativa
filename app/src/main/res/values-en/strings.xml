@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Spin36</string>
+
+    <!-- Welcome -->
+    <string name="bienvenida_placeholder">Enter your name…</string>
+    <string name="bienvenida_continuar">CONTINUE</string>
+
+    <!-- Menu -->
+    <string name="menu_titulo">MENU</string>
+    <string name="menu_apostar">BET</string>
+    <string name="menu_historial">HISTORY</string>
+    <string name="menu_atras">Back</string>
+
+    <!-- TopBar / navigation -->
+    <string name="nav_menu">Menu</string>
+    <string name="nav_juego">Game / Bet</string>
+    <string name="nav_historial">History</string>
+    <string name="nav_ajustes">Settings</string>
+    <string name="nav_ayuda">Help</string>
+    <string name="nav_salir">Exit</string>
+    <string name="nav_confirmar_salida">Confirm exit</string>
+    <string name="nav_confirmar_salida_texto">Are you sure you want to exit the app?</string>
+    <string name="nav_si">Yes</string>
+    <string name="nav_no">No</string>
+
+    <!-- Game -->
+    <string name="juego_titulo">GAME</string>
+    <string name="juego_jugador">Player</string>
+    <string name="juego_saldo">Balance</string>
+    <string name="juego_racha">Streak</string>
+    <string name="juego_placeholder_apuesta">Enter your bet…</string>
+    <string name="juego_tipo_apuesta">BET TYPE</string>
+    <string name="juego_pleno">STRAIGHT x36</string>
+    <string name="juego_docena">DOZEN x3</string>
+    <string name="juego_rojo">RED x2</string>
+    <string name="juego_negro">BLACK x2</string>
+    <string name="juego_par">EVEN x2</string>
+    <string name="juego_impar">ODD x2</string>
+    <string name="juego_elige_numero">Choose number</string>
+    <string name="juego_elige_docena">Choose dozen</string>
+    <string name="juego_docena_n">Dozen %d</string>
+    <string name="juego_girar">SPIN</string>
+    <string name="juego_atras">Back</string>
+    <string name="juego_terminado_titulo">Game over</string>
+    <string name="juego_terminado_texto">You have run out of balance. What do you want to do?</string>
+    <string name="juego_volver_menu">Back to menu</string>
+    <string name="juego_salir">Exit</string>
+
+    <!-- Result -->
+    <string name="resultado_titulo">Result</string>
+    <string name="resultado_numero_ganador">Winning number: %d</string>
+    <string name="resultado_ganancia">Total winnings: %d</string>
+    <string name="resultado_bonus">Streak bonus: +%d</string>
+    <string name="resultado_guardar_pregunta">Save victory image?</string>
+    <string name="resultado_guardar">Save</string>
+    <string name="resultado_no_guardar">Don\'t save</string>
+    <string name="resultado_guardada">Image saved successfully!</string>
+
+    <!-- Victory bitmap -->
+    <string name="bitmap_victoria">VICTORY!</string>
+    <string name="bitmap_numero_ganador">Winning number: %d</string>
+    <string name="bitmap_apuesta">Bet: %s</string>
+    <string name="bitmap_cantidad">Amount wagered: %d coins</string>
+    <string name="bitmap_monto">Amount won: %d coins</string>
+
+    <!-- Result messages (ViewModel) -->
+    <string name="msg_ganado_bonus">Number %1$d came up. You won %2$d coins and a streak bonus of +%3$d.</string>
+    <string name="msg_ganado">Number %1$d came up. You won %2$d coins.</string>
+    <string name="msg_perdido">Number %1$d came up. You lost your bet.</string>
+
+    <!-- Animation -->
+    <string name="animacion_resultado">Result</string>
+    <string name="animacion_toque">Tap to continue</string>
+
+    <!-- History -->
+    <string name="historial_titulo">HISTORY</string>
+    <string name="historial_vacio">No sessions recorded yet.</string>
+    <string name="historial_atras">Back</string>
+    <string name="historial_sesion_inicio">Start: %s</string>
+    <string name="historial_sesion_saldo">Final balance: %d coins</string>
+    <string name="historial_sesion_racha">Max streak: %d</string>
+    <string name="historial_sesion_apuestas">Bets placed: %d</string>
+
+    <!-- Settings -->
+    <string name="ajustes_titulo">SETTINGS</string>
+    <string name="ajustes_musica_titulo">MUSIC</string>
+    <string name="ajustes_musica_fondo">Background music</string>
+    <string name="ajustes_pista_activa">Active track: %s</string>
+    <string name="ajustes_cancion_personalizada">Custom song</string>
+    <string name="ajustes_melodia_oficial">Official game melody</string>
+    <string name="ajustes_volumen">Volume</string>
+    <string name="ajustes_elegir_dispositivo">CHOOSE FROM DEVICE</string>
+    <string name="ajustes_usar_oficial">USE OFFICIAL MELODY</string>
+    <string name="ajustes_atras">Back</string>
+
+    <!-- Language -->
+    <string name="ajustes_idioma_titulo">LANGUAGE</string>
+    <string name="ajustes_idioma_es">Spanish</string>
+    <string name="ajustes_idioma_en">English</string>
+    <string name="ajustes_idioma_ca">Catalan</string>
+    <string name="ajustes_idioma_eu">Basque</string>
+
+    <!-- Calendar -->
+    <string name="calendario_guardar_pregunta">Save victory to calendar?</string>
+    <string name="calendario_guardar">Save</string>
+    <string name="calendario_no_guardar">Don\'t save</string>
+    <string name="calendario_guardada">Victory saved to calendar!</string>
+    <string name="calendario_error">Could not save to calendar</string>
+
+    <!-- Help -->
+    <string name="ayuda_titulo">HELP</string>
+</resources>

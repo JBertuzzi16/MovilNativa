@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -95,7 +96,7 @@ fun HistorialContent(
         containerColor = casinoVerde,
         topBar = {
             Spin36TopBar(
-                titulo            = "HISTORIAL",
+                titulo            = stringResource(R.string.historial_titulo),
                 pantallaActual    = PantallaActual.HISTORIAL,
                 onIrMenu          = onIrMenuClick,
                 onIrJuego         = onIrJuegoClick,
@@ -148,7 +149,7 @@ fun HistorialContent(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = "No hay sesiones guardadas todavía.",
+                                    text = stringResource(R.string.historial_vacio),
                                     fontFamily = fuenteRuleta,
                                     color = casinoRojoAcciones
                                 )
@@ -192,13 +193,7 @@ fun HistorialContent(
                                 colors  = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
                                 shape   = RoundedCornerShape(10.dp)
                             ) {
-                                Text(
-                                    text       = "Atrás",
-                                    fontFamily = fuenteRuleta,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize   = 20.sp,
-                                    color      = casinoBlanco
-                                )
+                                Text(text = stringResource(R.string.historial_atras), fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = casinoBlanco)
                             }
                         }
                     }
@@ -231,14 +226,14 @@ fun SesionCard(sesion: SesionEntity, onClick: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(text = sesion.nombreJugador, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
-            Text(text = "Inicio: ${sesion.fechaHoraInicio} h.", fontFamily = fuenteRuleta)
+            Text(text = stringResource(R.string.historial_sesion_inicio, sesion.fechaHoraInicio), fontFamily = fuenteRuleta)
             Text(
-                text  = "Saldo final:    ${sesion.saldoFinal} monedas",
+                text  = stringResource(R.string.historial_sesion_saldo, sesion.saldoFinal),
                 fontFamily = fuenteRuleta,
                 color = if (sesion.saldoFinal > 0) casinoVerde else casinoRojoAcciones
             )
-            Text(text = "Racha máxima:   ${sesion.rachaMaxima}", fontFamily = fuenteRuleta)
-            Text(text = "Apuestas realizadas: ${sesion.apuestasRealizadas}", fontFamily = fuenteRuleta)
+            Text(text = stringResource(R.string.historial_sesion_racha, sesion.rachaMaxima), fontFamily = fuenteRuleta)
+            Text(text = stringResource(R.string.historial_sesion_apuestas, sesion.apuestasRealizadas), fontFamily = fuenteRuleta)
         }
     }
 }

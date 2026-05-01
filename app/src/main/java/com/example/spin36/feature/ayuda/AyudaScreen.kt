@@ -7,10 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.spin36.R
 import com.example.spin36.feature.components.PantallaActual
 import com.example.spin36.feature.components.Spin36TopBar
 import com.example.spin36.ui.theme.casinoVerde
+import java.util.Locale
 
 @Composable
 fun AyudaScreen(
@@ -21,11 +25,20 @@ fun AyudaScreen(
     onAjustesClick: () -> Unit,
     onSalirClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    val idioma  = context.resources.configuration.locales[0].language
+    val urlHtml = when (idioma) {
+        "en" -> "file:///android_asset/ayuda_en.html"
+        "ca" -> "file:///android_asset/ayuda_ca.html"
+        "eu" -> "file:///android_asset/ayuda_eu.html"
+        else -> "file:///android_asset/ayuda.html"
+    }
+
     Scaffold(
         containerColor = casinoVerde,
         topBar = {
             Spin36TopBar(
-                titulo            = "AYUDA",
+                titulo            = stringResource(R.string.ayuda_titulo),
                 pantallaActual    = PantallaActual.AYUDA,
                 onIrMenu          = onMenuClick,
                 onIrJuego         = onJuegoClick,
@@ -36,14 +49,12 @@ fun AyudaScreen(
         }
     ) { innerPadding ->
         AndroidView(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            factory = { context ->
-                WebView(context).apply {
-                    webViewClient = WebViewClient()
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            factory  = { ctx ->
+                WebView(ctx).apply {
+                    webViewClient          = WebViewClient()
                     settings.javaScriptEnabled = false
-                    loadUrl("file:///android_asset/ayuda.html")
+                    loadUrl(urlHtml)
                 }
             }
         )

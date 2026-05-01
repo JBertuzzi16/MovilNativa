@@ -1,3 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Spin36</string>
+
+    <!-- Bienvenida -->
+    <string name="bienvenida_placeholder">Ingresa tu nombre…</string>
+    <string name="bienvenida_continuar">CONTINUAR</string>
+
+    <!-- Menú -->
+    <string name="menu_titulo">MENÚ</string>
+    <string name="menu_apostar">APOSTAR</string>
+    <string name="menu_historial">HISTORIAL</string>
+    <string name="menu_atras">Atrás</string>
+
+    <!-- TopBar / navegación -->
+    <string name="nav_menu">Menú</string>
+    <string name="nav_juego">Juego / Apuesta</string>
+    <string name="nav_historial">Historial</string>
+    <string name="nav_ajustes">Ajustes</string>
+    <string name="nav_ayuda">Ayuda</string>
+    <string name="nav_salir">Salir</string>
+    <string name="nav_confirmar_salida">Confirmar salida</string>
+    <string name="nav_confirmar_salida_texto">¿Seguro que quieres salir de la app?</string>
+    <string name="nav_si">Sí</string>
+    <string name="nav_no">No</string>
+
+    <!-- Juego -->
+    <string name="juego_titulo">JUEGO</string>
+    <string name="juego_jugador">Jugador</string>
+    <string name="juego_saldo">Saldo</string>
+    <string name="juego_racha">Racha</string>
+    <string name="juego_placeholder_apuesta">Ingresa la apuesta…</string>
+    <string name="juego_tipo_apuesta">TIPO DE APUESTA</string>
+    <string name="juego_pleno">PLENO x36</string>
+    <string name="juego_docena">DOCENA x3</string>
+    <string name="juego_rojo">ROJO x2</string>
+    <string name="juego_negro">NEGRO x2</string>
+    <string name="juego_par">PAR x2</string>
+    <string name="juego_impar">IMPAR x2</string>
+    <string name="juego_elige_numero">Elige número</string>
+    <string name="juego_elige_docena">Elige docena</string>
+    <string name="juego_docena_n">Docena %d</string>
+    <string name="juego_girar">GIRAR</string>
+    <string name="juego_atras">Atrás</string>
+    <string name="juego_terminado_titulo">Juego terminado</string>
+    <string name="juego_terminado_texto">Te has quedado sin saldo. ¿Qué quieres hacer?</string>
+    <string name="juego_volver_menu">Volver al menú</string>
+    <string name="juego_salir">Salir</string>
+
+    <!-- Resultado -->
+    <string name="resultado_titulo">Resultado</string>
+    <string name="resultado_numero_ganador">Número ganador: %d</string>
+    <string name="resultado_ganancia">Ganancia total: %d</string>
+    <string name="resultado_bonus">Bonus racha: +%d</string>
+    <string name="resultado_guardar_pregunta">¿Guardar imagen de la victoria?</string>
+    <string name="resultado_guardar">Guardar</string>
+    <string name="resultado_no_guardar">No guardar</string>
+    <string name="resultado_guardada">¡Imagen guardada correctamente!</string>
+
+    <!-- Bitmap victoria -->
+    <string name="bitmap_victoria">¡VICTORIA!</string>
+    <string name="bitmap_numero_ganador">Número ganador: %d</string>
+    <string name="bitmap_apuesta">Apuesta: %s</string>
+    <string name="bitmap_cantidad">Cantidad apostada: %d monedas</string>
+    <string name="bitmap_monto">Monto ganado: %d monedas</string>
+
+    <!-- Mensaje resultado (ViewModel) -->
+    <string name="msg_ganado_bonus">Ha salido el %1$d. Has ganado %2$d monedas y bonus de racha +%3$d.</string>
+    <string name="msg_ganado">Ha salido el %1$d. Has ganado %2$d monedas.</string>
+    <string name="msg_perdido">Ha salido el %1$d. Has perdido la apuesta.</string>
+
+    <!-- Animación -->
+    <string name="animacion_resultado">Resultado</string>
+    <string name="animacion_toque">Toca para continuar</string>
+
+    <!-- Historial -->
+    <string name="historial_titulo">HISTORIAL</string>
+    <string name="historial_vacio">No hay sesiones guardadas todavía.</string>
+    <string name="historial_atras">Atrás</string>
+    <string name="historial_sesion_inicio">Inicio: %s h.</string>
+    <string name="historial_sesion_saldo">Saldo final: %d monedas</string>
+    <string name="historial_sesion_racha">Racha máxima: %d</string>
+    <string name="historial_sesion_apuestas">Apuestas realizadas: %d</string>
+
+    <!-- Ajustes -->
+    <string name="ajustes_titulo">AJUSTES</string>
+    <string name="ajustes_musica_titulo">MÚSICA</string>
+    <string name="ajustes_musica_fondo">Música de fondo</string>
+    <string name="ajustes_pista_activa">Pista activa: %s</string>
+    <string name="ajustes_cancion_personalizada">Canción personalizada</string>
+    <string name="ajustes_melodia_oficial">Melodía oficial del juego</string>
+    <string name="ajustes_volumen">Volumen</string>
+    <string name="ajustes_elegir_dispositivo">ELEGIR DEL DISPOSITIVO</string>
+    <string name="ajustes_usar_oficial">USAR MELODÍA OFICIAL</string>
+    <string name="ajustes_atras">Atrás</string>
+
+    <!-- Idioma -->
+    <string name="ajustes_idioma_titulo">IDIOMA</string>
+    <string name="ajustes_idioma_es">Castellano</string>
+    <string name="ajustes_idioma_en">Inglés</string>
+    <string name="ajustes_idioma_ca">Catalán</string>
+    <string name="ajustes_idioma_eu">Euskera</string>
+
+    <!-- Calendario -->
+    <string name="calendario_guardar_pregunta">¿Guardar victoria en el calendario?</string>
+    <string name="calendario_guardar">Guardar</string>
+    <string name="calendario_no_guardar">No guardar</string>
+    <string name="calendario_guardada">¡Victoria guardada en el calendario!</string>
+    <string name="calendario_error">No se pudo guardar en el calendario</string>
+
+    <!-- Ayuda -->
+    <string name="ayuda_titulo">AYUDA</string>
 </resources>

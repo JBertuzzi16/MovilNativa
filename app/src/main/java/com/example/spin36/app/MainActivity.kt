@@ -2,8 +2,8 @@ package com.example.spin36.app
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.spin36.data.database.Spin36Database
 import com.example.spin36.data.preferences.AjustesPreferences
@@ -16,16 +16,16 @@ import com.example.spin36.feature.historial.HistorialViewModel
 import com.example.spin36.feature.historial.HistorialViewModelFactory
 import com.example.spin36.feature.juego.JuegoViewModel
 import com.example.spin36.feature.juego.JuegoViewModelFactory
-import com.example.spin36.feature.components.ButtonSoundPool
 import com.example.spin36.feature.musica.MusicaManager
 import com.example.spin36.feature.notificacion.NotificacionHelper
+import com.example.spin36.feature.components.ButtonSoundPool
 import com.example.spin36.feature.ubicacion.UbicacionManager
 import com.example.spin36.ui.theme.Spin36Theme
 import android.Manifest
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var musicaManager: MusicaManager
     private lateinit var ajustesPreferences: AjustesPreferences
@@ -38,26 +38,23 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //bbdd y repos
+        ButtonSoundPool.init(applicationContext)
+
         val database   = Spin36Database.getDatabase(applicationContext)
         val dao        = database.CasinoDAO()
         val repository = CasinoRepository(dao)
 
-        //sonidos de botones
-        ButtonSoundPool.init(applicationContext)
-
-        //musica
         ajustesPreferences = AjustesPreferences(applicationContext)
         musicaManager      = MusicaManager(applicationContext)
         arrancarMusicaSegunPreferencias()
 
-        //viewmodels
         val juegoViewModel = ViewModelProvider(
-            this, JuegoViewModelFactory(
+            this,
+            JuegoViewModelFactory(
                 repository         = repository,
                 galeriaManager     = GaleriaManager(applicationContext),
                 calendarioManager  = CalendarioManager(applicationContext),
-                ubicacionManager = UbicacionManager(applicationContext),
+                ubicacionManager   = UbicacionManager(applicationContext),
                 context            = applicationContext
             )
         )[JuegoViewModel::class.java]
@@ -87,42 +84,30 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    //pausa musica al ir al background
     override fun onStop() {
         super.onStop()
-        if (ajustesPreferences.musicaActivada) {
-            musicaManager.onAppEnBackground()
-        }
+        if (ajustesPreferences.musicaActivada) musicaManager.onAppEnBackground()
     }
 
-    //reanuda la musica al tener en primer plano
     override fun onStart() {
         super.onStart()
-        if (ajustesPreferences.musicaActivada) {
-            musicaManager.onAppEnPrimer()
-        }
+        if (ajustesPreferences.musicaActivada) musicaManager.onAppEnPrimer()
     }
 
-    //librea mediaplayer al cerrar la app
     override fun onDestroy() {
         musicaManager.detener()
         ButtonSoundPool.release()
         super.onDestroy()
     }
 
-    //inicia musica segun persistencia
     private fun arrancarMusicaSegunPreferencias() {
         if (!ajustesPreferences.musicaActivada) return
-
-        //volumen guardado
         musicaManager.setVolumen(ajustesPreferences.volumenMusica)
-
         val uriGuardada = ajustesPreferences.uriMusicaPersonalizada
         if (uriGuardada != null) {
             try {
                 musicaManager.reproducirUri(Uri.parse(uriGuardada))
             } catch (e: Exception) {
-                //si la URI ya no contiene la cancion se pone musica oficiaql
                 ajustesPreferences.restablecerMusicaOficial()
                 musicaManager.reproducirOficial()
             }

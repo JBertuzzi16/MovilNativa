@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Spin36</string>
+
+    <!-- Ongi etorria -->
+    <string name="bienvenida_placeholder">Sartu zure izena…</string>
+    <string name="bienvenida_continuar">JARRAITU</string>
+
+    <!-- Menua -->
+    <string name="menu_titulo">MENUA</string>
+    <string name="menu_apostar">APOSTATU</string>
+    <string name="menu_historial">HISTORIA</string>
+    <string name="menu_atras">Atzera</string>
+
+    <!-- TopBar / nabigazioa -->
+    <string name="nav_menu">Menua</string>
+    <string name="nav_juego">Jokoa / Apustua</string>
+    <string name="nav_historial">Historia</string>
+    <string name="nav_ajustes">Ezarpenak</string>
+    <string name="nav_ayuda">Laguntza</string>
+    <string name="nav_salir">Irten</string>
+    <string name="nav_confirmar_salida">Irteera baieztatu</string>
+    <string name="nav_confirmar_salida_texto">Ziur zaude aplikaziotik irten nahi duzula?</string>
+    <string name="nav_si">Bai</string>
+    <string name="nav_no">Ez</string>
+
+    <!-- Jokoa -->
+    <string name="juego_titulo">JOKOA</string>
+    <string name="juego_jugador">Jokalaria</string>
+    <string name="juego_saldo">Saldoa</string>
+    <string name="juego_racha">Txanda</string>
+    <string name="juego_placeholder_apuesta">Sartu apustua…</string>
+    <string name="juego_tipo_apuesta">APUSTU MOTA</string>
+    <string name="juego_pleno">ZUZENA x36</string>
+    <string name="juego_docena">DOZENA x3</string>
+    <string name="juego_rojo">GORRIA x2</string>
+    <string name="juego_negro">BELTZA x2</string>
+    <string name="juego_par">BIKOITIA x2</string>
+    <string name="juego_impar">BAKOITIA x2</string>
+    <string name="juego_elige_numero">Aukeratu zenbakia</string>
+    <string name="juego_elige_docena">Aukeratu dozena</string>
+    <string name="juego_docena_n">Dozena %d</string>
+    <string name="juego_girar">BIRATU</string>
+    <string name="juego_atras">Atzera</string>
+    <string name="juego_terminado_titulo">Jokoa amaituta</string>
+    <string name="juego_terminado_texto">Saldorik gabe geratu zara. Zer egin nahi duzu?</string>
+    <string name="juego_volver_menu">Menura itzuli</string>
+    <string name="juego_salir">Irten</string>
+
+    <!-- Emaitza -->
+    <string name="resultado_titulo">Emaitza</string>
+    <string name="resultado_numero_ganador">Irabazle zenbakia: %d</string>
+    <string name="resultado_ganancia">Irabazi osoa: %d</string>
+    <string name="resultado_bonus">Txanda bonusa: +%d</string>
+    <string name="resultado_guardar_pregunta">Garaipenaren irudia gorde nahi duzu?</string>
+    <string name="resultado_guardar">Gorde</string>
+    <string name="resultado_no_guardar">Ez gorde</string>
+    <string name="resultado_guardada">Irudia behar bezala gordeta!</string>
+
+    <!-- Bitmap garaipena -->
+    <string name="bitmap_victoria">GARAIPENA!</string>
+    <string name="bitmap_numero_ganador">Irabazle zenbakia: %d</string>
+    <string name="bitmap_apuesta">Apustua: %s</string>
+    <string name="bitmap_cantidad">Apostatutako zenbatekoa: %d txanpon</string>
+    <string name="bitmap_monto">Irabazitako zenbatekoa: %d txanpon</string>
+
+    <!-- Emaitza mezua -->
+    <string name="msg_ganado_bonus">%1$d atera da. %2$d txanpon irabazi dituzu eta txanda bonusa +%3$d.</string>
+    <string name="msg_ganado">%1$d atera da. %2$d txanpon irabazi dituzu.</string>
+    <string name="msg_perdido">%1$d atera da. Apustua galdu duzu.</string>
+
+    <!-- Animazioa -->
+    <string name="animacion_resultado">Emaitza</string>
+    <string name="animacion_toque">Ukitu jarraitzeko</string>
+
+    <!-- Historia -->
+    <string name="historial_titulo">HISTORIA</string>
+    <string name="historial_vacio">Oraindik ez dago gordetako saiorik.</string>
+    <string name="historial_atras">Atzera</string>
+    <string name="historial_sesion_inicio">Hasiera: %s h.</string>
+    <string name="historial_sesion_saldo">Azken saldoa: %d txanpon</string>
+    <string name="historial_sesion_racha">Txanda maximoa: %d</string>
+    <string name="historial_sesion_apuestas">Egindako apustuak: %d</string>
+
+    <!-- Ezarpenak -->
+    <string name="ajustes_titulo">EZARPENAK</string>
+    <string name="ajustes_musica_titulo">MUSIKA</string>
+    <string name="ajustes_musica_fondo">Atzeko musika</string>
+    <string name="ajustes_pista_activa">Pista aktiboa: %s</string>
+    <string name="ajustes_cancion_personalizada">Abesti pertsonalizatua</string>
+    <string name="ajustes_melodia_oficial">Jokoaren melodia ofiziala</string>
+    <string name="ajustes_volumen">Bolumena</string>
+    <string name="ajustes_elegir_dispositivo">GAILUTIK AUKERATU</string>
+    <string name="ajustes_usar_oficial">MELODIA OFIZIALA ERABILI</string>
+    <string name="ajustes_atras">Atzera</string>
+
+    <!-- Hizkuntza -->
+    <string name="ajustes_idioma_titulo">HIZKUNTZA</string>
+    <string name="ajustes_idioma_es">Gaztelania</string>
+    <string name="ajustes_idioma_en">Ingelesa</string>
+    <string name="ajustes_idioma_ca">Katalana</string>
+    <string name="ajustes_idioma_eu">Euskara</string>
+
+    <!-- Egutegia -->
+    <string name="calendario_guardar_pregunta">Garaipena egutegian gorde nahi duzu?</string>
+    <string name="calendario_guardar">Gorde</string>
+    <string name="calendario_no_guardar">Ez gorde</string>
+    <string name="calendario_guardada">Garaipena egutegian gordeta!</string>
+    <string name="calendario_error">Ezin izan da egutegian gorde</string>
+
+    <!-- Laguntza -->
+    <string name="ayuda_titulo">LAGUNTZA</string>
+</resources>
