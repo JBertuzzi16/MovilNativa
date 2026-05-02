@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.tasks.await
 
 class UbicacionManager(private val context: Context) {
@@ -17,7 +18,8 @@ class UbicacionManager(private val context: Context) {
             if (location != null) {
                 Pair(location.latitude, location.longitude)
             } else {
-                val nuevaLocation = fusedClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).await()
+                val cts = CancellationTokenSource()
+                val nuevaLocation = fusedClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.token).await()
                 if (nuevaLocation != null) Pair(nuevaLocation.latitude, nuevaLocation.longitude) else null
             }
         } catch (e: Exception) {

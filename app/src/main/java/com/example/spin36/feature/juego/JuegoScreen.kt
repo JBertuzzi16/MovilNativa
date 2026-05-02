@@ -115,13 +115,27 @@ fun JuegoScreen(
         ActivityResultContracts.RequestPermission()
     ) { concedido -> if (concedido) viewModel.jugar() }
 
+    var confirmarCalendarioPendiente by remember { mutableStateOf(false) }
+
     val permisoCalendario = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) {}
+    ) { results ->
+        val concedido = results.values.all { it }
+        if (concedido && confirmarCalendarioPendiente) {
+            viewModel.confirmarGuardadoEnCalendario()
+        } else if (!concedido) {
+            Toast.makeText(context, context.getString(R.string.calendario_permiso_denegado), Toast.LENGTH_LONG).show()
+        }
+        confirmarCalendarioPendiente = false
+    }
 
     val permisoUbicacion = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) { }
+    ) { results ->
+        if (results.values.any { !it }) {
+            Toast.makeText(context, context.getString(R.string.ubicacion_permiso_denegado), Toast.LENGTH_SHORT).show()
+        }
+    }
 
     val guardarDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("image/webp")
@@ -179,7 +193,16 @@ fun JuegoScreen(
         onGirarClick             = { onGirarConPermiso() },
         onGuardarCapturaClick    = { guardarDocumentLauncher.launch("spin36_victoria_${System.currentTimeMillis()}.webp") },
         onDescartarCapturaClick  = { viewModel.descartarCaptura() },
-        onConfirmarCalendario    = { viewModel.confirmarGuardadoEnCalendario() },
+        onConfirmarCalendario    = {
+            val tienePermiso = arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR)
+                .all { context.checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED }
+            if (tienePermiso) {
+                viewModel.confirmarGuardadoEnCalendario()
+            } else {
+                confirmarCalendarioPendiente = true
+                permisoCalendario.launch(arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR))
+            }
+        },
         onRechazarCalendario     = { viewModel.rechazarGuardadoEnCalendario() },
         onAnimacionFinalizada    = { viewModel.marcarAnimacionFinalizada() },
         onCerrarAnimacion        = { viewModel.cerrarAnimacion() },

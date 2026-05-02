@@ -107,6 +107,8 @@
     <string name="calendario_no_guardar">No desar</string>
     <string name="calendario_guardada">Victòria desada al calendari!</string>
     <string name="calendario_error">No s\'ha pogut desar al calendari</string>
+    <string name="calendario_permiso_denegado">Sense permís de calendari no es pot desar la victòria</string>
+    <string name="ubicacion_permiso_denegado">Sense permís d\'ubicació, la partida es desarà sense coordenades</string>
 
     <!-- Ajuda -->
     <string name="ayuda_titulo">AJUDA</string>

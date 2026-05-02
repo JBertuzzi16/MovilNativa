@@ -307,6 +307,7 @@ class JuegoViewModel(
                     errorGuardado    = null
                 )
             }, { error ->
+
                 _uiState.value = _uiState.value.copy(
                     errorGuardado = "No se pudo guardar la imagen: ${error.message}"
                 )
@@ -334,6 +335,7 @@ class JuegoViewModel(
         val jugador = jugadorActual ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
+            var errorDetalle: String? = null
             val exito = try {
                 manager.guardarVictoriaEnCalendario(
                     nombreJugador = jugador.nombre,
@@ -343,13 +345,17 @@ class JuegoViewModel(
                     fechaMillis   = System.currentTimeMillis()
                 )
             } catch (e: Exception) {
+                errorDetalle = e.message
                 false
             }
             withContext(Dispatchers.Main) {
                 _uiState.value = _uiState.value.copy(
                     victoriaEnCalendario = exito,
-                    errorCalendario      = if (exito) null else
-                        appContext?.getString(R.string.calendario_error) ?: "No se pudo guardar en el calendario"
+                    errorCalendario = when {
+                        exito        -> null
+                        errorDetalle != null -> "${appContext?.getString(R.string.calendario_error)}: $errorDetalle"
+                        else         -> appContext?.getString(R.string.calendario_error) ?: "No se pudo guardar en el calendario"
+                    }
                 )
             }
         }

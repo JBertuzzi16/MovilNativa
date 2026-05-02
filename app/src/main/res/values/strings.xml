@@ -107,6 +107,8 @@
     <string name="calendario_no_guardar">No guardar</string>
     <string name="calendario_guardada">¡Victoria guardada en el calendario!</string>
     <string name="calendario_error">No se pudo guardar en el calendario</string>
+    <string name="calendario_permiso_denegado">Sin permiso de calendario no se puede guardar la victoria</string>
+    <string name="ubicacion_permiso_denegado">Sin permiso de ubicación, la partida se guardará sin coordenadas</string>
 
     <!-- Ayuda -->
     <string name="ayuda_titulo">AYUDA</string>

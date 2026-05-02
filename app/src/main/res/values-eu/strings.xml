@@ -107,6 +107,8 @@
     <string name="calendario_no_guardar">Ez gorde</string>
     <string name="calendario_guardada">Garaipena egutegian gordeta!</string>
     <string name="calendario_error">Ezin izan da egutegian gorde</string>
+    <string name="calendario_permiso_denegado">Egutegi-baimenik gabe ezin da garaipena gorde</string>
+    <string name="ubicacion_permiso_denegado">Kokapen-baimenik gabe, partida koordenaturik gabe gordeko da</string>
 
     <!-- Laguntza -->
     <string name="ayuda_titulo">LAGUNTZA</string>

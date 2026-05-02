@@ -107,6 +107,8 @@
     <string name="calendario_no_guardar">Don\'t save</string>
     <string name="calendario_guardada">Victory saved to calendar!</string>
     <string name="calendario_error">Could not save to calendar</string>
+    <string name="calendario_permiso_denegado">Calendar permission denied, cannot save the victory</string>
+    <string name="ubicacion_permiso_denegado">Location permission denied, the game will be saved without coordinates</string>
 
     <!-- Help -->
     <string name="ayuda_titulo">HELP</string>
