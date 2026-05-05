@@ -77,7 +77,8 @@ fun AjustesScreen(
     onMenuClick: () -> Unit,
     onJuegoClick: () -> Unit,
     onHistorialClick: () -> Unit,
-    onAyudaClick: () -> Unit = {}
+    onAyudaClick: () -> Unit = {},
+    onCerrarSesion: () -> Unit = {}
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     val context = LocalContext.current
@@ -99,6 +100,7 @@ fun AjustesScreen(
         onElegirMusica       = { selectorAudio.launch(arrayOf("audio/*")) },
         onRestablecerOficial = { viewModel.onRestablecerMusicaOficial() },
         onCambiarIdioma      = { tag -> AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag)) },
+        onCerrarSesion       = onCerrarSesion,
         onVolverClick        = onVolverClick,
         onSalirClick         = onSalirClick,
         onMenuClick          = onMenuClick,
@@ -116,6 +118,7 @@ fun AjustesContent(
     onElegirMusica: () -> Unit,
     onRestablecerOficial: () -> Unit,
     onCambiarIdioma: (String) -> Unit = {},
+    onCerrarSesion: () -> Unit = {},
     onVolverClick: () -> Unit,
     onSalirClick: () -> Unit,
     onMenuClick: () -> Unit,
@@ -134,6 +137,7 @@ fun AjustesContent(
                 onIrHistorial     = onHistorialClick,
                 onIrAjustes       = {},
                 onIrAyuda         = onAyudaClick,
+                onCerrarSesion    = onCerrarSesion,
                 onSalirConfirmado = onSalirClick
             )
         }

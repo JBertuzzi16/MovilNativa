@@ -105,6 +105,7 @@ fun JuegoScreen(
     onMenuClick: () -> Unit,
     onAjustesClick: () -> Unit,
     onAyudaClick: () -> Unit = {},
+    onCerrarSesion: () -> Unit = {},
     onSalirClick: () -> Unit,
     onVolverClick: () -> Unit
 ) {
@@ -210,6 +211,7 @@ fun JuegoScreen(
         onMenuClick              = onMenuClick,
         onAjustesClick           = onAjustesClick,
         onAyudaClick             = onAyudaClick,
+        onCerrarSesion           = onCerrarSesion,
         onSalirClick             = onSalirClick,
         onVolverClick            = onVolverClick
     )
@@ -239,6 +241,7 @@ fun JuegoContent(
     onMenuClick: () -> Unit,
     onAjustesClick: () -> Unit,
     onAyudaClick: () -> Unit = {},
+    onCerrarSesion: () -> Unit = {},
     onSalirClick: () -> Unit,
     onVolverClick: () -> Unit
 ) {
@@ -254,6 +257,7 @@ fun JuegoContent(
                     onIrHistorial     = onHistorialClick,
                     onIrAjustes       = onAjustesClick,
                     onIrAyuda         = onAyudaClick,
+                    onCerrarSesion    = onCerrarSesion,
                     onSalirConfirmado = onSalirClick
                 )
             }

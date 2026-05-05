@@ -5,6 +5,8 @@
     <!-- Benvinguda -->
     <string name="bienvenida_placeholder">Introdueix el teu nom…</string>
     <string name="bienvenida_continuar">CONTINUAR</string>
+    <string name="bienvenida_google">Inicia sessió amb Google</string>
+    <string name="bienvenida_error_google">No s\'ha pogut iniciar sessió amb Google</string>
 
     <!-- Menú -->
     <string name="menu_titulo">MENÚ</string>
@@ -18,6 +20,7 @@
     <string name="nav_historial">Historial</string>
     <string name="nav_ajustes">Ajustos</string>
     <string name="nav_ayuda">Ajuda</string>
+    <string name="nav_cerrar_sesion">Tanca la sessió</string>
     <string name="nav_salir">Sortir</string>
     <string name="nav_confirmar_salida">Confirmar sortida</string>
     <string name="nav_confirmar_salida_texto">Segur que vols sortir de l\'app?</string>

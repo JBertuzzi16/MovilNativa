@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "815331967975",
+    "project_id": "spin36-dcae9",
+    "storage_bucket": "spin36-dcae9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815331967975:android:adadf71c2317f835a6f342",
+        "android_client_info": {
+          "package_name": "com.example.spin36"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815331967975-106a0h8e8c2dl8ft35mqdv9totugmtmi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spin36",
+            "certificate_hash": "ee3e1c0a0c9dff0d533e639a94a8bd91070f6c9e"
+          }
+        },
+        {
+          "client_id": "815331967975-sabiq5cd9kq959h4u55k8632ga6lp9oq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-KzlV3GsqRgKN164khz7rA-kmqauwU-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815331967975-dkh6tid72vj3a1938v0aso6qcpvf6bmj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,6 +5,8 @@
     <!-- Ongi etorria -->
     <string name="bienvenida_placeholder">Sartu zure izena…</string>
     <string name="bienvenida_continuar">JARRAITU</string>
+    <string name="bienvenida_google">Hasi saioa Google-rekin</string>
+    <string name="bienvenida_error_google">Ezin izan da Google-rekin saioa hasi</string>
 
     <!-- Menua -->
     <string name="menu_titulo">MENUA</string>
@@ -18,6 +20,7 @@
     <string name="nav_historial">Historia</string>
     <string name="nav_ajustes">Ezarpenak</string>
     <string name="nav_ayuda">Laguntza</string>
+    <string name="nav_cerrar_sesion">Saioa itxi</string>
     <string name="nav_salir">Irten</string>
     <string name="nav_confirmar_salida">Irteera baieztatu</string>
     <string name="nav_confirmar_salida_texto">Ziur zaude aplikaziotik irten nahi duzula?</string>

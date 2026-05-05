@@ -2,6 +2,7 @@ package com.example.spin36.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,6 +17,9 @@ import com.example.spin36.feature.historial.HistorialViewModel
 import com.example.spin36.feature.juego.JuegoScreen
 import com.example.spin36.feature.juego.JuegoViewModel
 import com.example.spin36.feature.menu.MenuScreen
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun AppNavHost(
@@ -23,7 +27,18 @@ fun AppNavHost(
     historialViewModel: HistorialViewModel,
     ajustesViewModel: AjustesViewModel
 ) {
+    val context       = LocalContext.current
     val navController = rememberNavController()
+
+    fun cerrarSesion() {
+        FirebaseAuth.getInstance().signOut()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail().build()
+        GoogleSignIn.getClient(context, gso).signOut()
+        navController.navigate("bienvenida") {
+            popUpTo(0) { inclusive = true }
+        }
+    }
 
     NavHost(
         navController    = navController,
@@ -50,6 +65,7 @@ fun AppNavHost(
                 onHistorialClick = { navController.navigate("historial/$nombre") },
                 onAjustesClick   = { navController.navigate("ajustes/$nombre") },
                 onAyudaClick     = { navController.navigate("ayuda/$nombre") { launchSingleTop = true } },
+                onCerrarSesion   = ::cerrarSesion,
                 onSalirClick     = { navController.popBackStack("bienvenida", inclusive = false) },
                 onVolverClick    = { navController.popBackStack("bienvenida", inclusive = false) }
             )
@@ -72,17 +88,10 @@ fun AppNavHost(
                     val existe = navController.popBackStack("menu/$nombre", inclusive = false)
                     if (!existe) navController.navigate("menu/$nombre") { launchSingleTop = true }
                 },
-                onAjustesClick   = {
-                    navController.navigate("ajustes/$nombre") { launchSingleTop = true }
-                },
-                onAyudaClick     = {
-                    navController.navigate("ayuda/$nombre") { launchSingleTop = true }
-                },
-                onSalirClick     = {
-                    juegoViewModel.cerrarSesionActual {
-                        navController.popBackStack("bienvenida", inclusive = false)
-                    }
-                },
+                onAjustesClick   = { navController.navigate("ajustes/$nombre") { launchSingleTop = true } },
+                onAyudaClick     = { navController.navigate("ayuda/$nombre") { launchSingleTop = true } },
+                onCerrarSesion   = ::cerrarSesion,
+                onSalirClick     = { juegoViewModel.cerrarSesionActual { navController.popBackStack("bienvenida", inclusive = false) } },
                 onVolverClick    = {
                     val volvio = navController.popBackStack("menu/$nombre", inclusive = false)
                     if (!volvio) navController.navigate("menu/$nombre") { launchSingleTop = true }
@@ -99,18 +108,11 @@ fun AppNavHost(
             HistorialScreen(
                 viewModel        = historialViewModel,
                 onSalirClick     = { navController.popBackStack("bienvenida", inclusive = false) },
-                onIrMenuClick    = {
-                    navController.navigate("menu/$nombre") { launchSingleTop = true }
-                },
-                onIrJuegoClick   = {
-                    navController.navigate("juego/$nombre") { launchSingleTop = true }
-                },
-                onAjustesClick   = {
-                    navController.navigate("ajustes/$nombre") { launchSingleTop = true }
-                },
-                onAyudaClick     = {
-                    navController.navigate("ayuda/$nombre") { launchSingleTop = true }
-                },
+                onIrMenuClick    = { navController.navigate("menu/$nombre") { launchSingleTop = true } },
+                onIrJuegoClick   = { navController.navigate("juego/$nombre") { launchSingleTop = true } },
+                onAjustesClick   = { navController.navigate("ajustes/$nombre") { launchSingleTop = true } },
+                onAyudaClick     = { navController.navigate("ayuda/$nombre") { launchSingleTop = true } },
+                onCerrarSesion   = ::cerrarSesion,
                 onVolverClick    = {
                     val volvio = navController.popBackStack("menu/$nombre", inclusive = false)
                     if (!volvio) navController.navigate("menu/$nombre") { launchSingleTop = true }
@@ -131,18 +133,11 @@ fun AppNavHost(
                     if (!volvio) navController.navigate("menu/$nombre") { launchSingleTop = true }
                 },
                 onSalirClick     = { navController.popBackStack("bienvenida", inclusive = false) },
-                onMenuClick      = {
-                    navController.navigate("menu/$nombre") { launchSingleTop = true }
-                },
-                onJuegoClick     = {
-                    navController.navigate("juego/$nombre") { launchSingleTop = true }
-                },
-                onHistorialClick = {
-                    navController.navigate("historial/$nombre") { launchSingleTop = true }
-                },
-                onAyudaClick     = {
-                    navController.navigate("ayuda/$nombre") { launchSingleTop = true }
-                }
+                onMenuClick      = { navController.navigate("menu/$nombre") { launchSingleTop = true } },
+                onJuegoClick     = { navController.navigate("juego/$nombre") { launchSingleTop = true } },
+                onHistorialClick = { navController.navigate("historial/$nombre") { launchSingleTop = true } },
+                onAyudaClick     = { navController.navigate("ayuda/$nombre") { launchSingleTop = true } },
+                onCerrarSesion   = ::cerrarSesion
             )
         }
 

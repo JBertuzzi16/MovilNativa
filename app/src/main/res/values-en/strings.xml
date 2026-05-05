@@ -5,6 +5,8 @@
     <!-- Welcome -->
     <string name="bienvenida_placeholder">Enter your name…</string>
     <string name="bienvenida_continuar">CONTINUE</string>
+    <string name="bienvenida_google">Sign in with Google</string>
+    <string name="bienvenida_error_google">Could not sign in with Google</string>
 
     <!-- Menu -->
     <string name="menu_titulo">MENU</string>
@@ -18,6 +20,7 @@
     <string name="nav_historial">History</string>
     <string name="nav_ajustes">Settings</string>
     <string name="nav_ayuda">Help</string>
+    <string name="nav_cerrar_sesion">Sign out</string>
     <string name="nav_salir">Exit</string>
     <string name="nav_confirmar_salida">Confirm exit</string>
     <string name="nav_confirmar_salida_texto">Are you sure you want to exit the app?</string>

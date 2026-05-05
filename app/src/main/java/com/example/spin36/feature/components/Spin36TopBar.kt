@@ -39,6 +39,7 @@ fun Spin36TopBar(
     onIrHistorial: () -> Unit,
     onIrAjustes: () -> Unit = {},
     onIrAyuda: () -> Unit = {},
+    onCerrarSesion: () -> Unit = {},
     onSalirConfirmado: () -> Unit
 ) {
     val menuExpandido       = remember { mutableStateOf(false) }
@@ -66,6 +67,7 @@ fun Spin36TopBar(
                 if (pantallaActual != PantallaActual.AYUDA) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.nav_ayuda), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onIrAyuda() })
                 }
+                DropdownMenuItem(text = { Text(stringResource(R.string.nav_cerrar_sesion), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onCerrarSesion() })
                 DropdownMenuItem(text = { Text(stringResource(R.string.nav_salir), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; mostrarDialogoSalir.value = true })
             }
         },

@@ -1,14 +1,24 @@
 package com.example.spin36.feature.bienvenida
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,9 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -30,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import com.example.spin36.R
 import com.example.spin36.feature.components.rememberSoundClick
 import com.example.spin36.ui.theme.casinoAntracitaSecundario
@@ -44,19 +56,35 @@ fun BienvenidaScreen(
     onEntrarClick: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    val googleLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            viewModel.procesarResultadoGoogle(account.idToken) { nombre ->
+                onEntrarClick(nombre)
+            }
+        } catch (e: ApiException) {
+            viewModel.procesarExcepcionGoogle(e)
+        }
+    }
 
     BienvenidaContent(
-        nombreActual     = uiState.nombre,
-        onNombreCambiado = { viewModel.onNombreChange(it) },
-        onEntrarClick    = { if (uiState.nombre.isNotBlank()) onEntrarClick(uiState.nombre) }
+        uiState        = uiState,
+        onGoogleClick  = {
+            val client = viewModel.obtenerGoogleSignInClient(context)
+            googleLauncher.launch(client.signInIntent)
+        }
     )
 }
 
 @Composable
 fun BienvenidaContent(
-    nombreActual: String,
-    onNombreCambiado: (String) -> Unit,
-    onEntrarClick: () -> Unit
+    uiState: BienvenidaUiState,
+    onGoogleClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize().background(color = casinoVerde)) {
         ImagenRuleta(modifier = Modifier.align(Alignment.BottomCenter))
@@ -70,8 +98,24 @@ fun BienvenidaContent(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CampoIngresoNombre(nombreActual = nombreActual, onNombreCambiado = onNombreCambiado)
-                BotonContinuar(onClick = onEntrarClick)
+                if (uiState.error != null) {
+                    Text(
+                        text       = uiState.error,
+                        color      = casinoRojoAcciones,
+                        fontFamily = FontFamily(Font(R.font.mileast, FontWeight.Normal)),
+                        fontSize   = 15.sp
+                    )
+                }
+                if (uiState.cargando) {
+                    Row(
+                        modifier            = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(color = casinoBlanco)
+                    }
+                } else {
+                    BotonGoogle(onClick = onGoogleClick)
+                }
             }
         }
     }
@@ -81,7 +125,7 @@ fun BienvenidaContent(
 fun ImagenRuleta(modifier: Modifier = Modifier) {
     Image(
         painter            = painterResource(id = R.drawable.ruleta),
-        contentDescription = stringResource(R.string.bienvenida_placeholder),
+        contentDescription = null,
         modifier           = modifier.size(500.dp),
         contentScale       = ContentScale.Crop,
         alpha              = 0.85f
@@ -100,34 +144,7 @@ fun LogoSpin36() {
 }
 
 @Composable
-fun CampoIngresoNombre(nombreActual: String, onNombreCambiado: (String) -> Unit) {
-    Box(
-        modifier = Modifier
-            .dropShadow(shape = RoundedCornerShape(18.dp), shadow = Shadow(radius = 20.dp, color = casinoDoradoDetalles.copy(alpha = 0.35f), offset = DpOffset(0.dp, 16.dp)))
-            .background(brush = Brush.linearGradient(colors = listOf(casinoDoradoDetalles, casinoBlanco)), shape = RoundedCornerShape(16.dp))
-            .padding(2.dp)
-    ) {
-        OutlinedTextField(
-            value         = nombreActual,
-            onValueChange = { if (it.length <= 15) onNombreCambiado(it) },
-            placeholder   = { Text(stringResource(R.string.bienvenida_placeholder), color = casinoAntracitaSecundario) },
-            singleLine    = true,
-            shape         = RoundedCornerShape(16.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor        = casinoAntracitaSecundario,
-                unfocusedTextColor      = casinoAntracitaSecundario,
-                focusedContainerColor   = casinoBlanco,
-                unfocusedContainerColor = casinoBlanco,
-                focusedBorderColor      = casinoDoradoDetalles,
-                unfocusedBorderColor    = Color.Transparent
-            ),
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-}
-
-@Composable
-fun BotonContinuar(onClick: () -> Unit) {
+fun BotonGoogle(onClick: () -> Unit) {
     val fuenteRuleta  = FontFamily(Font(R.font.mileast, FontWeight.Normal))
     val onClickSonoro = rememberSoundClick(onClick)
     Box(
@@ -136,8 +153,25 @@ fun BotonContinuar(onClick: () -> Unit) {
             .background(brush = Brush.linearGradient(colors = listOf(casinoDoradoDetalles, casinoRojoAcciones)), shape = RoundedCornerShape(16.dp))
             .padding(2.dp)
     ) {
-        Button(onClick = onClickSonoro, colors = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones), shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth().height(56.dp)) {
-            Text(text = stringResource(R.string.bienvenida_continuar), color = casinoBlanco, fontSize = 25.sp, fontFamily = fuenteRuleta, fontWeight = FontWeight.Bold)
+        Button(
+            onClick  = onClickSonoro,
+            colors   = ButtonDefaults.buttonColors(containerColor = casinoRojoAcciones),
+            shape    = RoundedCornerShape(16.dp),
+            modifier = Modifier.fillMaxWidth().height(56.dp)
+        ) {
+            Image(
+                painter            = painterResource(id = R.drawable.ic_google),
+                contentDescription = null,
+                modifier           = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text       = stringResource(R.string.bienvenida_google),
+                color      = casinoBlanco,
+                fontSize   = 20.sp,
+                fontFamily = fuenteRuleta,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
@@ -145,5 +179,8 @@ fun BotonContinuar(onClick: () -> Unit) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewBienvenidaCompleta() {
-    BienvenidaContent(nombreActual = "KOLDO", onNombreCambiado = {}, onEntrarClick = {})
+    BienvenidaContent(
+        uiState       = BienvenidaUiState(),
+        onGoogleClick = {}
+    )
 }

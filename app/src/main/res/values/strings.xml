@@ -5,6 +5,9 @@
     <!-- Bienvenida -->
     <string name="bienvenida_placeholder">Ingresa tu nombre…</string>
     <string name="bienvenida_continuar">CONTINUAR</string>
+    <string name="bienvenida_google">Iniciar sesión con Google</string>
+    <string name="bienvenida_error_google">No se pudo iniciar sesión con Google</string>
+    <string name="default_web_client_id">815331967975-dkh6tid72vj3a1938v0aso6qcpvf6bmj.apps.googleusercontent.com</string>
 
     <!-- Menú -->
     <string name="menu_titulo">MENÚ</string>
@@ -18,6 +21,7 @@
     <string name="nav_historial">Historial</string>
     <string name="nav_ajustes">Ajustes</string>
     <string name="nav_ayuda">Ayuda</string>
+    <string name="nav_cerrar_sesion">Cerrar sesión</string>
     <string name="nav_salir">Salir</string>
     <string name="nav_confirmar_salida">Confirmar salida</string>
     <string name="nav_confirmar_salida_texto">¿Seguro que quieres salir de la app?</string>
