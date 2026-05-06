@@ -20,6 +20,7 @@
     <string name="nav_historial">Historial</string>
     <string name="nav_ajustes">Ajustos</string>
     <string name="nav_ayuda">Ajuda</string>
+    <string name="nav_topten">Top Ten</string>
     <string name="nav_cerrar_sesion">Tanca la sessió</string>
     <string name="nav_salir">Sortir</string>
     <string name="nav_confirmar_salida">Confirmar sortida</string>
@@ -112,6 +113,11 @@
     <string name="calendario_error">No s\'ha pogut desar al calendari</string>
     <string name="calendario_permiso_denegado">Sense permís de calendari no es pot desar la victòria</string>
     <string name="ubicacion_permiso_denegado">Sense permís d\'ubicació, la partida es desarà sense coordenades</string>
+
+    <!-- Top Ten -->
+    <string name="topten_titulo">TOP TEN</string>
+    <string name="topten_atras">Enrere</string>
+    <string name="topten_premio">Has entrat al Top Ten! +500 monedes de premi</string>
 
     <!-- Ajuda -->
     <string name="ayuda_titulo">AJUDA</string>

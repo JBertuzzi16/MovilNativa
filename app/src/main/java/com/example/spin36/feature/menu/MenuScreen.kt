@@ -53,6 +53,7 @@ fun MenuScreen(
     onHistorialClick: () -> Unit,
     onAjustesClick: () -> Unit,
     onAyudaClick: () -> Unit = {},
+    onTopTenClick: () -> Unit = {},
     onCerrarSesion: () -> Unit = {},
     onSalirClick: () -> Unit,
     onVolverClick: () -> Unit
@@ -68,6 +69,7 @@ fun MenuScreen(
                 onIrHistorial     = onHistorialClick,
                 onIrAjustes       = onAjustesClick,
                 onIrAyuda         = onAyudaClick,
+                onIrTopTen        = onTopTenClick,
                 onCerrarSesion    = onCerrarSesion,
                 onSalirConfirmado = onSalirClick
             )

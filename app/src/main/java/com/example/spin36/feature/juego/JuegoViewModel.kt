@@ -1,5 +1,8 @@
 package com.example.spin36.feature.juego
 
+import com.example.spin36.data.remote.PuntuacionDto
+import com.example.spin36.data.remote.TopTenRepository
+import com.example.spin36.data.remote.PREMIO_TOP_TEN
 import android.Manifest
 import android.content.Context
 import android.media.AudioAttributes
@@ -43,6 +46,7 @@ class JuegoViewModel(
 
     private val disposables = CompositeDisposable()
     private val appContext: Context? = context?.applicationContext
+    private val topTenRepository = TopTenRepository()
 
     private val _uiState = MutableStateFlow(JuegoUiState())
     val uiState: StateFlow<JuegoUiState> = _uiState
@@ -386,9 +390,29 @@ class JuegoViewModel(
         val disposable = repository.actualizarSesion(sesionCerrada)
             .subscribe({
                 sesionActual  = sesionCerrada
-                jugadorActual = null
-                sesionActual  = null
-                onSesionCerrada()
+                val uid       = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: jugador.nombre
+                val nombre    = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.displayName ?: jugador.nombre
+
+                viewModelScope.launch(Dispatchers.IO) {
+                    val puntuacion = PuntuacionDto(
+                        nombre     = nombre,
+                        puntuacion = jugador.saldoActual,
+                        fecha      = obtenerFechaHoraActual(),
+                        uid        = uid
+                    )
+                    val entroEnTop = topTenRepository.intentarEntrarEnTopTen(puntuacion)
+                    withContext(Dispatchers.Main) {
+                        if (entroEnTop) {
+                            jugador.actualizarSaldo(PREMIO_TOP_TEN)
+                            _uiState.value = _uiState.value.copy(
+                                saldoActual = jugador.saldoActual
+                            )
+                        }
+                        jugadorActual = null
+                        sesionActual  = null
+                        onSesionCerrada()
+                    }
+                }
             }, { error ->
                 _uiState.value = _uiState.value.copy(
                     error = error.message ?: "Error al cerrar la sesión"

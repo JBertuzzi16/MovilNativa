@@ -21,6 +21,7 @@
     <string name="nav_historial">Historial</string>
     <string name="nav_ajustes">Ajustes</string>
     <string name="nav_ayuda">Ayuda</string>
+    <string name="nav_topten">Top Ten</string>
     <string name="nav_cerrar_sesion">Cerrar sesión</string>
     <string name="nav_salir">Salir</string>
     <string name="nav_confirmar_salida">Confirmar salida</string>
@@ -113,6 +114,11 @@
     <string name="calendario_error">No se pudo guardar en el calendario</string>
     <string name="calendario_permiso_denegado">Sin permiso de calendario no se puede guardar la victoria</string>
     <string name="ubicacion_permiso_denegado">Sin permiso de ubicación, la partida se guardará sin coordenadas</string>
+
+    <!-- Top Ten -->
+    <string name="topten_titulo">TOP TEN</string>
+    <string name="topten_atras">Atrás</string>
+    <string name="topten_premio">¡Has entrado en el Top Ten! +500 monedas de premio</string>
 
     <!-- Ayuda -->
     <string name="ayuda_titulo">AYUDA</string>

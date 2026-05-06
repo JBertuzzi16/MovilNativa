@@ -20,6 +20,7 @@
     <string name="nav_historial">Historia</string>
     <string name="nav_ajustes">Ezarpenak</string>
     <string name="nav_ayuda">Laguntza</string>
+    <string name="nav_topten">Top Ten</string>
     <string name="nav_cerrar_sesion">Saioa itxi</string>
     <string name="nav_salir">Irten</string>
     <string name="nav_confirmar_salida">Irteera baieztatu</string>
@@ -112,6 +113,11 @@
     <string name="calendario_error">Ezin izan da egutegian gorde</string>
     <string name="calendario_permiso_denegado">Egutegi-baimenik gabe ezin da garaipena gorde</string>
     <string name="ubicacion_permiso_denegado">Kokapen-baimenik gabe, partida koordenaturik gabe gordeko da</string>
+
+    <!-- Top Ten -->
+    <string name="topten_titulo">TOP TEN</string>
+    <string name="topten_atras">Atzera</string>
+    <string name="topten_premio">Top Ten-en sartu zara! +500 txanpon sari</string>
 
     <!-- Laguntza -->
     <string name="ayuda_titulo">LAGUNTZA</string>

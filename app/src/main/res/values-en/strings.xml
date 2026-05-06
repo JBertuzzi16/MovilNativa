@@ -20,6 +20,7 @@
     <string name="nav_historial">History</string>
     <string name="nav_ajustes">Settings</string>
     <string name="nav_ayuda">Help</string>
+    <string name="nav_topten">Top Ten</string>
     <string name="nav_cerrar_sesion">Sign out</string>
     <string name="nav_salir">Exit</string>
     <string name="nav_confirmar_salida">Confirm exit</string>
@@ -112,6 +113,11 @@
     <string name="calendario_error">Could not save to calendar</string>
     <string name="calendario_permiso_denegado">Calendar permission denied, cannot save the victory</string>
     <string name="ubicacion_permiso_denegado">Location permission denied, the game will be saved without coordinates</string>
+
+    <!-- Top Ten -->
+    <string name="topten_titulo">TOP TEN</string>
+    <string name="topten_atras">Back</string>
+    <string name="topten_premio">You made the Top Ten! +500 coins prize</string>
 
     <!-- Help -->
     <string name="ayuda_titulo">HELP</string>

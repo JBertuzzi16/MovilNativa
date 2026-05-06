@@ -17,6 +17,7 @@ import com.example.spin36.feature.historial.HistorialViewModel
 import com.example.spin36.feature.juego.JuegoScreen
 import com.example.spin36.feature.juego.JuegoViewModel
 import com.example.spin36.feature.menu.MenuScreen
+import com.example.spin36.feature.topten.TopTenScreen
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -65,6 +66,7 @@ fun AppNavHost(
                 onHistorialClick = { navController.navigate("historial/$nombre") },
                 onAjustesClick   = { navController.navigate("ajustes/$nombre") },
                 onAyudaClick     = { navController.navigate("ayuda/$nombre") { launchSingleTop = true } },
+                onTopTenClick    = { navController.navigate("topten/$nombre") { launchSingleTop = true } },
                 onCerrarSesion   = ::cerrarSesion,
                 onSalirClick     = { navController.popBackStack("bienvenida", inclusive = false) },
                 onVolverClick    = { navController.popBackStack("bienvenida", inclusive = false) }
@@ -146,24 +148,28 @@ fun AppNavHost(
             arguments = listOf(navArgument("nombreJugador") { type = NavType.StringType })
         ) { backStackEntry ->
             val nombre = backStackEntry.arguments?.getString("nombreJugador") ?: "INVITADO"
-
             AyudaScreen(
-                onVolverClick    = {
-                    val volvio = navController.popBackStack()
-                    if (!volvio) navController.navigate("menu/$nombre") { launchSingleTop = true }
-                },
-                onMenuClick      = {
-                    navController.navigate("menu/$nombre") { launchSingleTop = true }
-                },
-                onJuegoClick     = {
-                    navController.navigate("juego/$nombre") { launchSingleTop = true }
-                },
-                onHistorialClick = {
-                    navController.navigate("historial/$nombre") { launchSingleTop = true }
-                },
-                onAjustesClick   = {
-                    navController.navigate("ajustes/$nombre") { launchSingleTop = true }
-                },
+                onVolverClick    = { val volvio = navController.popBackStack(); if (!volvio) navController.navigate("menu/$nombre") { launchSingleTop = true } },
+                onMenuClick      = { navController.navigate("menu/$nombre") { launchSingleTop = true } },
+                onJuegoClick     = { navController.navigate("juego/$nombre") { launchSingleTop = true } },
+                onHistorialClick = { navController.navigate("historial/$nombre") { launchSingleTop = true } },
+                onAjustesClick   = { navController.navigate("ajustes/$nombre") { launchSingleTop = true } },
+                onSalirClick     = { navController.popBackStack("bienvenida", inclusive = false) }
+            )
+        }
+
+        composable(
+            route     = "topten/{nombreJugador}",
+            arguments = listOf(navArgument("nombreJugador") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val nombre = backStackEntry.arguments?.getString("nombreJugador") ?: "INVITADO"
+            TopTenScreen(
+                onVolverClick    = { val volvio = navController.popBackStack(); if (!volvio) navController.navigate("menu/$nombre") { launchSingleTop = true } },
+                onMenuClick      = { navController.navigate("menu/$nombre") { launchSingleTop = true } },
+                onJuegoClick     = { navController.navigate("juego/$nombre") { launchSingleTop = true } },
+                onHistorialClick = { navController.navigate("historial/$nombre") { launchSingleTop = true } },
+                onAjustesClick   = { navController.navigate("ajustes/$nombre") { launchSingleTop = true } },
+                onCerrarSesion   = ::cerrarSesion,
                 onSalirClick     = { navController.popBackStack("bienvenida", inclusive = false) }
             )
         }

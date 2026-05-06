@@ -25,7 +25,7 @@ import com.example.spin36.ui.theme.casinoBlanco
 import com.example.spin36.ui.theme.casinoRojoAcciones
 import com.example.spin36.ui.theme.casinoVerde
 
-enum class PantallaActual { MENU, JUEGO, HISTORIAL, AJUSTES, AYUDA }
+enum class PantallaActual { MENU, JUEGO, HISTORIAL, AJUSTES, AYUDA, TOPTEN }
 
 private val fuenteRuletaTopBar = FontFamily(Font(R.font.mileast, FontWeight.Normal))
 
@@ -39,6 +39,7 @@ fun Spin36TopBar(
     onIrHistorial: () -> Unit,
     onIrAjustes: () -> Unit = {},
     onIrAyuda: () -> Unit = {},
+    onIrTopTen: () -> Unit = {},
     onCerrarSesion: () -> Unit = {},
     onSalirConfirmado: () -> Unit
 ) {
@@ -66,6 +67,9 @@ fun Spin36TopBar(
                 }
                 if (pantallaActual != PantallaActual.AYUDA) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.nav_ayuda), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onIrAyuda() })
+                }
+                if (pantallaActual != PantallaActual.TOPTEN) {
+                    DropdownMenuItem(text = { Text(stringResource(R.string.nav_topten), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onIrTopTen() })
                 }
                 DropdownMenuItem(text = { Text(stringResource(R.string.nav_cerrar_sesion), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; onCerrarSesion() })
                 DropdownMenuItem(text = { Text(stringResource(R.string.nav_salir), fontFamily = fuenteRuletaTopBar) }, onClick = rememberSoundClick { menuExpandido.value = false; mostrarDialogoSalir.value = true })
