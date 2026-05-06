@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "815331967975",
+    "firebase_url": "https://spin36-dcae9-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "spin36-dcae9",
     "storage_bucket": "spin36-dcae9.firebasestorage.app"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "com.example.spin36",
             "certificate_hash": "ee3e1c0a0c9dff0d533e639a94a8bd91070f6c9e"
+          }
+        },
+        {
+          "client_id": "815331967975-kfg0b79p3046p3uj1afp27962ivg1i5i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spin36",
+            "certificate_hash": "5e06d35e2c85f8740df8a72b266bd78d969cb80d"
           }
         },
         {

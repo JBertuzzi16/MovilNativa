@@ -396,7 +396,7 @@ class JuegoViewModel(
                 viewModelScope.launch(Dispatchers.IO) {
                     val puntuacion = PuntuacionDto(
                         nombre     = nombre,
-                        puntuacion = jugador.saldoActual,
+                        puntuacion = sesionCerrada.saldoFinal,
                         fecha      = obtenerFechaHoraActual(),
                         uid        = uid
                     )
